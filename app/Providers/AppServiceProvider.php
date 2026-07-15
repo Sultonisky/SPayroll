@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Limit;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Observers\UserObserver;

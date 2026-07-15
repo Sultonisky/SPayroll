@@ -1,19 +1,19 @@
 :root {
-    --cui-primary: #1cc88a;
-    --cui-primary-rgb: 28, 200, 138;
-    --cui-link-color: #1cc88a;
-    --cui-link-hover-color: #169b6b;
+    --cui-primary: #00F260;
+    --cui-primary-rgb: 0, 242, 96;
+    --cui-link-color: #00F260;
+    --cui-link-hover-color: #00c94f;
 }
 
 [data-coreui-theme="dark"] {
-    --cui-primary: #1cc88a;
-    --cui-primary-rgb: 28, 200, 138;
+    --cui-primary: #00F260;
+    --cui-primary-rgb: 0, 242, 96;
 }
 
 .alert-primary {
     --cui-alert-color: #0a6442;
-    --cui-alert-bg: rgba(28, 200, 138, 0.15);
-    --cui-alert-border-color: rgba(28, 200, 138, 0.3);
+    --cui-alert-bg: rgba(0, 242, 96, 0.15);
+    --cui-alert-border-color: rgba(0, 242, 96, 0.3);
 }
 
 .alert-primary .alert-link {
@@ -22,8 +22,8 @@
 
 [data-coreui-theme="dark"] .alert-primary {
     --cui-alert-color: #75b798;
-    --cui-alert-bg: rgba(28, 200, 138, 0.15);
-    --cui-alert-border-color: rgba(28, 200, 138, 0.3);
+    --cui-alert-bg: rgba(0, 242, 96, 0.15);
+    --cui-alert-border-color: rgba(0, 242, 96, 0.3);
 }
 
 .card {
@@ -37,7 +37,7 @@
 
 .table thead th {
     border-top: none !important;
-    background-color: #1cc88a !important;
+    background-color: #00F260 !important;
     color: white !important;
     text-transform: uppercase;
     font-size: 0.8rem;

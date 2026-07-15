@@ -5,7 +5,7 @@
         <stop offset="100%" stop-color="#00F260"/>
     </linearGradient>
     <style>
-        .brand-name { font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-weight: 900; font-size: 64px; }
+        .brand-name { font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-weight: 900; font-size: 70px; }
         .tagline { font-family: 'Montserrat', 'Segoe UI', system-ui, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 5px; fill: #64748B; }
     </style>
 </defs>
@@ -13,19 +13,32 @@
 <!-- Background -->
 <rect width="500" height="500" fill="transparent" rx="40"/>
 
+<!--
+  SAFE AREA / CLEAR SPACE GUIDE (tidak dirender)
+  Kanvas 500x500, margin aman 10% tiap sisi -> kotak aman x:50-450, y:50-450.
+  Seluruh elemen logo (mark + wordmark) diposisikan di dalam kotak ini,
+  dengan margin atas/bawah yang sama (~90px) dan margin kiri/kanan yang sama (~89px)
+  agar logo tetap terbaca saat di-crop lingkaran (favicon/avatar) dan tidak
+  menempel ke tepi kanvas.
+-->
+
 <!-- Logo Mark (Combined S and Dollar Sign) -->
-<g transform="translate(250, 190) scale(0.75) translate(-250, -200)">
+<!-- Sebelumnya mark tingginya 324px (65% kanvas) & nyaris menabrak wordmark.
+     Sekarang diskalakan ke tinggi 200px (40% kanvas) dan diposisikan simetris. -->
+<g transform="translate(250, 191) scale(0.463) translate(-250, -200)">
     <path d="M 250 15 L 250 10
              M 250 390 L 250 385
              M 305 130
              A 55 55 0 0 0 195 130
              C 195 190, 305 210, 305 270
              A 55 55 0 0 1 195 270"
-          stroke="url(#logoGrad)" stroke-width="52" stroke-linecap="round" fill="none" filter="url(#glow)"/>
+          stroke="url(#logoGrad)" stroke-width="52" stroke-linecap="round" fill="none"/>
 </g>
 
-<!-- Brand Name with corrected Payroll color -->
-<text x="250" y="405" class="brand-name" text-anchor="middle">
-    <tspan fill="#00F260">S</tspan><tspan fill="#0A192F">Payroll</tspan>
+<!-- Brand Name -->
+<!-- y digeser dari 405 -> 394 & font-size 64 -> 70 supaya jarak (gap) ke mark
+     konsisten (~40px) dan margin bawah seimbang dengan margin atas mark. -->
+<text x="250" y="394" class="brand-name" text-anchor="middle">
+    <tspan fill="#00F260">S</tspan><tspan fill="#1e293b">Payroll</tspan>
 </text>
 </svg>
