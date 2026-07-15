@@ -29,7 +29,16 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        // Notify other admins about updated user
+        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new DashboardNotification(
+                'User Updated',
+                "User '{$user->name}' has been updated with role '{$user->role}'.",
+                route('users.show', $user->id),
+                'warning'
+            ));
+        }
     }
 
     /**
@@ -37,7 +46,16 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        //
+        // Notify other admins about deleted user
+        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new DashboardNotification(
+                'User Deleted',
+                "User '{$user->name}' has been deleted.",
+                route('users.index'),
+                'danger'
+            ));
+        }
     }
 
     /**
@@ -45,7 +63,16 @@ class UserObserver
      */
     public function restored(User $user): void
     {
-        //
+        // Notify other admins about restored user
+        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new DashboardNotification(
+                'User Restored',
+                "User '{$user->name}' has been restored.",
+                route('users.show', $user->id),
+                'success'
+            ));
+        }
     }
 
     /**
@@ -53,6 +80,15 @@ class UserObserver
      */
     public function forceDeleted(User $user): void
     {
-        //
+        // Notify other admins about force deleted user
+        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new DashboardNotification(
+                'User Permanently Deleted',
+                "User '{$user->name}' has been permanently deleted.",
+                route('users.index'),
+                'danger'
+            ));
+        }
     }
 }
