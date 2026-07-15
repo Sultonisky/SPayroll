@@ -10,50 +10,50 @@ class DepartmentPolicy
 {
     public function viewAny(User $user): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat mengakses manajemen departemen.');
+            : Response::deny('Anda tidak memiliki izin untuk melihat daftar departemen.');
     }
 
     public function view(User $user, Department $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat melihat detail departemen.');
+            : Response::deny('Anda tidak memiliki izin untuk melihat detail departemen.');
     }
 
     public function create(User $user): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menambah departemen baru.');
+            : Response::deny('Anda tidak memiliki izin untuk menambah departemen baru.');
     }
 
     public function update(User $user, Department $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat mengubah data departemen.');
+            : Response::deny('Anda tidak memiliki izin untuk mengubah data departemen.');
     }
 
     public function delete(User $user, Department $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menghapus departemen.');
+            : Response::deny('Anda tidak memiliki izin untuk menghapus departemen.');
     }
 
     public function restore(User $user, Department $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat memulihkan departemen.');
+            : Response::deny('Anda tidak memiliki izin untuk memulihkan departemen.');
     }
 
     public function forceDelete(User $user, Department $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menghapus permanen departemen.');
+            : Response::deny('Anda tidak memiliki izin untuk menghapus permanen departemen.');
     }
 }

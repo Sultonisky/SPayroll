@@ -10,50 +10,50 @@ class AttendancePolicy
 {
     public function viewAny(User $user): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager', 'staff']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat mengakses manajemen kehadiran.');
+            : Response::deny('Anda tidak memiliki izin untuk melihat daftar absensi.');
     }
 
     public function view(User $user, Attendance $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager', 'staff']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat melihat detail kehadiran.');
+            : Response::deny('Anda tidak memiliki izin untuk melihat detail absensi.');
     }
 
     public function create(User $user): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menambah data kehadiran baru.');
+            : Response::deny('Anda tidak memiliki izin untuk menambah data absensi baru.');
     }
 
     public function update(User $user, Attendance $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat mengubah data kehadiran.');
+            : Response::deny('Anda tidak memiliki izin untuk mengubah data absensi.');
     }
 
     public function delete(User $user, Attendance $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menghapus data kehadiran.');
+            : Response::deny('Anda tidak memiliki izin untuk menghapus data absensi.');
     }
 
     public function restore(User $user, Attendance $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat memulihkan data kehadiran.');
+            : Response::deny('Anda tidak memiliki izin untuk memulihkan data absensi.');
     }
 
     public function forceDelete(User $user, Attendance $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menghapus permanen data kehadiran.');
+            : Response::deny('Anda tidak memiliki izin untuk menghapus permanen data absensi.');
     }
 }
