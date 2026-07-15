@@ -10,50 +10,50 @@ class PayrollPolicy
 {
     public function viewAny(User $user): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager', 'staff']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat mengakses manajemen payroll.');
+            : Response::deny('Anda tidak memiliki izin untuk melihat daftar penggajian.');
     }
 
     public function view(User $user, Payroll $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager', 'staff']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat melihat detail payroll.');
+            : Response::deny('Anda tidak memiliki izin untuk melihat detail penggajian.');
     }
 
     public function create(User $user): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menambah payroll baru.');
+            : Response::deny('Anda tidak memiliki izin untuk menambah data penggajian baru.');
     }
 
     public function update(User $user, Payroll $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR', 'manager']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat mengubah data payroll.');
+            : Response::deny('Anda tidak memiliki izin untuk mengubah data penggajian.');
     }
 
     public function delete(User $user, Payroll $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menghapus payroll.');
+            : Response::deny('Anda tidak memiliki izin untuk menghapus data penggajian.');
     }
 
     public function restore(User $user, Payroll $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat memulihkan payroll.');
+            : Response::deny('Anda tidak memiliki izin untuk memulihkan data penggajian.');
     }
 
     public function forceDelete(User $user, Payroll $model): Response
     {
-        return $user->isAdmin() 
+        return in_array($user->role, ['admin', 'HR']) 
             ? Response::allow() 
-            : Response::deny('Hanya Admin yang dapat menghapus permanen payroll.');
+            : Response::deny('Anda tidak memiliki izin untuk menghapus permanen data penggajian.');
     }
 }
