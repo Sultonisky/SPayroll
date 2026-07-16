@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -20,7 +20,7 @@ class UserController extends Controller
             ->latest()
             ->get();
             
-        return view('admin.dashboard.users.index', compact('users'));
+        return view('dashboard.users.index', compact('users'));
     }
 
     /**
@@ -34,7 +34,7 @@ class UserController extends Controller
             ->latest()
             ->get();
             
-        return view('admin.dashboard.users.index', compact('users'))->with('isTrash', true);
+        return view('dashboard.users.index', compact('users'))->with('isTrash', true);
     }
 
     /**
@@ -43,7 +43,7 @@ class UserController extends Controller
     public function create()
     {
         Gate::authorize('create', \App\Models\User::class);
-        return view('admin.dashboard.users.create');
+        return view('dashboard.users.create');
     }
 
     /**
@@ -56,7 +56,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:admin,staff',
+            'role' => 'required|in:admin,HR,manager,staff',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -73,7 +73,7 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->findOrFail($id);
         Gate::authorize('view', $user);
-        return view('admin.dashboard.users.show', compact('user'));
+        return view('dashboard.users.show', compact('user'));
     }
 
     /**
@@ -84,11 +84,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->route('profile.index')->with('info', 'Gunakan halaman profil untuk mengedit akun Anda.');
+            return redirect()->route('admin.dashboard')->with('info', 'Gunakan halaman profil untuk mengedit akun Anda.');
         }
 
         Gate::authorize('update', $user);
-        return view('admin.dashboard.users.edit', compact('user'));
+        return view('dashboard.users.edit', compact('user'));
     }
 
     /**
@@ -99,14 +99,14 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->route('profile.index')->with('error', 'Anda tidak dapat memperbarui akun sendiri melalui manajemen pengguna.');
+            return redirect()->route('admin.dashboard')->with('error', 'Anda tidak dapat memperbarui akun sendiri melalui manajemen pengguna.');
         }
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6',
-            'role' => 'required|in:admin,staff',
+            'role' => 'required|in:admin,HR,manager,staff',
         ]);
 
 
