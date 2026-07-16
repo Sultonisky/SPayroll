@@ -14,7 +14,7 @@
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
         {{-- Dashboard --}}
         <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <i class="nav-icon fas fa-home"></i>
                 Dashboard
             </a>
@@ -22,37 +22,53 @@
 
         <li class="nav-title">Master Data</li>
 
-        {{-- Karyawan --}}
+        <!-- Users -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="nav-icon fas fa-users"></i>
-                Data Karyawan
+            <a class="nav-link" href="{{ route('users.index') }}">
+                <i class="nav-icon fas fa-user-lock"></i>
+                Users
             </a>
         </li>
 
-        {{-- Jabatan --}}
+        <!-- Departments -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ route('departments.index') }}">
+                <i class="nav-icon fas fa-building"></i>
+                Departments
+            </a>
+        </li>
+
+        <!-- Positions -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('positions.index') }}">
                 <i class="nav-icon fas fa-briefcase"></i>
-                Jabatan
+                Positions
+            </a>
+        </li>
+
+        <!-- Employees -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('employees.index') }}">
+                <i class="nav-icon fas fa-users"></i>
+                Employees
             </a>
         </li>
 
         <li class="nav-title">Payroll</li>
 
-        {{-- Penggajian --}}
+        <!-- Attendances -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="nav-icon fas fa-money-check-alt"></i>
-                Penggajian
+            <a class="nav-link" href="{{ route('attendances.index') }}">
+                <i class="nav-icon fas fa-calendar-check"></i>
+                Attendances
             </a>
         </li>
 
-        {{-- Laporan --}}
+        <!-- Payrolls -->
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                Laporan
+            <a class="nav-link" href="{{ route('payrolls.index') }}">
+                <i class="nav-icon fas fa-money-check-alt"></i>
+                Payrolls
             </a>
         </li>
     </ul>

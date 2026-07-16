@@ -91,7 +91,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                messageTop: 'Yayasan At-Tarbiyah - Data Export'
+                messageTop: 'S-Payroll - Data Export'
             },
             {
                 extend: 'csv',
@@ -100,7 +100,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                title: 'Yayasan At-Tarbiyah - Data Export'
+                title: 'S-Payroll - Data Export'
             },
             {
                 extend: 'excel',
@@ -109,7 +109,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                title: 'Yayasan At-Tarbiyah - Data Export'
+                title: 'S-Payroll - Data Export'
             },
             {
                 extend: 'pdf',
@@ -118,7 +118,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                title: 'Yayasan At-Tarbiyah - Data Export'
+                title: 'S-Payroll - Data Export'
             }
         ]
     });

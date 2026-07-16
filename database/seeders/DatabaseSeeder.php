@@ -38,6 +38,10 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Admin user created/updated successfully!');
 
+        // 1b. Seed Regular Users
+        $this->command->info('Seeding Regular Users...');
+        User::factory()->count(10)->create();
+
         // 2. Seed Departments
         $this->command->info('Seeding Departments...');
         Department::factory()->count(5)->create();
