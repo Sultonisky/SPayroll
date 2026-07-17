@@ -76,7 +76,7 @@ class EmployeeController extends Controller
 
         Employee::create($validated);
 
-        return redirect()->route('employees.index')->with('success', 'Berhasil menambahkan karyawan baru.');
+        return redirect()->route('employees.index')->with('success', 'Success create new employee data.');
     }
 
     /**
@@ -127,7 +127,7 @@ class EmployeeController extends Controller
 
         $employee->update($validated);
 
-        return redirect()->route('employees.index')->with('success', 'Karyawan berhasil diperbarui.');
+        return redirect()->route('employees.index')->with('success', 'Success update employee data.');
     }
 
     /**
@@ -139,7 +139,7 @@ class EmployeeController extends Controller
         Gate::authorize('delete', $employee);
         $employee->delete();
 
-        return redirect()->route('employees.index')->with('success', 'Karyawan dipindahkan ke tempat sampah.');
+        return redirect()->route('employees.index')->with('success', 'Success move employee data to trash.');
     }
 
     /**
@@ -151,7 +151,7 @@ class EmployeeController extends Controller
         Gate::authorize('restore', $employee);
         $employee->restore();
 
-        return redirect()->route('employees.trash')->with('success', 'Karyawan berhasil dipulihkan.');
+        return redirect()->route('employees.trash')->with('success', 'Success restore employee data.');
     }
 
     /**
@@ -163,7 +163,7 @@ class EmployeeController extends Controller
         Gate::authorize('forceDelete', $employee);
         $employee->forceDelete();
 
-        return redirect()->route('employees.trash')->with('success', 'Karyawan dihapus secara permanen.');
+        return redirect()->route('employees.trash')->with('success', 'Success permanently delete employee data.');
     }
 
     /**
@@ -192,21 +192,21 @@ class EmployeeController extends Controller
             // Employee details
             fputcsv($file, ['ID', $employee->id]);
             fputcsv($file, ['NIK', $employee->nik]);
-            fputcsv($file, ['Nama Karyawan', $employee->name]);
+            fputcsv($file, ['Name', $employee->name]);
             fputcsv($file, ['Email', $employee->email]);
-            fputcsv($file, ['Telepon', $employee->phone]);
-            fputcsv($file, ['Alamat', $employee->address]);
-            fputcsv($file, ['Tanggal Bergabung', $employee->join_date->format('Y-m-d')]);
-            fputcsv($file, ['Tanggal Lahir', $employee->birth_date ? $employee->birth_date->format('Y-m-d') : '-']);
+            fputcsv($file, ['Phone', $employee->phone]);
+            fputcsv($file, ['Address', $employee->address]);
+            fputcsv($file, ['Join Date', $employee->join_date->format('Y-m-d')]);
+            fputcsv($file, ['Birth Date', $employee->birth_date ? $employee->birth_date->format('Y-m-d') : '-']);
             fputcsv($file, ['Status', $employee->status]);
-            fputcsv($file, ['Gaji Pokok', $employee->base_salary]);
-            fputcsv($file, ['Departemen', $employee->department ? $employee->department->name : '-']);
-            fputcsv($file, ['Jabatan', $employee->position ? $employee->position->name : '-']);
+            fputcsv($file, ['Base Salary', $employee->base_salary]);
+            fputcsv($file, ['Department', $employee->department ? $employee->department->name : '-']);
+            fputcsv($file, ['Position', $employee->position ? $employee->position->name : '-']);
             fputcsv($file, ['User', $employee->user ? $employee->user->name : '-']);
-            fputcsv($file, ['Tanggal Dibuat', $employee->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Tanggal Diperbarui', $employee->updated_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Created At', $employee->created_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Updated At', $employee->updated_at->format('Y-m-d H:i:s')]);
             if ($employee->deleted_at) {
-                fputcsv($file, ['Tanggal Dihapus', $employee->deleted_at->format('Y-m-d H:i:s')]);
+                fputcsv($file, ['Deleted At', $employee->deleted_at->format('Y-m-d H:i:s')]);
             }
 
             fclose($file);

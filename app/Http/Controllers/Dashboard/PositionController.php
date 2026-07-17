@@ -59,7 +59,7 @@ class PositionController extends Controller
 
         Position::create($validated);
 
-        return redirect()->route('positions.index')->with('success', 'Berhasil menambahkan jabatan baru.');
+        return redirect()->route('positions.index')->with('success', 'Success create new position data.');
     }
 
     /**
@@ -98,7 +98,7 @@ class PositionController extends Controller
 
         $position->update($validated);
 
-        return redirect()->route('positions.index')->with('success', 'Jabatan berhasil diperbarui.');
+        return redirect()->route('positions.index')->with('success', 'Success update position data.');
     }
 
     /**
@@ -110,7 +110,7 @@ class PositionController extends Controller
         Gate::authorize('delete', $position);
         $position->delete();
 
-        return redirect()->route('positions.index')->with('success', 'Jabatan dipindahkan ke tempat sampah.');
+        return redirect()->route('positions.index')->with('success', 'Success move position data to trash.');
     }
 
     /**
@@ -122,7 +122,7 @@ class PositionController extends Controller
         Gate::authorize('restore', $position);
         $position->restore();
 
-        return redirect()->route('positions.trash')->with('success', 'Jabatan berhasil dipulihkan.');
+        return redirect()->route('positions.trash')->with('success', 'Success restore position data.');
     }
 
     /**
@@ -134,7 +134,7 @@ class PositionController extends Controller
         Gate::authorize('forceDelete', $position);
         $position->forceDelete();
 
-        return redirect()->route('positions.trash')->with('success', 'Jabatan dihapus secara permanen.');
+        return redirect()->route('positions.trash')->with('success', 'Success permanently delete position data.');
     }
 
     /**
@@ -162,13 +162,13 @@ class PositionController extends Controller
             
             // Position details
             fputcsv($file, ['ID', $position->id]);
-            fputcsv($file, ['Nama Jabatan', $position->name]);
-            fputcsv($file, ['Deskripsi', $position->description]);
-            fputcsv($file, ['Gaji Pokok', $position->base_salary]);
-            fputcsv($file, ['Tanggal Dibuat', $position->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Tanggal Diperbarui', $position->updated_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Position Name', $position->name]);
+            fputcsv($file, ['Description', $position->description]);
+            fputcsv($file, ['Base Salary', $position->base_salary]);
+            fputcsv($file, ['Created At', $position->created_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Updated At', $position->updated_at->format('Y-m-d H:i:s')]);
             if ($position->deleted_at) {
-                fputcsv($file, ['Tanggal Dihapus', $position->deleted_at->format('Y-m-d H:i:s')]);
+                fputcsv($file, ['Deleted At', $position->deleted_at->format('Y-m-d H:i:s')]);
             }
 
             fclose($file);

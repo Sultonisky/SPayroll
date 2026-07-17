@@ -70,7 +70,7 @@ class AttendanceController extends Controller
 
         Attendance::create($validated);
 
-        return redirect()->route('attendances.index')->with('success', 'Berhasil menambahkan data absensi baru.');
+        return redirect()->route('attendances.index')->with('success', 'Success create new attendance data.');
     }
 
     /**
@@ -117,7 +117,7 @@ class AttendanceController extends Controller
 
         $attendance->update($validated);
 
-        return redirect()->route('attendances.index')->with('success', 'Data absensi berhasil diperbarui.');
+        return redirect()->route('attendances.index')->with('success', 'Success update attendance data.');
     }
 
     /**
@@ -129,7 +129,7 @@ class AttendanceController extends Controller
         Gate::authorize('delete', $attendance);
         $attendance->delete();
 
-        return redirect()->route('attendances.index')->with('success', 'Data absensi dipindahkan ke tempat sampah.');
+        return redirect()->route('attendances.index')->with('success', 'Success move attendance data to trash.');
     }
 
     /**
@@ -141,7 +141,7 @@ class AttendanceController extends Controller
         Gate::authorize('restore', $attendance);
         $attendance->restore();
 
-        return redirect()->route('attendances.trash')->with('success', 'Data absensi berhasil dipulihkan.');
+        return redirect()->route('attendances.trash')->with('success', 'Success restore attendance data.');
     }
 
     /**
@@ -153,7 +153,7 @@ class AttendanceController extends Controller
         Gate::authorize('forceDelete', $attendance);
         $attendance->forceDelete();
 
-        return redirect()->route('attendances.trash')->with('success', 'Data absensi dihapus secara permanen.');
+        return redirect()->route('attendances.trash')->with('success', 'Success permanently delete attendance data.');
     }
 
     /**
@@ -181,20 +181,20 @@ class AttendanceController extends Controller
             
             // Attendance details
             fputcsv($file, ['ID', $attendance->id]);
-            fputcsv($file, ['Karyawan', $attendance->employee ? $attendance->employee->name : '-']);
-            fputcsv($file, ['Tahun', $attendance->year]);
-            fputcsv($file, ['Bulan', $attendance->month]);
-            fputcsv($file, ['Hari Kerja', $attendance->work_days]);
-            fputcsv($file, ['Hadir', $attendance->present]);
-            fputcsv($file, ['Sakit', $attendance->sick]);
-            fputcsv($file, ['Izin', $attendance->leave]);
+            fputcsv($file, ['Employee', $attendance->employee ? $attendance->employee->name : '-']);
+            fputcsv($file, ['Year', $attendance->year]);
+            fputcsv($file, ['Month', $attendance->month]);
+            fputcsv($file, ['Work Days', $attendance->work_days]);
+            fputcsv($file, ['Present', $attendance->present]);
+            fputcsv($file, ['Sick', $attendance->sick]);
+            fputcsv($file, ['Leave', $attendance->leave]);
             fputcsv($file, ['Alpha', $attendance->alpha]);
-            fputcsv($file, ['Jam Lembur', $attendance->overtime_hours]);
-            fputcsv($file, ['Catatan', $attendance->notes]);
-            fputcsv($file, ['Tanggal Dibuat', $attendance->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Tanggal Diperbarui', $attendance->updated_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Overtime Hours', $attendance->overtime_hours]);
+            fputcsv($file, ['Notes', $attendance->notes]);
+            fputcsv($file, ['Created At', $attendance->created_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Updated At', $attendance->updated_at->format('Y-m-d H:i:s')]);
             if ($attendance->deleted_at) {
-                fputcsv($file, ['Tanggal Dihapus', $attendance->deleted_at->format('Y-m-d H:i:s')]);
+                fputcsv($file, ['Deleted At', $attendance->deleted_at->format('Y-m-d H:i:s')]);
             }
 
             fclose($file);
