@@ -75,7 +75,7 @@ class PayrollController extends Controller
 
         Payroll::create($validated);
 
-        return redirect()->route('payrolls.index')->with('success', 'Berhasil menambahkan data gaji baru.');
+        return redirect()->route('payrolls.index')->with('success', 'Success create new payroll data.');
     }
 
     /**
@@ -126,7 +126,7 @@ class PayrollController extends Controller
 
         $payroll->update($validated);
 
-        return redirect()->route('payrolls.index')->with('success', 'Data gaji berhasil diperbarui.');
+        return redirect()->route('payrolls.index')->with('success', 'Success update payroll data.');
     }
 
     /**
@@ -138,7 +138,7 @@ class PayrollController extends Controller
         Gate::authorize('delete', $payroll);
         $payroll->delete();
 
-        return redirect()->route('payrolls.index')->with('success', 'Data gaji dipindahkan ke tempat sampah.');
+        return redirect()->route('payrolls.index')->with('success', 'Success move payroll data to trash.');
     }
 
     /**
@@ -150,7 +150,7 @@ class PayrollController extends Controller
         Gate::authorize('restore', $payroll);
         $payroll->restore();
 
-        return redirect()->route('payrolls.trash')->with('success', 'Data gaji berhasil dipulihkan.');
+        return redirect()->route('payrolls.trash')->with('success', 'Success restore payroll data.');
     }
 
     /**
@@ -162,7 +162,7 @@ class PayrollController extends Controller
         Gate::authorize('forceDelete', $payroll);
         $payroll->forceDelete();
 
-        return redirect()->route('payrolls.trash')->with('success', 'Data gaji dihapus secara permanen.');
+        return redirect()->route('payrolls.trash')->with('success', 'Success permanently delete payroll data.');
     }
 
     /**
@@ -190,23 +190,23 @@ class PayrollController extends Controller
             
             // Payroll details
             fputcsv($file, ['ID', $payroll->id]);
-            fputcsv($file, ['Karyawan', $payroll->employee ? $payroll->employee->name : '-']);
-            fputcsv($file, ['Absensi', $payroll->attendance ? $payroll->attendance->id : '-']);
-            fputcsv($file, ['Tahun', $payroll->year]);
-            fputcsv($file, ['Bulan', $payroll->month]);
-            fputcsv($file, ['Tanggal Bayar', $payroll->pay_date->format('Y-m-d')]);
-            fputcsv($file, ['Gaji Pokok', $payroll->base_salary]);
-            fputcsv($file, ['Tunjangan', $payroll->allowances]);
+            fputcsv($file, ['Employee Name', $payroll->employee ? $payroll->employee->name : '-']);
+            fputcsv($file, ['Attendance ID', $payroll->attendance ? $payroll->attendance->id : '-']);
+            fputcsv($file, ['Year', $payroll->year]);
+            fputcsv($file, ['Month', $payroll->month]);
+            fputcsv($file, ['Pay Date', $payroll->pay_date->format('Y-m-d')]);
+            fputcsv($file, ['Base Salary', $payroll->base_salary]);
+            fputcsv($file, ['Allowances', $payroll->allowances]);
             fputcsv($file, ['Bonus', $payroll->bonus]);
-            fputcsv($file, ['Gaji Lembur', $payroll->overtime_pay]);
-            fputcsv($file, ['Potongan', $payroll->deductions]);
-            fputcsv($file, ['Total Gaji', $payroll->total_salary]);
+            fputcsv($file, ['Overtime Pay', $payroll->overtime_pay]);
+            fputcsv($file, ['Deductions', $payroll->deductions]);
+            fputcsv($file, ['Total Salary', $payroll->total_salary]);
             fputcsv($file, ['Status', $payroll->status]);
-            fputcsv($file, ['Catatan', $payroll->notes]);
-            fputcsv($file, ['Tanggal Dibuat', $payroll->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Tanggal Diperbarui', $payroll->updated_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Notes', $payroll->notes]);
+            fputcsv($file, ['Created At', $payroll->created_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Updated At', $payroll->updated_at->format('Y-m-d H:i:s')]);
             if ($payroll->deleted_at) {
-                fputcsv($file, ['Tanggal Dihapus', $payroll->deleted_at->format('Y-m-d H:i:s')]);
+                fputcsv($file, ['Deleted At', $payroll->deleted_at->format('Y-m-d H:i:s')]);
             }
 
             fclose($file);

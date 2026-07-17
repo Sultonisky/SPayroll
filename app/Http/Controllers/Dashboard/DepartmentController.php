@@ -58,7 +58,7 @@ class DepartmentController extends Controller
 
         Department::create($validated);
 
-        return redirect()->route('departments.index')->with('success', 'Berhasil menambahkan departemen baru.');
+        return redirect()->route('departments.index')->with('success', 'Success create new department data.');
     }
 
     /**
@@ -96,7 +96,7 @@ class DepartmentController extends Controller
 
         $department->update($validated);
 
-        return redirect()->route('departments.index')->with('success', 'Departemen berhasil diperbarui.');
+        return redirect()->route('departments.index')->with('success', 'Success update department data.');
     }
 
     /**
@@ -108,7 +108,7 @@ class DepartmentController extends Controller
         Gate::authorize('delete', $department);
         $department->delete();
 
-        return redirect()->route('departments.index')->with('success', 'Departemen dipindahkan ke tempat sampah.');
+        return redirect()->route('departments.index')->with('success', 'Success move department data to trash.');
     }
 
     /**
@@ -120,7 +120,7 @@ class DepartmentController extends Controller
         Gate::authorize('restore', $department);
         $department->restore();
 
-        return redirect()->route('departments.trash')->with('success', 'Departemen berhasil dipulihkan.');
+        return redirect()->route('departments.trash')->with('success', 'Success restore department data.');
     }
 
     /**
@@ -132,7 +132,7 @@ class DepartmentController extends Controller
         Gate::authorize('forceDelete', $department);
         $department->forceDelete();
 
-        return redirect()->route('departments.trash')->with('success', 'Departemen dihapus secara permanen.');
+        return redirect()->route('departments.trash')->with('success', 'Success permanently delete department data.');
     }
 
     /**
@@ -160,12 +160,12 @@ class DepartmentController extends Controller
             
             // Department details
             fputcsv($file, ['ID', $department->id]);
-            fputcsv($file, ['Nama Departemen', $department->name]);
-            fputcsv($file, ['Deskripsi', $department->description]);
-            fputcsv($file, ['Tanggal Dibuat', $department->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Tanggal Diperbarui', $department->updated_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Name', $department->name]);
+            fputcsv($file, ['Description', $department->description]);
+            fputcsv($file, ['Created At', $department->created_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Updated At', $department->updated_at->format('Y-m-d H:i:s')]);
             if ($department->deleted_at) {
-                fputcsv($file, ['Tanggal Dihapus', $department->deleted_at->format('Y-m-d H:i:s')]);
+                fputcsv($file, ['Deleted At', $department->deleted_at->format('Y-m-d H:i:s')]);
             }
 
             fclose($file);

@@ -63,7 +63,7 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'Berhasil menambahkan pengguna baru.');
+        return redirect()->route('users.index')->with('success', 'Success create new user data.');
     }
 
     /**
@@ -84,7 +84,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->route('admin.dashboard')->with('info', 'Gunakan halaman profil untuk mengedit akun Anda.');
+            return redirect()->route('admin.dashboard')->with('info', 'Please use profile page to edit your account.');
         }
 
         Gate::authorize('update', $user);
@@ -99,7 +99,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->route('admin.dashboard')->with('error', 'Anda tidak dapat memperbarui akun sendiri melalui manajemen pengguna.');
+            return redirect()->route('admin.dashboard')->with('error', 'You cannot update your account via user management page.');
         }
 
         $validated = $request->validate([
@@ -119,7 +119,7 @@ class UserController extends Controller
         Gate::authorize('update', $user);
         $user->update($validated);
 
-        return redirect()->route('users.index')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->route('users.index')->with('success', 'Success update user data.');
     }
 
     /**
@@ -130,13 +130,13 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+            return redirect()->back()->with('error', 'You cannot delete your account.');
         }
 
         Gate::authorize('delete', $user);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'Pengguna dipindahkan ke tempat sampah.');
+        return redirect()->route('users.index')->with('success', 'Success move user data to trash.');
     }
 
     /**
@@ -147,13 +147,13 @@ class UserController extends Controller
         $user = User::onlyTrashed()->findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->back()->with('error', 'Anda tidak dapat memulihkan akun Anda sendiri dari tempat sampah.');
+            return redirect()->back()->with('error', 'You cannot restore your account from trash.');
         }
 
         Gate::authorize('restore', $user);
         $user->restore();
 
-        return redirect()->route('users.trash')->with('success', 'Pengguna berhasil dipulihkan.');
+        return redirect()->route('users.trash')->with('success', 'Success restore user data.');
     }
 
     /**
@@ -164,13 +164,13 @@ class UserController extends Controller
         $user = User::onlyTrashed()->findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->back()->with('error', 'Anda tidak dapat menghapus permanen akun Anda sendiri.');
+            return redirect()->back()->with('error', 'You cannot permanently delete your account.');
         }
 
         Gate::authorize('forceDelete', $user);
         $user->forceDelete();
 
-        return redirect()->route('users.trash')->with('success', 'Pengguna dihapus secara permanen.');
+        return redirect()->route('users.trash')->with('success', 'Success permanently delete user data.');
     }
 
     /**
@@ -198,13 +198,13 @@ class UserController extends Controller
             
             // User details
             fputcsv($file, ['ID', $user->id]);
-            fputcsv($file, ['Nama', $user->name]);
+            fputcsv($file, ['Name', $user->name]);
             fputcsv($file, ['Email', $user->email]);
             fputcsv($file, ['Role', $user->role]);
-            fputcsv($file, ['Tanggal Dibuat', $user->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Tanggal Diperbarui', $user->updated_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Created At', $user->created_at->format('Y-m-d H:i:s')]);
+            fputcsv($file, ['Updated At', $user->updated_at->format('Y-m-d H:i:s')]);
             if ($user->deleted_at) {
-                fputcsv($file, ['Tanggal Dihapus', $user->deleted_at->format('Y-m-d H:i:s')]);
+                fputcsv($file, ['Deleted At', $user->deleted_at->format('Y-m-d H:i:s')]);
             }
 
             fclose($file);

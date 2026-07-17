@@ -44,77 +44,119 @@ Route::middleware(['auth'])->group(function () {
     // Department Routes - Admin & HR & Manager (read for staff)
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('departments/trash', [DepartmentController::class, 'trash'])->name('departments.trash');
-        Route::get('departments/{id}/export', [DepartmentController::class, 'export'])->name('departments.export');
-        Route::resource('departments', DepartmentController::class)->only(['index', 'show']);
     });
     
     Route::middleware(['role:admin,HR'])->group(function () {
+        Route::get('departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+        Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
+        Route::get('departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+        Route::put('departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
+        Route::patch('departments/{department}', [DepartmentController::class, 'update']);
+        Route::delete('departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
         Route::post('departments/{id}/restore', [DepartmentController::class, 'restore'])->name('departments.restore');
         Route::delete('departments/{id}/force-delete', [DepartmentController::class, 'forceDelete'])->name('departments.force-delete');
-        Route::resource('departments', DepartmentController::class)->except(['index', 'show']);
+    });
+    
+    Route::middleware(['role:admin,HR,manager'])->group(function () {
+        Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
+        Route::get('departments/{department}', [DepartmentController::class, 'show'])->name('departments.show');
+        Route::get('departments/{id}/export', [DepartmentController::class, 'export'])->name('departments.export');
     });
 
     // Position Routes - Admin & HR & Manager (read for staff)
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('positions/trash', [PositionController::class, 'trash'])->name('positions.trash');
-        Route::get('positions/{id}/export', [PositionController::class, 'export'])->name('positions.export');
-        Route::resource('positions', PositionController::class)->only(['index', 'show']);
     });
     
     Route::middleware(['role:admin,HR'])->group(function () {
+        Route::get('positions/create', [PositionController::class, 'create'])->name('positions.create');
+        Route::post('positions', [PositionController::class, 'store'])->name('positions.store');
+        Route::get('positions/{position}/edit', [PositionController::class, 'edit'])->name('positions.edit');
+        Route::put('positions/{position}', [PositionController::class, 'update'])->name('positions.update');
+        Route::patch('positions/{position}', [PositionController::class, 'update']);
+        Route::delete('positions/{position}', [PositionController::class, 'destroy'])->name('positions.destroy');
         Route::post('positions/{id}/restore', [PositionController::class, 'restore'])->name('positions.restore');
         Route::delete('positions/{id}/force-delete', [PositionController::class, 'forceDelete'])->name('positions.force-delete');
-        Route::resource('positions', PositionController::class)->except(['index', 'show']);
+    });
+    
+    Route::middleware(['role:admin,HR,manager'])->group(function () {
+        Route::get('positions', [PositionController::class, 'index'])->name('positions.index');
+        Route::get('positions/{position}', [PositionController::class, 'show'])->name('positions.show');
+        Route::get('positions/{id}/export', [PositionController::class, 'export'])->name('positions.export');
     });
 
     // Employee Routes - Admin & HR & Manager (read for staff)
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('employees/trash', [EmployeeController::class, 'trash'])->name('employees.trash');
-        Route::get('employees/{id}/export', [EmployeeController::class, 'export'])->name('employees.export');
-        Route::resource('employees', EmployeeController::class)->only(['index', 'show']);
     });
     
     Route::middleware(['role:admin,HR,manager'])->group(function () {
-        Route::resource('employees', EmployeeController::class)->only(['create', 'store', 'edit', 'update']);
+        Route::get('employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+        Route::post('employees', [EmployeeController::class, 'store'])->name('employees.store');
+        Route::get('employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+        Route::put('employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+        Route::patch('employees/{employee}', [EmployeeController::class, 'update']);
     });
     
     Route::middleware(['role:admin,HR'])->group(function () {
+        Route::delete('employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
         Route::post('employees/{id}/restore', [EmployeeController::class, 'restore'])->name('employees.restore');
         Route::delete('employees/{id}/force-delete', [EmployeeController::class, 'forceDelete'])->name('employees.force-delete');
-        Route::resource('employees', EmployeeController::class)->only(['destroy']);
+    });
+    
+    Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
+        Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
+        Route::get('employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+        Route::get('employees/{id}/export', [EmployeeController::class, 'export'])->name('employees.export');
     });
 
     // Attendance Routes - Admin & HR & Manager (read for staff)
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('attendances/trash', [AttendanceController::class, 'trash'])->name('attendances.trash');
-        Route::get('attendances/{id}/export', [AttendanceController::class, 'export'])->name('attendances.export');
-        Route::resource('attendances', AttendanceController::class)->only(['index', 'show']);
     });
     
     Route::middleware(['role:admin,HR,manager'])->group(function () {
-        Route::resource('attendances', AttendanceController::class)->only(['create', 'store', 'edit', 'update']);
+        Route::get('attendances/create', [AttendanceController::class, 'create'])->name('attendances.create');
+        Route::post('attendances', [AttendanceController::class, 'store'])->name('attendances.store');
+        Route::get('attendances/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
+        Route::put('attendances/{attendance}', [AttendanceController::class, 'update'])->name('attendances.update');
+        Route::patch('attendances/{attendance}', [AttendanceController::class, 'update']);
     });
     
     Route::middleware(['role:admin,HR'])->group(function () {
+        Route::delete('attendances/{attendance}', [AttendanceController::class, 'destroy'])->name('attendances.destroy');
         Route::post('attendances/{id}/restore', [AttendanceController::class, 'restore'])->name('attendances.restore');
         Route::delete('attendances/{id}/force-delete', [AttendanceController::class, 'forceDelete'])->name('attendances.force-delete');
-        Route::resource('attendances', AttendanceController::class)->only(['destroy']);
+    });
+    
+    Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
+        Route::get('attendances', [AttendanceController::class, 'index'])->name('attendances.index');
+        Route::get('attendances/{attendance}', [AttendanceController::class, 'show'])->name('attendances.show');
+        Route::get('attendances/{id}/export', [AttendanceController::class, 'export'])->name('attendances.export');
     });
 
     // Payroll Routes - Admin & HR & Manager (read for staff)
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('payrolls/trash', [PayrollController::class, 'trash'])->name('payrolls.trash');
-        Route::get('payrolls/{id}/export', [PayrollController::class, 'export'])->name('payrolls.export');
-        Route::resource('payrolls', PayrollController::class)->only(['index', 'show']);
     });
     
     Route::middleware(['role:admin,HR,manager'])->group(function () {
-        Route::resource('payrolls', PayrollController::class)->only(['create', 'store', 'edit', 'update']);
+        Route::get('payrolls/create', [PayrollController::class, 'create'])->name('payrolls.create');
+        Route::post('payrolls', [PayrollController::class, 'store'])->name('payrolls.store');
+        Route::get('payrolls/{payroll}/edit', [PayrollController::class, 'edit'])->name('payrolls.edit');
+        Route::put('payrolls/{payroll}', [PayrollController::class, 'update'])->name('payrolls.update');
+        Route::patch('payrolls/{payroll}', [PayrollController::class, 'update']);
     });
     
     Route::middleware(['role:admin,HR'])->group(function () {
+        Route::delete('payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');
         Route::post('payrolls/{id}/restore', [PayrollController::class, 'restore'])->name('payrolls.restore');
         Route::delete('payrolls/{id}/force-delete', [PayrollController::class, 'forceDelete'])->name('payrolls.force-delete');
-        Route::resource('payrolls', PayrollController::class)->only(['destroy']);
+    });
+    
+    Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
+        Route::get('payrolls', [PayrollController::class, 'index'])->name('payrolls.index');
+        Route::get('payrolls/{payroll}', [PayrollController::class, 'show'])->name('payrolls.show');
+        Route::get('payrolls/{id}/export', [PayrollController::class, 'export'])->name('payrolls.export');
     });
 });
