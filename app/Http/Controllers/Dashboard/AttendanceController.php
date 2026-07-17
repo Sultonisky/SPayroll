@@ -18,9 +18,13 @@ class AttendanceController extends Controller
         Gate::authorize('viewAny', Attendance::class);
         $attendances = Attendance::select('id', 'employee_id', 'year', 'month', 'present', 'created_at')
             ->with(['employee'])
-            ->latest()
+            ->orderBy('employee_id')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
             ->get();
-            
+
+        $attendances = $attendances->groupBy('employee_id');
+
         return view('dashboard.attendances.index', compact('attendances'));
     }
 
@@ -33,9 +37,13 @@ class AttendanceController extends Controller
         $attendances = Attendance::onlyTrashed()
             ->select('id', 'employee_id', 'year', 'month', 'present', 'created_at')
             ->with(['employee'])
-            ->latest()
+            ->orderBy('employee_id')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
             ->get();
-            
+
+        $attendances = $attendances->groupBy('employee_id');
+
         return view('dashboard.attendances.index', compact('attendances'))->with('isTrash', true);
     }
 
@@ -80,7 +88,14 @@ class AttendanceController extends Controller
     {
         $attendance = Attendance::withTrashed()->with(['employee'])->findOrFail($id);
         Gate::authorize('view', $attendance);
-        return view('dashboard.attendances.show', compact('attendance'));
+
+        $periods = Attendance::withTrashed()
+            ->where('employee_id', $attendance->employee_id)
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        return view('dashboard.attendances.show', compact('attendance', 'periods'));
     }
 
     /**
