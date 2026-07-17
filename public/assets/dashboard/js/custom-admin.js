@@ -58,26 +58,26 @@ if (typeof $.fn.dataTable !== 'undefined') {
             [10, 25, 50, "All"]
         ],
         "language": {
-            "sEmptyTable": "Tidak ada data yang tersedia pada tabel ini",
-            "sProcessing": "Sedang memproses...",
-            "sLengthMenu": "Tampilkan _MENU_ entri",
-            "sZeroRecords": "Tidak ditemukan data yang sesuai",
-            "sInfo": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-            "sInfoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
-            "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+            "sEmptyTable": "No data available in table",
+            "sProcessing": "Processing...",
+            "sLengthMenu": "Show _MENU_ entries",
+            "sZeroRecords": "No matching data found",
+            "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+            "sInfoEmpty": "Showing 0 to 0 of 0 entries",
+            "sInfoFiltered": "(filtered from _MAX_ total)",
             "sInfoPostFix": "",
             "sSearch": "Cari:",
             "sUrl": "",
             "oPaginate": {
-                "sFirst": "Pertama",
-                "sPrevious": "Sebelumnya",
-                "sNext": "Selanjutnya",
-                "sLast": "Terakhir"
+                "sFirst": "First",
+                "sPrevious": "Previous",
+                "sNext": "Next",
+                "sLast": "Last"
             },
             "search": "",
             "searchPlaceholder": "Cari...",
-            "lengthMenu": "Tampilkan _MENU_ entri",
-            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "lengthMenu": "Show _MENU_ entries",
+            "info": "Showing _START_ to _END_ of _TOTAL_ entries",
             "paginate": {
                 "next": "<i class='fas fa-chevron-right'></i>",
                 "previous": "<i class='fas fa-chevron-left'></i>"
