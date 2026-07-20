@@ -20,7 +20,6 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         $position = Position::inRandomOrder()->first() ?? Position::factory()->create();
-        $baseSalary = $position->base_salary ?? fake()->numberBetween(3000000, 30000000);
 
         return [
             'department_id' => Department::inRandomOrder()->first()?->id ?? Department::factory()->create()->id,
@@ -33,7 +32,8 @@ class EmployeeFactory extends Factory
             'join_date' => fake()->dateTimeBetween('-10 years', 'now')->format('Y-m-d'),
             'birth_date' => fake()->dateTimeBetween('-55 years', '-22 years')->format('Y-m-d'),
             'status' => fake()->randomElement(['active', 'inactive', 'resigned']),
-            'base_salary' => $baseSalary,
+            'bank_name' => fake()->randomElement(['BCA', 'Mandiri', 'BNI', 'BRI']),
+            'bank_account_number' => fake()->numerify('##########'),
         ];
     }
 }
