@@ -17,7 +17,9 @@ class Position extends Model
         'base_salary',
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
 
     /**
      * Get all employees for the position.
