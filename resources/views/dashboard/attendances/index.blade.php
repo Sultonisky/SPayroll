@@ -18,7 +18,7 @@
                                 <i class="fas fa-arrow-left me-2"></i>Back
                             </a>
                         @else
-                            @if (auth()->user()->isAdmin() || auth()->user()->role == 'HR')
+                            @if (auth()->user()->isAdmin() || auth()->user()->role == 'HR' || auth()->user()->role == 'manager')
                                 <a href="{{ route('attendances.trash') }}"
                                     class="btn btn-outline-danger btn-sm rounded-pill px-3 px-md-4 shadow-sm">
                                     <i class="fas fa-trash me-2"></i>Trash
@@ -27,6 +27,11 @@
                                     class="btn bg-primary fw-bold text-black btn-sm rounded-pill px-3 px-md-4 shadow-sm">
                                     <i class="fas fa-plus-circle me-2"></i>Add New
                                 </a>
+                                <button type="button"
+                                    class="btn bg-info fw-bold text-white btn-sm rounded-pill px-3 px-md-4 shadow-sm"
+                                    data-coreui-toggle="modal" data-coreui-target="#importModal">
+                                    <i class="fas fa-file-import me-2"></i>Import
+                                </button>
                             @endif
                         @endif
                     </div>
@@ -179,6 +184,37 @@
                         </table>
                     </div>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Import Attendance Data</h5>
+                    <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('attendances.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3 d-flex justify-content-between align-items-center">
+                            <label for="file" class="form-label mb-0">Upload File (CSV, XLSX, XLS)</label>
+                            <a href="{{ route('attendances.import.template') }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download me-1"></i> Download Template
+                            </a>
+                        </div>
+                        <input type="file" name="file" class="form-control" id="file" accept=".csv,.xlsx,.xls" required>
+                        <div class="form-text mt-2">
+                            Columns: employee_id or employee_name, year, month, work_days, present, sick, leave, alpha, overtime_hours, notes
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

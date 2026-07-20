@@ -74,6 +74,22 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label class="form-label fw-bold">Gender <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-venus-mars"></i></span>
+                                    <select name="gender" class="form-select border-start-0 @error('gender') is-invalid @enderror" required>
+                                        <option value="">Select gender</option>
+                                        <option value="laki-laki" {{ old('gender', $employee->gender) === 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="perempuan" {{ old('gender', $employee->gender) === 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                    </select>
+                                </div>
+                                @error('gender')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Email <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
@@ -115,12 +131,12 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-briefcase"></i></span>
-                                    <select name="position_id"
+                                    <select name="position_id" id="position_id"
                                         class="form-select border-start-0 @error('position_id') is-invalid @enderror"
                                         required>
                                         <option value="">Select position</option>
                                         @foreach ($positions as $position)
-                                            <option value="{{ $position->id }}"
+                                            <option value="{{ $position->id }}" data-salary="{{ $position->base_salary }}"
                                                 {{ old('position_id', $employee->position_id) == $position->id ? 'selected' : '' }}>
                                                 {{ $position->name }}
                                             </option>
@@ -131,6 +147,27 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Base Salary</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-money-bill-wave"></i></span>
+                                    <input type="text" id="base_salary_display"
+                                        class="form-control border-start-0"
+                                        placeholder="Select position to see salary" readonly>
+                                </div>
+                            </div>
+                            
+                            <script>
+                                document.getElementById('position_id').addEventListener('change', function() {
+                                    const selectedOption = this.options[this.selectedIndex];
+                                    const salary = selectedOption.getAttribute('data-salary');
+                                    document.getElementById('base_salary_display').value = salary ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(salary) : '';
+                                });
+                                // Trigger on load
+                                document.getElementById('position_id').dispatchEvent(new Event('change'));
+                            </script>
 
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Phone</label>
@@ -147,16 +184,56 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Base Salary <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Bank Name</label>
+                                @php
+                                    $commonBanks = ['BCA', 'Mandiri', 'BNI', 'BRI', 'CIMB Niaga'];
+                                    $isOther = $employee->bank_name && !in_array($employee->bank_name, $commonBanks);
+                                @endphp
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
-                                            class="fas fa-money-bill-wave"></i></span>
-                                    <input type="number" name="base_salary" step="0.01"
-                                        class="form-control border-start-0 @error('base_salary') is-invalid @enderror"
-                                        placeholder="Enter base salary"
-                                        value="{{ old('base_salary', $employee->base_salary) }}" required>
+                                            class="fas fa-university"></i></span>
+                                    <select name="bank_name" id="bank_select" class="form-select border-start-0 @error('bank_name') is-invalid @enderror">
+                                        <option value="">Select Bank</option>
+                                        @foreach($commonBanks as $bank)
+                                            <option value="{{ $bank }}" {{ old('bank_name', $employee->bank_name) == $bank ? 'selected' : '' }}>{{ $bank }}</option>
+                                        @endforeach
+                                        <option value="Other" {{ $isOther ? 'selected' : '' }}>Other</option>
+                                    </select>
                                 </div>
-                                @error('base_salary')
+                                <div id="other_bank_div" class="mt-2" style="{{ $isOther ? 'display: block;' : 'display: none;' }}">
+                                    <input type="text" name="bank_name_other" id="other_bank_input" class="form-control" placeholder="Enter other bank name" value="{{ $isOther ? $employee->bank_name : '' }}">
+                                </div>
+                                @error('bank_name')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <script>
+                                document.getElementById('bank_select').addEventListener('change', function() {
+                                    const otherDiv = document.getElementById('other_bank_div');
+                                    const otherInput = document.getElementById('other_bank_input');
+                                    if (this.value === 'Other') {
+                                        otherDiv.style.display = 'block';
+                                        otherInput.required = true;
+                                    } else {
+                                        otherDiv.style.display = 'none';
+                                        otherInput.required = false;
+                                        otherInput.value = '';
+                                    }
+                                });
+                            </script>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Bank Account Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-credit-card"></i></span>
+                                    <input type="text" name="bank_account_number"
+                                        class="form-control border-start-0 @error('bank_account_number') is-invalid @enderror"
+                                        placeholder="Enter bank account number"
+                                        value="{{ old('bank_account_number', $employee->bank_account_number) }}">
+                                </div>
+                                @error('bank_account_number')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>

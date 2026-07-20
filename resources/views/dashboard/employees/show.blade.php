@@ -70,6 +70,14 @@
                         <div class="col-sm-6 col-xl-4">
                             <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
                                 <div class="card-body p-3">
+                                    <div class="text-uppercase small fw-bold text-primary mb-2">Gender</div>
+                                    <div class="fs-6 fw-bold text-body">{{ ucfirst($employee->gender) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
+                                <div class="card-body p-3">
                                     <div class="text-uppercase small fw-bold text-primary mb-2">Email</div>
                                     <div class="fs-6 fw-bold text-body">{{ $employee->email }}</div>
                                 </div>
@@ -132,8 +140,24 @@
                                 <div class="card-body p-3">
                                     <div class="text-uppercase small fw-bold text-primary mb-2">Base Salary</div>
                                     <div class="fs-6 fw-bold text-body">
-                                        {{ number_format($employee->base_salary, 2, ',', '.') }}
+                                        {{ number_format($employee->position?->base_salary ?? 0, 2, ',', '.') }}
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
+                                <div class="card-body p-3">
+                                    <div class="text-uppercase small fw-bold text-primary mb-2">Bank Name</div>
+                                    <div class="fs-6 fw-bold text-body">{{ $employee->bank_name ?: '-' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
+                                <div class="card-body p-3">
+                                    <div class="text-uppercase small fw-bold text-primary mb-2">Bank Account Number</div>
+                                    <div class="fs-6 fw-bold text-body">{{ $employee->bank_account_number ?: '-' }}</div>
                                 </div>
                             </div>
                         </div>
