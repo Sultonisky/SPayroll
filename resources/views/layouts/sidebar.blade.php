@@ -54,16 +54,37 @@
             </a>
         </li>
 
-        <li class="nav-title">Payroll</li>
-
-        <!-- Attendances -->
+        <li class="nav-title">Attendance</li>
+        <!-- Import Attendance -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('attendances.index') }}">
+            <a class="nav-link" href="{{ route('attendance-imports.create') }}">
+                <i class="nav-icon fas fa-file-import"></i>
+                Import Attendance
+            </a>
+        </li>
+        <!-- Attendance Records -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('attendance-records.index') }}">
                 <i class="nav-icon fas fa-calendar-check"></i>
-                Attendances
+                Attendance Records
+            </a>
+        </li>
+        <!-- Attendance Adjustments -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('attendance-adjustments.index') }}">
+                <i class="nav-icon fas fa-edit"></i>
+                Attendance Adjustments
+            </a>
+        </li>
+        <!-- Import History -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('attendance-imports.index') }}">
+                <i class="nav-icon fas fa-history"></i>
+                Import History
             </a>
         </li>
 
+        <li class="nav-title">Payroll</li>
         <!-- Payrolls -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('payrolls.index') }}">

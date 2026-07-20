@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Imports\AttendanceImport;
 use App\Models\Attendance;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceController extends Controller
 {
@@ -171,6 +173,7 @@ class AttendanceController extends Controller
         return redirect()->route('attendances.trash')->with('success', 'Success permanently delete attendance data.');
     }
 
+
     /**
      * Export single attendance to CSV.
      */
@@ -212,6 +215,49 @@ class AttendanceController extends Controller
                 fputcsv($file, ['Deleted At', $attendance->deleted_at->format('Y-m-d H:i:s')]);
             }
 
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function import(Request $request)
+    {
+        Gate::authorize('create', Attendance::class);
+        
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        $import = new AttendanceImport();
+        Excel::import($import, $request->file('file'));
+
+        if (!empty($import->failures)) {
+            $messages = [];
+            foreach ($import->failures as $failure) {
+                $messages[] = "{$failure['row']}: {$failure['error']}";
+            }
+            return back()->with('warning', 'Beberapa data gagal diimport: ' . implode(' | ', $messages));
+        }
+
+        return back()->with('success', 'Attendance data imported successfully!');
+    }
+
+    public function downloadSampleTemplate()
+    {
+        Gate::authorize('create', Attendance::class);
+
+        $headers = [
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=attendance_template.csv',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['employee_id', 'employee_name', 'year', 'month', 'work_days', 'present', 'sick', 'leave', 'alpha', 'overtime_hours', 'notes']);
             fclose($file);
         };
 

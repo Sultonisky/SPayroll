@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Attendance;
+use App\Models\AttendanceImport;
+use App\Models\AttendanceRecord;
+use App\Models\AttendanceAdjustment;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
@@ -54,8 +57,33 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Seeding Employees...');
         $employees = Employee::factory()->count(20)->create();
 
-        // 5. Seed Attendances and Payrolls for each Employee (last 6 months)
-        $this->command->info('Seeding Attendances and Payrolls...');
+        // 5. Seed Attendance Imports
+        $this->command->info('Seeding Attendance Imports...');
+        $imports = AttendanceImport::factory()->count(5)->create();
+
+        // 6. Seed Attendance Records
+        $this->command->info('Seeding Attendance Records...');
+        $records = collect();
+        foreach ($employees as $employee) {
+            // Create records for last 30 days
+            for ($i = 0; $i < 30; $i++) {
+                $record = AttendanceRecord::factory()->create([
+                    'employee_id' => $employee->id,
+                    'attendance_import_id' => $imports->random()->id,
+                    'attendance_date' => now()->subDays($i)->format('Y-m-d'),
+                ]);
+                $records->push($record);
+            }
+        }
+
+        // 7. Seed Attendance Adjustments
+        $this->command->info('Seeding Attendance Adjustments...');
+        AttendanceAdjustment::factory()->count(10)->create([
+            'attendance_record_id' => $records->random()->id,
+        ]);
+
+        // 8. Seed old Attendances and Payrolls (for compatibility)
+        $this->command->info('Seeding old Attendances and Payrolls...');
         $currentYear = now()->year;
         $currentMonth = now()->month;
 
@@ -81,7 +109,7 @@ class DatabaseSeeder extends Seeder
                     'attendance_id' => $attendance->id,
                     'year' => $year,
                     'month' => $month,
-                    'base_salary' => $employee->base_salary,
+                    'base_salary' => $employee->position->base_salary ?? 5000000,
                 ]);
             }
         }

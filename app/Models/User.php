@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -112,5 +113,15 @@ class User extends Authenticatable
         }
         
         return \Illuminate\Support\Facades\Storage::disk('supabase')->url($this->foto);
+    }
+
+    public function attendanceImports(): HasMany
+    {
+        return $this->hasMany(AttendanceImport::class, 'imported_by');
+    }
+
+    public function approvedAttendanceAdjustments(): HasMany
+    {
+        return $this->hasMany(AttendanceAdjustment::class, 'approved_by');
     }
 }

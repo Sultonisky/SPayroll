@@ -18,16 +18,22 @@ class Employee extends Model
         'position_id',
         'nik',
         'name',
+        'gender',
         'email',
         'phone',
         'address',
         'join_date',
         'birth_date',
         'status',
-        'base_salary',
+        'bank_name',
+        'bank_account_number',
     ];
 
-    protected $dates = ['deleted_at', 'join_date', 'birth_date'];
+    protected $casts = [
+        'join_date' => 'date',
+        'birth_date' => 'date',
+        'deleted_at' => 'datetime',
+    ];
 
     /**
      * Get the user associated with the employee.
@@ -67,5 +73,13 @@ class Employee extends Model
     public function payrolls(): HasMany
     {
         return $this->hasMany(Payroll::class);
+    }
+
+    /**
+     * Get all attendance records for the employee.
+     */
+    public function attendanceRecords(): HasMany
+    {
+        return $this->hasMany(AttendanceRecord::class);
     }
 }

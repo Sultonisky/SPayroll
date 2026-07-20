@@ -22,7 +22,7 @@ class PayrollFactory extends Factory
         $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();
         $year = fake()->year();
         $month = fake()->numberBetween(1, 12);
-        $baseSalary = $employee->base_salary;
+        $baseSalary = $employee->position->base_salary ?? fake()->numberBetween(3000000, 30000000);
         $allowances = fake()->numberBetween(500000, 3000000);
         $bonus = fake()->optional(0.3)->numberBetween(500000, 5000000) ?? 0;
         $overtimeHours = fake()->numberBetween(0, 40);

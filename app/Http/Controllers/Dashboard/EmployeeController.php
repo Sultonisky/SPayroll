@@ -65,14 +65,22 @@ class EmployeeController extends Controller
             'position_id' => 'required|exists:positions,id',
             'nik' => 'required|string|max:50|unique:employees,nik',
             'name' => 'required|string|max:255',
+            'gender' => 'required|in:laki-laki,perempuan',
             'email' => 'required|email|unique:employees,email',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'join_date' => 'required|date',
             'birth_date' => 'nullable|date',
             'status' => 'required|in:active,inactive',
-            'base_salary' => 'required|numeric|min:0',
+            'bank_name' => 'required|string|max:100',
+            'bank_name_other' => 'required_if:bank_name,Other|nullable|string|max:100',
+            'bank_account_number' => 'nullable|string|max:50',
         ]);
+
+        if ($validated['bank_name'] === 'Other') {
+            $validated['bank_name'] = $validated['bank_name_other'];
+        }
+        unset($validated['bank_name_other']);
 
         Employee::create($validated);
 
@@ -116,14 +124,22 @@ class EmployeeController extends Controller
             'position_id' => 'required|exists:positions,id',
             'nik' => 'required|string|max:50|unique:employees,nik,' . $id,
             'name' => 'required|string|max:255',
+            'gender' => 'required|in:laki-laki,perempuan',
             'email' => 'required|email|unique:employees,email,' . $id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'join_date' => 'required|date',
             'birth_date' => 'nullable|date',
             'status' => 'required|in:active,inactive',
-            'base_salary' => 'required|numeric|min:0',
+            'bank_name' => 'required|string|max:100',
+            'bank_name_other' => 'required_if:bank_name,Other|nullable|string|max:100',
+            'bank_account_number' => 'nullable|string|max:50',
         ]);
+
+        if ($validated['bank_name'] === 'Other') {
+            $validated['bank_name'] = $validated['bank_name_other'];
+        }
+        unset($validated['bank_name_other']);
 
         $employee->update($validated);
 
@@ -196,12 +212,30 @@ class EmployeeController extends Controller
             fputcsv($file, ['Email', $employee->email]);
             fputcsv($file, ['Phone', $employee->phone]);
             fputcsv($file, ['Address', $employee->address]);
-            fputcsv($file, ['Join Date', $employee->join_date->format('Y-m-d')]);
-            fputcsv($file, ['Birth Date', $employee->birth_date ? $employee->birth_date->format('Y-m-d') : '-']);
+            $joinDate = '-';
+            if ($employee->join_date) {
+                if ($employee->join_date instanceof \DateTimeInterface) {
+                    $joinDate = $employee->join_date->format('Y-m-d');
+                } else {
+                    $joinDate = (string) $employee->join_date;
+                }
+            }
+            fputcsv($file, ['Join Date', $joinDate]);
+            $birthDate = '-';
+            if ($employee->birth_date) {
+                if ($employee->birth_date instanceof \DateTimeInterface) {
+                    $birthDate = $employee->birth_date->format('Y-m-d');
+                } else {
+                    $birthDate = (string) $employee->birth_date;
+                }
+            }
+            fputcsv($file, ['Birth Date', $birthDate]);
             fputcsv($file, ['Status', $employee->status]);
-            fputcsv($file, ['Base Salary', $employee->base_salary]);
+            fputcsv($file, ['Bank Name', $employee->bank_name ?? '-']);
+            fputcsv($file, ['Bank Account Number', $employee->bank_account_number ?? '-']);
             fputcsv($file, ['Department', $employee->department ? $employee->department->name : '-']);
             fputcsv($file, ['Position', $employee->position ? $employee->position->name : '-']);
+            fputcsv($file, ['Position Base Salary', $employee->position ? $employee->position->base_salary : '-']);
             fputcsv($file, ['User', $employee->user ? $employee->user->name : '-']);
             fputcsv($file, ['Created At', $employee->created_at->format('Y-m-d H:i:s')]);
             fputcsv($file, ['Updated At', $employee->updated_at->format('Y-m-d H:i:s')]);
