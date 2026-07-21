@@ -5,7 +5,6 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\PositionController;
 use App\Http\Controllers\Dashboard\EmployeeController;
-use App\Http\Controllers\Dashboard\AttendanceController;
 use App\Http\Controllers\Dashboard\AttendanceImportController;
 use App\Http\Controllers\Dashboard\AttendanceRecordController;
 use App\Http\Controllers\Dashboard\AttendanceAdjustmentController;

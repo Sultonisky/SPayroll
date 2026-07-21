@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Attendance;
 use App\Models\AttendanceImport;
 use App\Models\AttendanceRecord;
 use App\Models\AttendanceAdjustment;
@@ -81,38 +80,6 @@ class DatabaseSeeder extends Seeder
         AttendanceAdjustment::factory()->count(10)->create([
             'attendance_record_id' => $records->random()->id,
         ]);
-
-        // 8. Seed old Attendances and Payrolls (for compatibility)
-        $this->command->info('Seeding old Attendances and Payrolls...');
-        $currentYear = now()->year;
-        $currentMonth = now()->month;
-
-        foreach ($employees as $employee) {
-            for ($i = 0; $i < 6; $i++) {
-                $month = $currentMonth - $i;
-                $year = $currentYear;
-                if ($month <= 0) {
-                    $month += 12;
-                    $year -= 1;
-                }
-
-                // Create Attendance
-                $attendance = Attendance::factory()->create([
-                    'employee_id' => $employee->id,
-                    'year' => $year,
-                    'month' => $month,
-                ]);
-
-                // Create Payroll linked to Attendance
-                Payroll::factory()->create([
-                    'employee_id' => $employee->id,
-                    'attendance_id' => $attendance->id,
-                    'year' => $year,
-                    'month' => $month,
-                    'base_salary' => $employee->position->base_salary ?? 5000000,
-                ]);
-            }
-        }
 
         $this->command->info('All dummy data seeded successfully!');
     }

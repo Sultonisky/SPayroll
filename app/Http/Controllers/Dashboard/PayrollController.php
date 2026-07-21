@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Payroll;
 use App\Models\Employee;
-use App\Models\Attendance;
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -47,8 +46,7 @@ class PayrollController extends Controller
     {
         Gate::authorize('create', Payroll::class);
         $employees = Employee::all();
-        $attendances = Attendance::all();
-        return view('dashboard.payrolls.create', compact('employees', 'attendances'));
+        return view('dashboard.payrolls.create', compact('employees'));
     }
 
     /**
@@ -59,7 +57,6 @@ class PayrollController extends Controller
         Gate::authorize('create', Payroll::class);
         $validated = $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'attendance_id' => 'nullable|exists:attendances,id',
             'year' => 'required|integer|min:2000|max:2100',
             'month' => 'required|integer|min:1|max:12',
             'pay_date' => 'required|date',
@@ -83,7 +80,7 @@ class PayrollController extends Controller
      */
     public function show(string $id)
     {
-        $payroll = Payroll::withTrashed()->with(['employee', 'attendance'])->findOrFail($id);
+        $payroll = Payroll::withTrashed()->with(['employee'])->findOrFail($id);
         Gate::authorize('view', $payroll);
         return view('dashboard.payrolls.show', compact('payroll'));
     }
@@ -96,8 +93,7 @@ class PayrollController extends Controller
         $payroll = Payroll::findOrFail($id);
         Gate::authorize('update', $payroll);
         $employees = Employee::all();
-        $attendances = Attendance::all();
-        return view('dashboard.payrolls.edit', compact('payroll', 'employees', 'attendances'));
+        return view('dashboard.payrolls.edit', compact('payroll', 'employees'));
     }
 
     /**
@@ -110,7 +106,6 @@ class PayrollController extends Controller
         
         $validated = $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'attendance_id' => 'nullable|exists:attendances,id',
             'year' => 'required|integer|min:2000|max:2100',
             'month' => 'required|integer|min:1|max:12',
             'pay_date' => 'required|date',
@@ -191,7 +186,6 @@ class PayrollController extends Controller
             // Payroll details
             fputcsv($file, ['ID', $payroll->id]);
             fputcsv($file, ['Employee Name', $payroll->employee ? $payroll->employee->name : '-']);
-            fputcsv($file, ['Attendance ID', $payroll->attendance ? $payroll->attendance->id : '-']);
             fputcsv($file, ['Year', $payroll->year]);
             fputcsv($file, ['Month', $payroll->month]);
             fputcsv($file, ['Pay Date', $payroll->pay_date->format('Y-m-d')]);
