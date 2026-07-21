@@ -88,9 +88,27 @@
         <li class="nav-title">Payroll</li>
         <!-- Payrolls -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('payrolls.index') }}">
+            <a class="nav-link" href="{{ route('bonuses.index') }}">
+                <i class="nav-icon fas fa-comments-dollar"></i>
+                Bonus
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('payrolls.generate') }}">
                 <i class="nav-icon fas fa-money-check-alt"></i>
-                Payrolls
+                Payrolls Generate
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('payrolls.periods') }}">
+                <i class="nav-icon fas fa-calendar-check"></i>
+                Payroll Periods
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('payrolls.index') }}">
+                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                Payroll Records
             </a>
         </li>
     </ul>
