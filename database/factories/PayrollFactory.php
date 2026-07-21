@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Attendance;
+// use App\Models\Attendance; // TEMPORARILY DISABLED - attendance feature not yet needed
 use App\Models\Employee;
 use App\Models\Payroll;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +22,8 @@ class PayrollFactory extends Factory
         $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();
         $year = fake()->year();
         $month = fake()->numberBetween(1, 12);
-        $baseSalary = $employee->position->base_salary ?? fake()->numberBetween(3000000, 30000000);
+        // Use the employee's base_salary accessor which resolves by employee_type
+        $baseSalary = $employee->base_salary ?? fake()->numberBetween(3_000_000, 30_000_000);
         $allowances = fake()->numberBetween(500000, 3000000);
         $bonus = fake()->optional(0.3)->numberBetween(500000, 5000000) ?? 0;
         $overtimeHours = fake()->numberBetween(0, 40);
@@ -32,7 +33,7 @@ class PayrollFactory extends Factory
 
         return [
             'employee_id' => $employee->id,
-            'attendance_id' => Attendance::where('employee_id', $employee->id)->where('year', $year)->where('month', $month)->first()?->id ?? null,
+            // 'attendance_id' => Attendance::where('employee_id', $employee->id)->where('year', $year)->where('month', $month)->first()?->id ?? null, // TEMPORARILY DISABLED
             'year' => $year,
             'month' => $month,
             'pay_date' => fake()->dateTimeBetween("$year-$month-01", "$year-$month-30")->format('Y-m-d'),

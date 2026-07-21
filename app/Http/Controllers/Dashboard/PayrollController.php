@@ -165,7 +165,8 @@ class PayrollController extends Controller
      */
     public function export(string $id)
     {
-        $payroll = Payroll::withTrashed()->with(['employee', 'attendance'])->findOrFail($id);
+        // ->with(['employee', 'attendance']) — 'attendance' relation disabled (attendance feature not yet needed)
+        $payroll = Payroll::withTrashed()->with(['employee'])->findOrFail($id);
         Gate::authorize('view', $payroll);
 
         $fileName = 'payroll_' . $payroll->id . '_' . date('Y-m-d') . '.csv';
