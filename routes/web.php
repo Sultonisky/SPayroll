@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\EmployeeController;
 // use App\Http\Controllers\Dashboard\AttendanceRecordController;
 // use App\Http\Controllers\Dashboard\AttendanceAdjustmentController;
 use App\Http\Controllers\Dashboard\PayrollController;
+use App\Http\Controllers\Dashboard\BonusController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -153,11 +154,23 @@ Route::middleware(['auth'])->group(function () {
     //     Route::post('attendance-adjustments/{attendanceAdjustment}/reject', [AttendanceAdjustmentController::class, 'reject'])->name('attendance-adjustments.reject');
     // });
 
-    // Payroll Routes - Admin & HR & Manager (read for staff)
+    // Payroll Routes
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('payrolls/trash', [PayrollController::class, 'trash'])->name('payrolls.trash');
+        Route::get('payrolls/periods', [PayrollController::class, 'periods'])->name('payrolls.periods');
     });
-    
+
+    Route::middleware(['role:admin,HR'])->group(function () {
+        Route::get('payrolls/generate', [PayrollController::class, 'generateForm'])->name('payrolls.generate');
+        Route::post('payrolls/generate', [PayrollController::class, 'generateBulk'])->name('payrolls.generate.bulk');
+        Route::get('payrolls/generate/preview', [PayrollController::class, 'generatePreview'])->name('payrolls.generate.preview');
+        Route::post('payrolls/{id}/approve', [PayrollController::class, 'approve'])->name('payrolls.approve');
+        Route::post('payrolls/{id}/mark-paid', [PayrollController::class, 'markPaid'])->name('payrolls.mark-paid');
+        Route::delete('payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');
+        Route::post('payrolls/{id}/restore', [PayrollController::class, 'restore'])->name('payrolls.restore');
+        Route::delete('payrolls/{id}/force-delete', [PayrollController::class, 'forceDelete'])->name('payrolls.force-delete');
+    });
+
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('payrolls/create', [PayrollController::class, 'create'])->name('payrolls.create');
         Route::post('payrolls', [PayrollController::class, 'store'])->name('payrolls.store');
@@ -165,16 +178,33 @@ Route::middleware(['auth'])->group(function () {
         Route::put('payrolls/{payroll}', [PayrollController::class, 'update'])->name('payrolls.update');
         Route::patch('payrolls/{payroll}', [PayrollController::class, 'update']);
     });
-    
-    Route::middleware(['role:admin,HR'])->group(function () {
-        Route::delete('payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');
-        Route::post('payrolls/{id}/restore', [PayrollController::class, 'restore'])->name('payrolls.restore');
-        Route::delete('payrolls/{id}/force-delete', [PayrollController::class, 'forceDelete'])->name('payrolls.force-delete');
-    });
-    
+
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('payrolls', [PayrollController::class, 'index'])->name('payrolls.index');
         Route::get('payrolls/{payroll}', [PayrollController::class, 'show'])->name('payrolls.show');
         Route::get('payrolls/{id}/export', [PayrollController::class, 'export'])->name('payrolls.export');
+    });
+
+    // Bonus Routes
+    Route::middleware(['role:admin,HR,manager'])->group(function () {
+        Route::get('bonuses/trash', [BonusController::class, 'trash'])->name('bonuses.trash');
+        Route::get('bonuses/create', [BonusController::class, 'create'])->name('bonuses.create');
+        Route::post('bonuses', [BonusController::class, 'store'])->name('bonuses.store');
+        Route::get('bonuses/{bonus}/edit', [BonusController::class, 'edit'])->name('bonuses.edit');
+        Route::put('bonuses/{bonus}', [BonusController::class, 'update'])->name('bonuses.update');
+        Route::patch('bonuses/{bonus}', [BonusController::class, 'update']);
+    });
+
+    Route::middleware(['role:admin,HR'])->group(function () {
+        Route::post('bonuses/{id}/approve', [BonusController::class, 'approve'])->name('bonuses.approve');
+        Route::post('bonuses/{id}/reject', [BonusController::class, 'reject'])->name('bonuses.reject');
+        Route::delete('bonuses/{bonus}', [BonusController::class, 'destroy'])->name('bonuses.destroy');
+        Route::post('bonuses/{id}/restore', [BonusController::class, 'restore'])->name('bonuses.restore');
+        Route::delete('bonuses/{id}/force-delete', [BonusController::class, 'forceDelete'])->name('bonuses.force-delete');
+    });
+
+    Route::middleware(['role:admin,HR,manager'])->group(function () {
+        Route::get('bonuses', [BonusController::class, 'index'])->name('bonuses.index');
+        Route::get('bonuses/{bonus}', [BonusController::class, 'show'])->name('bonuses.show');
     });
 });
