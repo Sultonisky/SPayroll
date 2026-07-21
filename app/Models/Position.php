@@ -14,12 +14,27 @@ class Position extends Model
     protected $fillable = [
         'name',
         'description',
-        'base_salary',
+        'base_salary_fulltime',
+        'base_salary_internship',
     ];
 
     protected $casts = [
-        'deleted_at' => 'datetime',
+        'base_salary_fulltime'   => 'float',
+        'base_salary_internship' => 'float',
+        'deleted_at'             => 'datetime',
     ];
+
+    /**
+     * Get the base salary for a given employee type.
+     */
+    public function getBaseSalaryFor(string $employeeType): ?float
+    {
+        return match($employeeType) {
+            'fulltime'   => $this->base_salary_fulltime,
+            'internship' => $this->base_salary_internship,
+            default      => null,
+        };
+    }
 
     /**
      * Get all employees for the position.
