@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-// use App\Models\Attendance; // TEMPORARILY DISABLED - attendance feature not yet needed
 use App\Models\Employee;
 use App\Models\Payroll;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,38 +12,55 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PayrollFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
+     * Common remote-work allowances for a software house / digital agency (IDR).
+     * These are realistic for Indonesian tech companies.
      */
+    private const ALLOWANCE_RANGE  = [500_000,  2_000_000]; // internet, electricity, etc.
+    private const BONUS_CHANCE      = 0.25;                  // 25% chance of performance bonus
+    private const BONUS_RANGE       = [500_000,  3_000_000];
+    private const OVERTIME_RATE     = 100_000;               // per hour (remote overtime)
+    private const OVERTIME_MAX_HRS  = 20;
+    private const DEDUCTION_RANGE   = [100_000,  500_000];   // BPJS, etc.
+
     public function definition(): array
     {
-        $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();
-        $year = fake()->year();
+        $employee = Employee::with('position')->inRandomOrder()->first()
+            ?? Employee::factory()->create();
+
+        // Resolve base salary via model accessor (respects employee_type)
+        $baseSalary = $employee->base_salary
+            ?? fake()->numberBetween(5_000_000, 20_000_000);
+
+        $year  = fake()->numberBetween(2023, 2026);
         $month = fake()->numberBetween(1, 12);
-        // Use the employee's base_salary accessor which resolves by employee_type
-        $baseSalary = $employee->base_salary ?? fake()->numberBetween(3_000_000, 30_000_000);
-        $allowances = fake()->numberBetween(500000, 3000000);
-        $bonus = fake()->optional(0.3)->numberBetween(500000, 5000000) ?? 0;
-        $overtimeHours = fake()->numberBetween(0, 40);
-        $overtimePay = $overtimeHours * 150000; // contoh rate lembur
-        $deductions = fake()->numberBetween(200000, 1500000);
-        $totalSalary = $baseSalary + $allowances + $bonus + $overtimePay - $deductions;
+
+        // Keep pay_date within valid range for the month
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $payDay      = min(25, $daysInMonth); // payroll usually on 25th
+        $payDate     = sprintf('%04d-%02d-%02d', $year, $month, $payDay);
+
+        $allowances   = fake()->numberBetween(...self::ALLOWANCE_RANGE);
+        $bonus        = fake()->boolean((int)(self::BONUS_CHANCE * 100))
+                            ? fake()->numberBetween(...self::BONUS_RANGE)
+                            : 0;
+        $overtimeHrs  = fake()->numberBetween(0, self::OVERTIME_MAX_HRS);
+        $overtimePay  = $overtimeHrs * self::OVERTIME_RATE;
+        $deductions   = fake()->numberBetween(...self::DEDUCTION_RANGE);
+        $totalSalary  = max(0, $baseSalary + $allowances + $bonus + $overtimePay - $deductions);
 
         return [
-            'employee_id' => $employee->id,
-            // 'attendance_id' => Attendance::where('employee_id', $employee->id)->where('year', $year)->where('month', $month)->first()?->id ?? null, // TEMPORARILY DISABLED
-            'year' => $year,
-            'month' => $month,
-            'pay_date' => fake()->dateTimeBetween("$year-$month-01", "$year-$month-30")->format('Y-m-d'),
-            'base_salary' => $baseSalary,
-            'allowances' => $allowances,
-            'bonus' => $bonus,
+            'employee_id'  => $employee->id,
+            'year'         => $year,
+            'month'        => $month,
+            'pay_date'     => $payDate,
+            'base_salary'  => $baseSalary,
+            'allowances'   => $allowances,
+            'bonus'        => $bonus,
             'overtime_pay' => $overtimePay,
-            'deductions' => $deductions,
-            'total_salary' => max($totalSalary, 0), // jangan sampai minus
-            'notes' => fake()->optional()->paragraph(),
-            'status' => fake()->randomElement(['draft', 'approved', 'paid']),
+            'deductions'   => $deductions,
+            'total_salary' => $totalSalary,
+            'notes'        => fake()->optional(0.3)->sentence(),
+            'status'       => fake()->randomElement(['draft', 'approved', 'approved', 'paid', 'paid']), // bias towards processed
         ];
     }
 }

@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\AttendanceImport;
-use App\Models\AttendanceRecord;
-use App\Models\AttendanceAdjustment;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
@@ -20,67 +17,66 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Seed the application's database.
+     *
+     * Data is shaped for a remote-first software house / digital agency.
      */
     public function run(): void
     {
-        // 1. Seed Admin
-        $adminEmail = env('ADMIN_EMAIL', 'admin@spayroll.com');
-        $adminName = env('ADMIN_NAME', 'Administrator');
-        $adminPassword = env('ADMIN_PASSWORD', 'password123');
+        // ----------------------------------------------------------------
+        // 1. Admin account
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding admin user...');
 
         User::firstOrCreate(
-            ['email' => $adminEmail],
+            ['email' => env('ADMIN_EMAIL', 'admin@spayroll.com')],
             [
-                'name'              => $adminName,
-                'password'          => Hash::make($adminPassword),
+                'name'              => env('ADMIN_NAME', 'Administrator'),
+                'password'          => Hash::make(env('ADMIN_PASSWORD', 'password123')),
                 'email_verified_at' => now(),
                 'role'              => 'admin',
             ]
         );
 
-        $this->command->info('Admin user created/updated successfully!');
+        // ----------------------------------------------------------------
+        // 2. Supporting users (HR & managers first, then regular staff)
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding supporting users...');
 
-        // 1b. Seed Regular Users
-        $this->command->info('Seeding Regular Users...');
-        User::factory()->count(10)->create();
+        User::factory()->hr()->count(2)->create();
+        User::factory()->manager()->count(3)->create();
+        User::factory()->count(15)->create(); // mix of staff
 
-        // 2. Seed Departments
-        $this->command->info('Seeding Departments...');
-        Department::factory()->count(5)->create();
+        // ----------------------------------------------------------------
+        // 3. Departments — tech company structure (max 10 defined)
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding departments...');
 
-        // 3. Seed Positions
-        $this->command->info('Seeding Positions...');
-        Position::factory()->count(6)->create();
+        Department::factory()->count(8)->create();
 
-        // 4. Seed Employees
-        $this->command->info('Seeding Employees...');
-        $employees = Employee::factory()->count(20)->create();
+        // ----------------------------------------------------------------
+        // 4. Positions — role-based, with split fulltime/internship salary
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding positions...');
 
-        // 5. Seed Attendance Imports
-        $this->command->info('Seeding Attendance Imports...');
-        $imports = AttendanceImport::factory()->count(5)->create();
+        Position::factory()->count(12)->create();
 
-        // 6. Seed Attendance Records
-        $this->command->info('Seeding Attendance Records...');
-        $records = collect();
-        foreach ($employees as $employee) {
-            // Create records for last 30 days
-            for ($i = 0; $i < 30; $i++) {
-                $record = AttendanceRecord::factory()->create([
-                    'employee_id' => $employee->id,
-                    'attendance_import_id' => $imports->random()->id,
-                    'attendance_date' => now()->subDays($i)->format('Y-m-d'),
-                ]);
-                $records->push($record);
-            }
-        }
+        // ----------------------------------------------------------------
+        // 5. Employees — mostly active, mix of fulltime & internship
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding employees...');
 
-        // 7. Seed Attendance Adjustments
-        $this->command->info('Seeding Attendance Adjustments...');
-        AttendanceAdjustment::factory()->count(10)->create([
-            'attendance_record_id' => $records->random()->id,
-        ]);
+        Employee::factory()->count(30)->create();
 
-        $this->command->info('All dummy data seeded successfully!');
+        // ----------------------------------------------------------------
+        // 6. Payrolls — a few months of payroll history per employee
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding payrolls...');
+
+        Payroll::factory()->count(60)->create();
+
+        // ----------------------------------------------------------------
+        $this->command->info('All seed data created successfully.');
+        $this->command->line('  Admin email : ' . env('ADMIN_EMAIL', 'admin@spayroll.com'));
+        $this->command->line('  Admin pass  : ' . env('ADMIN_PASSWORD', 'password123'));
     }
 }
