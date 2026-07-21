@@ -12,11 +12,13 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
 use App\Models\Position;
+use App\Models\Bonus;
 use App\Observers\UserObserver;
 use App\Observers\DepartmentObserver;
 use App\Observers\EmployeeObserver;
 use App\Observers\PayrollObserver;
 use App\Observers\PositionObserver;
+use App\Observers\BonusObserver;
 
 
 
@@ -40,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
          Employee::observe(EmployeeObserver::class);
          Payroll::observe(PayrollObserver::class);
          Position::observe(PositionObserver::class);
+         Bonus::observe(BonusObserver::class);
          RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->email . $request->ip());
         });

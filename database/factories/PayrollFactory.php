@@ -2,51 +2,57 @@
 
 namespace Database\Factories;
 
+use App\Models\Bonus;
 use App\Models\Employee;
 use App\Models\Payroll;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<Payroll>
+ *
+ * Formula: total_salary = base_salary + bonus
+ * No allowances, no overtime, no deductions — by design.
  */
 class PayrollFactory extends Factory
 {
-    /**
-     * Common remote-work allowances for a software house / digital agency (IDR).
-     * These are realistic for Indonesian tech companies.
-     */
-    private const ALLOWANCE_RANGE  = [500_000,  2_000_000]; // internet, electricity, etc.
-    private const BONUS_CHANCE      = 0.25;                  // 25% chance of performance bonus
-    private const BONUS_RANGE       = [500_000,  3_000_000];
-    private const OVERTIME_RATE     = 100_000;               // per hour (remote overtime)
-    private const OVERTIME_MAX_HRS  = 20;
-    private const DEDUCTION_RANGE   = [100_000,  500_000];   // BPJS, etc.
-
     public function definition(): array
     {
         $employee = Employee::with('position')->inRandomOrder()->first()
             ?? Employee::factory()->create();
 
-        // Resolve base salary via model accessor (respects employee_type)
-        $baseSalary = $employee->base_salary
-            ?? fake()->numberBetween(5_000_000, 20_000_000);
+        // Track used employee+year+month combos to avoid unique constraint violation
+        static $used = [];
 
-        $year  = fake()->numberBetween(2023, 2026);
-        $month = fake()->numberBetween(1, 12);
+        $attempt = 0;
+        do {
+            $year  = fake()->numberBetween(2024, 2026);
+            $month = fake()->numberBetween(1, 12);
+            $key   = "{$employee->id}-{$year}-{$month}";
+            $attempt++;
 
-        // Keep pay_date within valid range for the month
+            // After a few tries with same employee, pick a different employee
+            if ($attempt > 10) {
+                $employee = Employee::with('position')
+                    ->inRandomOrder()
+                    ->first();
+                $attempt = 0;
+            }
+        } while (in_array($key, $used, true));
+
+        $used[] = $key;
+
+        // Base salary via model accessor (resolves by employee_type + position)
+        $baseSalary = (float) ($employee->base_salary ?? fake()->numberBetween(5_000_000, 20_000_000));
+
+        // Sum approved bonuses for this employee/period (if any exist)
+        $bonus = (float) Bonus::forEmployee($employee->id)
+            ->forPeriod($year, $month)
+            ->approved()
+            ->sum('amount');
+
+        // Pay date: always on the 25th (or last day of month if < 25 days)
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $payDay      = min(25, $daysInMonth); // payroll usually on 25th
-        $payDate     = sprintf('%04d-%02d-%02d', $year, $month, $payDay);
-
-        $allowances   = fake()->numberBetween(...self::ALLOWANCE_RANGE);
-        $bonus        = fake()->boolean((int)(self::BONUS_CHANCE * 100))
-                            ? fake()->numberBetween(...self::BONUS_RANGE)
-                            : 0;
-        $overtimeHrs  = fake()->numberBetween(0, self::OVERTIME_MAX_HRS);
-        $overtimePay  = $overtimeHrs * self::OVERTIME_RATE;
-        $deductions   = fake()->numberBetween(...self::DEDUCTION_RANGE);
-        $totalSalary  = max(0, $baseSalary + $allowances + $bonus + $overtimePay - $deductions);
+        $payDate     = sprintf('%04d-%02d-%02d', $year, $month, min(25, $daysInMonth));
 
         return [
             'employee_id'  => $employee->id,
@@ -54,13 +60,10 @@ class PayrollFactory extends Factory
             'month'        => $month,
             'pay_date'     => $payDate,
             'base_salary'  => $baseSalary,
-            'allowances'   => $allowances,
             'bonus'        => $bonus,
-            'overtime_pay' => $overtimePay,
-            'deductions'   => $deductions,
-            'total_salary' => $totalSalary,
-            'notes'        => fake()->optional(0.3)->sentence(),
-            'status'       => fake()->randomElement(['draft', 'approved', 'approved', 'paid', 'paid']), // bias towards processed
+            'total_salary' => $baseSalary + $bonus,
+            'notes'        => fake()->optional(0.2)->sentence(),
+            'status'       => fake()->randomElement(['draft', 'approved', 'approved', 'paid', 'paid']),
         ];
     }
 }

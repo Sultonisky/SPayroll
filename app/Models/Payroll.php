@@ -17,22 +17,39 @@ class Payroll extends Model
         'month',
         'pay_date',
         'base_salary',
-        'allowances',
         'bonus',
-        'overtime_pay',
-        'deductions',
         'total_salary',
         'notes',
         'status',
     ];
 
-    protected $dates = ['deleted_at', 'pay_date'];
+    protected $casts = [
+        'base_salary'  => 'float',
+        'bonus'        => 'float',
+        'total_salary' => 'float',
+        'pay_date'     => 'date',
+        'deleted_at'   => 'datetime',
+    ];
 
-    /**
-     * Get the employee that owns the payroll.
-     */
+    // ----------------------------------------------------------------
+    // Relationships
+    // ----------------------------------------------------------------
+
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    // ----------------------------------------------------------------
+    // Helpers
+    // ----------------------------------------------------------------
+
+    public function isDraft(): bool    { return $this->status === 'draft'; }
+    public function isApproved(): bool { return $this->status === 'approved'; }
+    public function isPaid(): bool     { return $this->status === 'paid'; }
+
+    public function monthName(): string
+    {
+        return \Carbon\Carbon::create($this->year, $this->month)->translatedFormat('F Y');
     }
 }
