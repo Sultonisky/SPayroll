@@ -86,6 +86,14 @@ class Employee extends Model
     }
 
     /**
+     * Get all bonuses for the employee.
+     */
+    public function bonuses(): HasMany
+    {
+        return $this->hasMany(Bonus::class);
+    }
+
+    /**
      * Get all attendance records for the employee.
      * TEMPORARILY DISABLED - attendance feature not yet needed
      */
