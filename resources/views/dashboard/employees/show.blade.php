@@ -40,15 +40,33 @@
                                 <span class="badge bg-body text-body border rounded-pill px-4 py-2 fs-6">
                                     <i class="fas fa-id-badge me-2 text-info"></i>{{ $employee->nik }}
                                 </span>
-                                <span
-                                    class="badge {{ $employee->status === 'active' ? 'bg-success' : 'bg-secondary' }} text-white rounded-pill px-4 py-2 fs-6">
-                                    {{ ucfirst($employee->status) }}
+                                @php
+                                    $statusColor = match($employee->employee_status) {
+                                        'active'   => 'bg-success',
+                                        'inactive' => 'bg-secondary',
+                                        'resigned' => 'bg-danger',
+                                        default    => 'bg-secondary',
+                                    };
+                                @endphp
+                                <span class="badge {{ $statusColor }} text-white rounded-pill px-4 py-2 fs-6">
+                                    {{ ucfirst($employee->employee_status) }}
+                                </span>
+                                <span class="badge bg-info text-white rounded-pill px-4 py-2 fs-6">
+                                    <i class="fas fa-user-tag me-2"></i>{{ ucfirst($employee->employee_type) }}
                                 </span>
                             </div>
                         </div>
                     </div>
 
                     <div class="row g-4">
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
+                                <div class="card-body p-3">
+                                    <div class="text-uppercase small fw-bold text-primary mb-2">Employee Code</div>
+                                    <div class="fs-5 fw-bold text-body font-monospace">{{ $employee->employee_code ?? '-' }}</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-6 col-xl-4">
                             <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
                                 <div class="card-body p-3">
@@ -140,7 +158,7 @@
                                 <div class="card-body p-3">
                                     <div class="text-uppercase small fw-bold text-primary mb-2">Base Salary</div>
                                     <div class="fs-6 fw-bold text-body">
-                                        {{ number_format($employee->position?->base_salary ?? 0, 2, ',', '.') }}
+                                        {{ $employee->base_salary !== null ? 'Rp ' . number_format($employee->base_salary, 2, ',', '.') : '-' }}
                                     </div>
                                 </div>
                             </div>

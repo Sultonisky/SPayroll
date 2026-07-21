@@ -17,19 +17,20 @@ class UserFactory extends Factory
     protected static ?string $password;
 
     /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
+     * Roles available for non-admin users in a remote-first tech company.
+     * Admin is always seeded directly, not via factory.
      */
+    private static array $roles = ['HR', 'manager', 'staff', 'staff', 'staff']; // bias towards staff
+
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-            'role' => 'staff',
+            'name'               => fake()->name(),
+            'email'              => fake()->unique()->safeEmail(),
+            'email_verified_at'  => now(),
+            'password'           => static::$password ??= Hash::make('password'),
+            'remember_token'     => Str::random(10),
+            'role'               => fake()->randomElement(self::$roles),
         ];
     }
 
@@ -40,6 +41,26 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Create a user with manager role.
+     */
+    public function manager(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'manager',
+        ]);
+    }
+
+    /**
+     * Create a user with HR role.
+     */
+    public function hr(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'HR',
         ]);
     }
 }

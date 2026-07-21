@@ -18,7 +18,7 @@ class EmployeeController extends Controller
     public function index()
     {
         Gate::authorize('viewAny', Employee::class);
-        $employees = Employee::select('id', 'nik', 'name', 'email', 'department_id', 'position_id', 'status', 'created_at')
+        $employees = Employee::select('id', 'employee_code', 'nik', 'name', 'email', 'department_id', 'position_id', 'employee_status', 'employee_type', 'created_at')
             ->with(['department', 'position'])
             ->latest()
             ->get();
@@ -33,7 +33,7 @@ class EmployeeController extends Controller
     {
         Gate::authorize('viewAny', Employee::class);
         $employees = Employee::onlyTrashed()
-            ->select('id', 'nik', 'name', 'email', 'department_id', 'position_id', 'status', 'created_at')
+            ->select('id', 'employee_code', 'nik', 'name', 'email', 'department_id', 'position_id', 'employee_status', 'employee_type', 'created_at')
             ->with(['department', 'position'])
             ->latest()
             ->get();
@@ -71,7 +71,8 @@ class EmployeeController extends Controller
             'address' => 'nullable|string',
             'join_date' => 'required|date',
             'birth_date' => 'nullable|date',
-            'status' => 'required|in:active,inactive',
+            'employee_status' => 'required|in:active,inactive,resigned',
+            'employee_type' => 'required|in:fulltime,internship',
             'bank_name' => 'required|string|max:100',
             'bank_name_other' => 'required_if:bank_name,Other|nullable|string|max:100',
             'bank_account_number' => 'nullable|string|max:50',
@@ -130,7 +131,8 @@ class EmployeeController extends Controller
             'address' => 'nullable|string',
             'join_date' => 'required|date',
             'birth_date' => 'nullable|date',
-            'status' => 'required|in:active,inactive',
+            'employee_status' => 'required|in:active,inactive,resigned',
+            'employee_type' => 'required|in:fulltime,internship',
             'bank_name' => 'required|string|max:100',
             'bank_name_other' => 'required_if:bank_name,Other|nullable|string|max:100',
             'bank_account_number' => 'nullable|string|max:50',
@@ -207,6 +209,7 @@ class EmployeeController extends Controller
             
             // Employee details
             fputcsv($file, ['ID', $employee->id]);
+            fputcsv($file, ['Employee Code', $employee->employee_code ?? '-']);
             fputcsv($file, ['NIK', $employee->nik]);
             fputcsv($file, ['Name', $employee->name]);
             fputcsv($file, ['Email', $employee->email]);
@@ -230,12 +233,15 @@ class EmployeeController extends Controller
                 }
             }
             fputcsv($file, ['Birth Date', $birthDate]);
-            fputcsv($file, ['Status', $employee->status]);
+            fputcsv($file, ['Status', $employee->employee_status]);
+            fputcsv($file, ['Employee Type', $employee->employee_type]);
             fputcsv($file, ['Bank Name', $employee->bank_name ?? '-']);
             fputcsv($file, ['Bank Account Number', $employee->bank_account_number ?? '-']);
             fputcsv($file, ['Department', $employee->department ? $employee->department->name : '-']);
             fputcsv($file, ['Position', $employee->position ? $employee->position->name : '-']);
-            fputcsv($file, ['Position Base Salary', $employee->position ? $employee->position->base_salary : '-']);
+            fputcsv($file, ['Base Salary (Fulltime)', $employee->position ? $employee->position->base_salary_fulltime : '-']);
+            fputcsv($file, ['Base Salary (Internship)', $employee->position ? $employee->position->base_salary_internship : '-']);
+            fputcsv($file, ['Applicable Base Salary', $employee->base_salary ?? '-']);
             fputcsv($file, ['User', $employee->user ? $employee->user->name : '-']);
             fputcsv($file, ['Created At', $employee->created_at->format('Y-m-d H:i:s')]);
             fputcsv($file, ['Updated At', $employee->updated_at->format('Y-m-d H:i:s')]);

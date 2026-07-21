@@ -23,6 +23,17 @@
 
                         <div class="row g-4">
                             <div class="col-md-6">
+                                <label class="form-label fw-bold">Employee Code</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-hashtag"></i></span>
+                                    <input type="text" class="form-control border-start-0 font-monospace"
+                                        value="{{ $employee->employee_code ?? '-' }}" disabled>
+                                </div>
+                                <small class="text-muted">Employee code is auto-generated and cannot be changed.</small>
+                            </div>
+
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">User Account</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
@@ -136,7 +147,9 @@
                                         required>
                                         <option value="">Select position</option>
                                         @foreach ($positions as $position)
-                                            <option value="{{ $position->id }}" data-salary="{{ $position->base_salary }}"
+                                            <option value="{{ $position->id }}"
+                                                data-salary-fulltime="{{ $position->base_salary_fulltime }}"
+                                                data-salary-internship="{{ $position->base_salary_internship }}"
                                                 {{ old('position_id', $employee->position_id) == $position->id ? 'selected' : '' }}>
                                                 {{ $position->name }}
                                             </option>
@@ -149,24 +162,52 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label class="form-label fw-bold">Employee Type <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-user-tag"></i></span>
+                                    <select name="employee_type" id="employee_type"
+                                        class="form-select border-start-0 @error('employee_type') is-invalid @enderror" required>
+                                        <option value="">Select type</option>
+                                        <option value="fulltime" {{ old('employee_type', $employee->employee_type) === 'fulltime' ? 'selected' : '' }}>Fulltime</option>
+                                        <option value="internship" {{ old('employee_type', $employee->employee_type) === 'internship' ? 'selected' : '' }}>Internship</option>
+                                    </select>
+                                </div>
+                                @error('employee_type')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Base Salary</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-money-bill-wave"></i></span>
                                     <input type="text" id="base_salary_display"
                                         class="form-control border-start-0"
-                                        placeholder="Select position to see salary" readonly>
+                                        placeholder="Select position & type to see salary" readonly>
                                 </div>
                             </div>
                             
                             <script>
-                                document.getElementById('position_id').addEventListener('change', function() {
-                                    const selectedOption = this.options[this.selectedIndex];
-                                    const salary = selectedOption.getAttribute('data-salary');
-                                    document.getElementById('base_salary_display').value = salary ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(salary) : '';
-                                });
+                                function updateSalaryDisplay() {
+                                    const positionSelect = document.getElementById('position_id');
+                                    const typeSelect = document.getElementById('employee_type');
+                                    const display = document.getElementById('base_salary_display');
+                                    const selectedOption = positionSelect.options[positionSelect.selectedIndex];
+                                    const type = typeSelect.value;
+                                    let salary = null;
+                                    if (type === 'fulltime') {
+                                        salary = selectedOption.getAttribute('data-salary-fulltime');
+                                    } else if (type === 'internship') {
+                                        salary = selectedOption.getAttribute('data-salary-internship');
+                                    }
+                                    display.value = salary ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(salary) : '';
+                                }
+                                document.getElementById('position_id').addEventListener('change', updateSalaryDisplay);
+                                document.getElementById('employee_type').addEventListener('change', updateSalaryDisplay);
                                 // Trigger on load
-                                document.getElementById('position_id').dispatchEvent(new Event('change'));
+                                updateSalaryDisplay();
                             </script>
 
                             <div class="col-md-6">
@@ -272,18 +313,15 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-toggle-on"></i></span>
-                                    <select name="status"
-                                        class="form-select border-start-0 @error('status') is-invalid @enderror" required>
+                                    <select name="employee_status"
+                                        class="form-select border-start-0 @error('employee_status') is-invalid @enderror" required>
                                         <option value="">Select status</option>
-                                        <option value="active"
-                                            {{ old('status', $employee->status) === 'active' ? 'selected' : '' }}>Active
-                                        </option>
-                                        <option value="inactive"
-                                            {{ old('status', $employee->status) === 'inactive' ? 'selected' : '' }}>
-                                            Inactive</option>
+                                        <option value="active" {{ old('employee_status', $employee->employee_status) === 'active' ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive" {{ old('employee_status', $employee->employee_status) === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="resigned" {{ old('employee_status', $employee->employee_status) === 'resigned' ? 'selected' : '' }}>Resigned</option>
                                     </select>
                                 </div>
-                                @error('status')
+                                @error('employee_status')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>

@@ -15,7 +15,7 @@ class PositionController extends Controller
     public function index()
     {
         Gate::authorize('viewAny', Position::class);
-        $positions = Position::select('id', 'name', 'description', 'base_salary', 'created_at')
+        $positions = Position::select('id', 'name', 'description', 'base_salary_fulltime', 'base_salary_internship', 'created_at')
             ->latest()
             ->get();
             
@@ -29,7 +29,7 @@ class PositionController extends Controller
     {
         Gate::authorize('viewAny', Position::class);
         $positions = Position::onlyTrashed()
-            ->select('id', 'name', 'description', 'base_salary', 'created_at')
+            ->select('id', 'name', 'description', 'base_salary_fulltime', 'base_salary_internship', 'created_at')
             ->latest()
             ->get();
             
@@ -54,7 +54,8 @@ class PositionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'base_salary' => 'required|numeric|min:0',
+            'base_salary_fulltime' => 'required|numeric|min:0',
+            'base_salary_internship' => 'required|numeric|min:0|lte:base_salary_fulltime',
         ]);
 
         Position::create($validated);
@@ -93,7 +94,8 @@ class PositionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'base_salary' => 'required|numeric|min:0',
+            'base_salary_fulltime' => 'required|numeric|min:0',
+            'base_salary_internship' => 'required|numeric|min:0|lte:base_salary_fulltime',
         ]);
 
         $position->update($validated);
@@ -164,7 +166,8 @@ class PositionController extends Controller
             fputcsv($file, ['ID', $position->id]);
             fputcsv($file, ['Position Name', $position->name]);
             fputcsv($file, ['Description', $position->description]);
-            fputcsv($file, ['Base Salary', $position->base_salary]);
+            fputcsv($file, ['Base Salary (Fulltime)', $position->base_salary_fulltime]);
+            fputcsv($file, ['Base Salary (Internship)', $position->base_salary_internship]);
             fputcsv($file, ['Created At', $position->created_at->format('Y-m-d H:i:s')]);
             fputcsv($file, ['Updated At', $position->updated_at->format('Y-m-d H:i:s')]);
             if ($position->deleted_at) {

@@ -8,6 +8,22 @@ use App\Notifications\DashboardNotification;
 
 class EmployeeObserver
 {
+    /**
+     * Auto-generate employee_code before creating (format: 001, 002, ...)
+     */
+    public function creating(Employee $employee): void
+    {
+        if (empty($employee->employee_code)) {
+            $latest = Employee::withTrashed()
+                ->whereNotNull('employee_code')
+                ->orderByDesc('employee_code')
+                ->value('employee_code');
+
+            $next = $latest ? ((int) $latest) + 1 : 1;
+            $employee->employee_code = str_pad($next, 3, '0', STR_PAD_LEFT);
+        }
+    }
+
     public function created(Employee $employee): void
     {
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
