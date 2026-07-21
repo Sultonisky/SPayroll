@@ -13,7 +13,6 @@ class Payroll extends Model
 
     protected $fillable = [
         'employee_id',
-        'attendance_id',
         'year',
         'month',
         'pay_date',
@@ -35,13 +34,5 @@ class Payroll extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    /**
-     * Get the attendance associated with the payroll.
-     */
-    public function attendance(): BelongsTo
-    {
-        return $this->belongsTo(Attendance::class);
     }
 }

@@ -60,14 +60,6 @@ class Employee extends Model
     }
 
     /**
-     * Get all attendances for the employee.
-     */
-    public function attendances(): HasMany
-    {
-        return $this->hasMany(Attendance::class);
-    }
-
-    /**
      * Get all payrolls for the employee.
      */
     public function payrolls(): HasMany
