@@ -67,9 +67,19 @@
                         <div class="col-sm-6 col-xl-4">
                             <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
                                 <div class="card-body p-3">
-                                    <div class="text-uppercase small fw-bold text-primary mb-2">Base Salary</div>
+                                    <div class="text-uppercase small fw-bold text-primary mb-2">Base Salary (Fulltime)</div>
                                     <div class="fs-5 fw-bold text-body">
-                                        {{ number_format($position->base_salary, 2, ',', '.') }}
+                                        {{ $position->base_salary_fulltime !== null ? 'Rp ' . number_format($position->base_salary_fulltime, 2, ',', '.') : '-' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
+                                <div class="card-body p-3">
+                                    <div class="text-uppercase small fw-bold text-primary mb-2">Base Salary (Internship)</div>
+                                    <div class="fs-5 fw-bold text-body">
+                                        {{ $position->base_salary_internship !== null ? 'Rp ' . number_format($position->base_salary_internship, 2, ',', '.') : '-' }}
                                     </div>
                                 </div>
                             </div>

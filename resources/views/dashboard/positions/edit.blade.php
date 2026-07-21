@@ -38,18 +38,34 @@
                                 @enderror
                             </div>
 
-                            {{-- Base Salary --}}
+                            {{-- Base Salary Fulltime --}}
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Base Salary <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Base Salary (Fulltime) <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-money-bill-wave"></i></span>
-                                    <input type="number" name="base_salary" step="0.01"
-                                        class="form-control border-start-0 @error('base_salary') is-invalid @enderror"
-                                        placeholder="Enter base salary"
-                                        value="{{ old('base_salary', $position->base_salary) }}" required>
+                                    <input type="number" name="base_salary_fulltime" step="0.01"
+                                        class="form-control border-start-0 @error('base_salary_fulltime') is-invalid @enderror"
+                                        placeholder="Enter base salary for fulltime"
+                                        value="{{ old('base_salary_fulltime', $position->base_salary_fulltime) }}" required>
                                 </div>
-                                @error('base_salary')
+                                @error('base_salary_fulltime')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Base Salary Internship --}}
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Base Salary (Internship) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-money-bill-wave"></i></span>
+                                    <input type="number" name="base_salary_internship" step="0.01"
+                                        class="form-control border-start-0 @error('base_salary_internship') is-invalid @enderror"
+                                        placeholder="Enter base salary for internship"
+                                        value="{{ old('base_salary_internship', $position->base_salary_internship) }}" required>
+                                </div>
+                                @error('base_salary_internship')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>

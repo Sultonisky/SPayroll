@@ -53,7 +53,8 @@
                             <tr>
                                 <th width="5%" class="text-center">No.</th>
                                 <th>Name</th>
-                                <th>Base Salary</th>
+                                <th>Base Salary (Fulltime)</th>
+                                <th>Base Salary (Internship)</th>
                                 <th width="50%" class="text-center">Description</th>
                                 <th width="15%" class="text-center">Action</th>
                             </tr>
@@ -64,7 +65,10 @@
                                     <td class="text-center fw-bold">{{ $loop->iteration }}</td>
                                     <td class="fw-bold text-body">{{ $position->name }}</td>
                                     <td class="text-body">
-                                        {{ number_format($position->base_salary, 2, ',', '.') }}
+                                        {{ $position->base_salary_fulltime !== null ? 'Rp ' . number_format($position->base_salary_fulltime, 2, ',', '.') : '-' }}
+                                    </td>
+                                    <td class="text-body">
+                                        {{ $position->base_salary_internship !== null ? 'Rp ' . number_format($position->base_salary_internship, 2, ',', '.') : '-' }}
                                     </td>
                                     <td class="text-body">{{ $position->description }}</td>
                                     <td class="text-center">
@@ -166,7 +170,7 @@
                     ],
                     "columnDefs": [{
                         "orderable": false,
-                        "targets": [3]
+                        "targets": [4]
                     }],
                     "language": {
                         "searchPlaceholder": "Search positions...",
