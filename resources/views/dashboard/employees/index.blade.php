@@ -54,6 +54,7 @@
                         <thead class="table-light text-dark small text-uppercase">
                             <tr>
                                 <th width="5%" class="text-center">No.</th>
+                                <th>Code</th>
                                 <th>NIK</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -67,15 +68,23 @@
                             @foreach ($employees as $employee)
                                 <tr>
                                     <td class="text-center fw-bold">{{ $loop->iteration }}</td>
+                                    <td class="fw-semibold text-body font-monospace">{{ $employee->employee_code ?? '-' }}</td>
                                     <td class="fw-semibold text-body">{{ $employee->nik }}</td>
                                     <td class="fw-bold text-body">{{ $employee->name }}</td>
                                     <td class="text-body">{{ $employee->email }}</td>
                                     <td class="text-body">{{ $employee->department?->name ?? '-' }}</td>
                                     <td class="text-body">{{ $employee->position?->name ?? '-' }}</td>
                                     <td>
-                                        <span
-                                            class="badge {{ $employee->status === 'active' ? 'bg-success' : 'bg-secondary' }} text-white rounded-pill px-3">
-                                            {{ ucfirst($employee->status) }}
+                                        @php
+                                            $statusColor = match($employee->employee_status) {
+                                                'active'   => 'bg-success',
+                                                'inactive' => 'bg-secondary',
+                                                'resigned' => 'bg-danger',
+                                                default    => 'bg-secondary',
+                                            };
+                                        @endphp
+                                        <span class="badge {{ $statusColor }} text-white rounded-pill px-3">
+                                            {{ ucfirst($employee->employee_status) }}
                                         </span>
                                     </td>
                                     <td class="text-center">
@@ -177,7 +186,7 @@
                     ],
                     "columnDefs": [{
                         "orderable": false,
-                        "targets": [7]
+                        "targets": [8]
                     }],
                     "language": {
                         "searchPlaceholder": "Search employees...",
