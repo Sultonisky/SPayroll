@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('attendance_id')->nullable()->constrained()->nullOnDelete(); // Relasi ke absensi bulan tersebut (opsional)
+            // $table->foreignId('attendance_id')->nullable()->constrained()->nullOnDelete(); // TEMPORARILY DISABLED - attendance feature not yet needed
             $table->year('year'); // Tahun penggajian
             $table->tinyInteger('month'); // Bulan penggajian (1-12)
             $table->date('pay_date'); // Tanggal pembayaran gaji
