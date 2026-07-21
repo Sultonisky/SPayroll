@@ -5,9 +5,9 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\PositionController;
 use App\Http\Controllers\Dashboard\EmployeeController;
-use App\Http\Controllers\Dashboard\AttendanceImportController;
-use App\Http\Controllers\Dashboard\AttendanceRecordController;
-use App\Http\Controllers\Dashboard\AttendanceAdjustmentController;
+// use App\Http\Controllers\Dashboard\AttendanceImportController;
+// use App\Http\Controllers\Dashboard\AttendanceRecordController;
+// use App\Http\Controllers\Dashboard\AttendanceAdjustmentController;
 use App\Http\Controllers\Dashboard\PayrollController;
 use Illuminate\Support\Facades\Route;
 
@@ -112,43 +112,46 @@ Route::middleware(['auth'])->group(function () {
         Route::get('employees/{id}/export', [EmployeeController::class, 'export'])->name('employees.export');
     });
 
-    // Attendance Import Routes
-    Route::middleware(['role:admin,HR,manager'])->group(function () {
-        Route::get('attendance-imports/template', [AttendanceImportController::class, 'downloadTemplate'])->name('attendance-imports.template');
-        Route::get('attendance-imports', [AttendanceImportController::class, 'index'])->name('attendance-imports.index');
-        Route::get('attendance-imports/create', [AttendanceImportController::class, 'create'])->name('attendance-imports.create');
-        Route::post('attendance-imports/preview', [AttendanceImportController::class, 'preview'])->name('attendance-imports.preview');
-        Route::post('attendance-imports', [AttendanceImportController::class, 'store'])->name('attendance-imports.store');
-        Route::get('attendance-imports/{attendanceImport}', [AttendanceImportController::class, 'show'])->name('attendance-imports.show');
-    });
+    // =============================================
+    // ATTENDANCE ROUTES - Temporarily Disabled
+    // =============================================
+    // // Attendance Import Routes
+    // Route::middleware(['role:admin,HR,manager'])->group(function () {
+    //     Route::get('attendance-imports/template', [AttendanceImportController::class, 'downloadTemplate'])->name('attendance-imports.template');
+    //     Route::get('attendance-imports', [AttendanceImportController::class, 'index'])->name('attendance-imports.index');
+    //     Route::get('attendance-imports/create', [AttendanceImportController::class, 'create'])->name('attendance-imports.create');
+    //     Route::post('attendance-imports/preview', [AttendanceImportController::class, 'preview'])->name('attendance-imports.preview');
+    //     Route::post('attendance-imports', [AttendanceImportController::class, 'store'])->name('attendance-imports.store');
+    //     Route::get('attendance-imports/{attendanceImport}', [AttendanceImportController::class, 'show'])->name('attendance-imports.show');
+    // });
 
-    // Attendance Record Routes
-    Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
-        Route::get('attendance-records', [AttendanceRecordController::class, 'index'])->name('attendance-records.index');
-        Route::get('attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'show'])->name('attendance-records.show');
-    });
+    // // Attendance Record Routes
+    // Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
+    //     Route::get('attendance-records', [AttendanceRecordController::class, 'index'])->name('attendance-records.index');
+    //     Route::get('attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'show'])->name('attendance-records.show');
+    // });
 
-    Route::middleware(['role:admin,HR'])->group(function () {
-        Route::get('attendance-records/{attendanceRecord}/edit', [AttendanceRecordController::class, 'edit'])->name('attendance-records.edit');
-        Route::put('attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'update'])->name('attendance-records.update');
-        Route::patch('attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'update']);
-    });
+    // Route::middleware(['role:admin,HR'])->group(function () {
+    //     Route::get('attendance-records/{attendanceRecord}/edit', [AttendanceRecordController::class, 'edit'])->name('attendance-records.edit');
+    //     Route::put('attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'update'])->name('attendance-records.update');
+    //     Route::patch('attendance-records/{attendanceRecord}', [AttendanceRecordController::class, 'update']);
+    // });
 
-    // Attendance Adjustment Routes
-    Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
-        Route::get('attendance-adjustments', [AttendanceAdjustmentController::class, 'index'])->name('attendance-adjustments.index');
-        Route::get('attendance-adjustments/{attendanceAdjustment}', [AttendanceAdjustmentController::class, 'show'])->name('attendance-adjustments.show');
-    });
+    // // Attendance Adjustment Routes
+    // Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
+    //     Route::get('attendance-adjustments', [AttendanceAdjustmentController::class, 'index'])->name('attendance-adjustments.index');
+    //     Route::get('attendance-adjustments/{attendanceAdjustment}', [AttendanceAdjustmentController::class, 'show'])->name('attendance-adjustments.show');
+    // });
 
-    Route::middleware(['role:admin,HR,manager'])->group(function () {
-        Route::get('attendance-records/{attendanceRecord}/adjustments/create', [AttendanceAdjustmentController::class, 'create'])->name('attendance-adjustments.create');
-        Route::post('attendance-records/{attendanceRecord}/adjustments', [AttendanceAdjustmentController::class, 'store'])->name('attendance-adjustments.store');
-    });
+    // Route::middleware(['role:admin,HR,manager'])->group(function () {
+    //     Route::get('attendance-records/{attendanceRecord}/adjustments/create', [AttendanceAdjustmentController::class, 'create'])->name('attendance-adjustments.create');
+    //     Route::post('attendance-records/{attendanceRecord}/adjustments', [AttendanceAdjustmentController::class, 'store'])->name('attendance-adjustments.store');
+    // });
 
-    Route::middleware(['role:admin,HR'])->group(function () {
-        Route::post('attendance-adjustments/{attendanceAdjustment}/approve', [AttendanceAdjustmentController::class, 'approve'])->name('attendance-adjustments.approve');
-        Route::post('attendance-adjustments/{attendanceAdjustment}/reject', [AttendanceAdjustmentController::class, 'reject'])->name('attendance-adjustments.reject');
-    });
+    // Route::middleware(['role:admin,HR'])->group(function () {
+    //     Route::post('attendance-adjustments/{attendanceAdjustment}/approve', [AttendanceAdjustmentController::class, 'approve'])->name('attendance-adjustments.approve');
+    //     Route::post('attendance-adjustments/{attendanceAdjustment}/reject', [AttendanceAdjustmentController::class, 'reject'])->name('attendance-adjustments.reject');
+    // });
 
     // Payroll Routes - Admin & HR & Manager (read for staff)
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
