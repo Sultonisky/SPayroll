@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bonus;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
@@ -15,18 +16,12 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     *
-     * Data is shaped for a remote-first software house / digital agency.
-     */
     public function run(): void
     {
         // ----------------------------------------------------------------
-        // 1. Admin account
+        // 1. Admin
         // ----------------------------------------------------------------
         $this->command->info('Seeding admin user...');
-
         User::firstOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@spayroll.com')],
             [
@@ -38,43 +33,46 @@ class DatabaseSeeder extends Seeder
         );
 
         // ----------------------------------------------------------------
-        // 2. Supporting users (HR & managers first, then regular staff)
+        // 2. Supporting users
         // ----------------------------------------------------------------
         $this->command->info('Seeding supporting users...');
-
         User::factory()->hr()->count(2)->create();
         User::factory()->manager()->count(3)->create();
-        User::factory()->count(15)->create(); // mix of staff
+        User::factory()->count(15)->create();
 
         // ----------------------------------------------------------------
-        // 3. Departments — tech company structure (max 10 defined)
+        // 3. Departments
         // ----------------------------------------------------------------
         $this->command->info('Seeding departments...');
-
         Department::factory()->count(8)->create();
 
         // ----------------------------------------------------------------
-        // 4. Positions — role-based, with split fulltime/internship salary
+        // 4. Positions
         // ----------------------------------------------------------------
         $this->command->info('Seeding positions...');
-
         Position::factory()->count(12)->create();
 
         // ----------------------------------------------------------------
-        // 5. Employees — mostly active, mix of fulltime & internship
+        // 5. Employees
         // ----------------------------------------------------------------
         $this->command->info('Seeding employees...');
-
         Employee::factory()->count(30)->create();
 
         // ----------------------------------------------------------------
-        // 6. Payrolls — a few months of payroll history per employee
+        // 6. Bonuses — seed before payrolls so PayrollFactory can sum them
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding bonuses...');
+        Bonus::factory()->approved()->count(40)->create();
+        Bonus::factory()->pending()->count(10)->create();
+
+        // ----------------------------------------------------------------
+        // 7. Payrolls
         // ----------------------------------------------------------------
         $this->command->info('Seeding payrolls...');
-
         Payroll::factory()->count(60)->create();
 
         // ----------------------------------------------------------------
+        $this->command->info('');
         $this->command->info('All seed data created successfully.');
         $this->command->line('  Admin email : ' . env('ADMIN_EMAIL', 'admin@spayroll.com'));
         $this->command->line('  Admin pass  : ' . env('ADMIN_PASSWORD', 'password123'));
