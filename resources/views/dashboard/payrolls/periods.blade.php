@@ -7,7 +7,7 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header py-3 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
-                        <i class="fas fa-calendar-check me-2"></i>Payroll Periods
+                        <i class="fas fa-calendar-check me-2"></i>All Payroll Periods
                     </h5>
                     @if (auth()->user()->isAdmin() || auth()->user()->role === 'HR')
                         <a href="{{ route('payrolls.generate') }}"
@@ -109,14 +109,16 @@
                                     <tr>
                                         <td class="text-center fw-bold">{{ $loop->iteration }}</td>
                                         <td>
-                                            <div class="fw-bold text-body fs-6">
-                                                {{ \Carbon\Carbon::create($period->year, $period->month)->translatedFormat('F Y') }}
-                                            </div>
-                                            @if ($period->pay_date)
-                                                <small class="text-muted">
-                                                    Pay date: {{ \Carbon\Carbon::parse($period->pay_date)->translatedFormat('d M Y') }}
-                                                </small>
-                                            @endif
+                                            <span data-order="{{ $period->year * 100 + $period->month }}">
+                                                <div class="fw-bold text-body fs-6">
+                                                    {{ \Carbon\Carbon::create($period->year, $period->month)->translatedFormat('F Y') }}
+                                                </div>
+                                                @if ($period->pay_date)
+                                                    <small class="text-muted">
+                                                        Pay date: {{ \Carbon\Carbon::parse($period->pay_date)->translatedFormat('d M Y') }}
+                                                    </small>
+                                                @endif
+                                            </span>
                                         </td>
                                         <td class="text-center">
                                             <span class="badge bg-body text-body border rounded-pill px-3 fs-6">
@@ -186,16 +188,22 @@
     <script>
         $(document).ready(function () {
             if (!$.fn.DataTable.isDataTable('#periodsTable')) {
-                $('#periodsTable').DataTable({
+                var table = $('#periodsTable').DataTable({
                     "dom": '<"dt-controls"Bf>r<"table-responsive"t><"dt-footer"ip>',
                     "order": [[1, "desc"]],
-                    "columnDefs": [{ "orderable": false, "targets": [6, 7] }],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [6, 7] },
+                        { "type": "num", "targets": [1] }
+                    ],
                     "language": {
                         "searchPlaceholder": "Search periods...",
                         "paginate": {
                             "previous": "<i class='fas fa-chevron-left'></i>",
                             "next": "<i class='fas fa-chevron-right'></i>"
                         }
+                    },
+                    "rowCallback": function(row, data, displayIndex) {
+                        $('td:first', row).html('<strong>' + (displayIndex + 1) + '</strong>');
                     }
                 });
             }

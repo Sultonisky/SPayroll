@@ -20,7 +20,7 @@
                     <div class="alert alert-secondary mb-4">
                         <i class="fas fa-lock me-2"></i>
                         Employee and period cannot be changed after creation.
-                        <strong>{{ $payroll->employee?->name }}</strong> —
+                        <strong>{{ $payroll->employee?->name }}</strong> -
                         {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->translatedFormat('F Y') }}
                     </div>
 
@@ -61,8 +61,8 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-coins"></i></span>
                                     <input type="number" name="total_salary" id="total_salary" step="1000"
-                                        class="form-control border-start-0 bg-light @error('total_salary') is-invalid @enderror"
-                                        value="{{ old('total_salary', $payroll->total_salary) }}" min="0" readonly>
+                                        class="form-control border-start-0 @error('total_salary') is-invalid @enderror"
+                                        value="{{ old('total_salary', $payroll->total_salary) }}" min="0" readonly disabled>
                                 </div>
                                 <small class="text-muted">Auto-calculated: Base Salary + Bonus</small>
                             </div>

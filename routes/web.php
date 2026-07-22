@@ -154,6 +154,9 @@ Route::middleware(['auth'])->group(function () {
     // Payroll Routes
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('payrolls/trash', [PayrollController::class, 'trash'])->name('payrolls.trash');
+        Route::get('payrolls/drafts', [PayrollController::class, 'drafts'])->name('payrolls.drafts');
+        Route::get('payrolls/approved', [PayrollController::class, 'approved'])->name('payrolls.approved');
+        Route::get('payrolls/approved/export', [PayrollController::class, 'exportApproved'])->name('payrolls.approved.export');
         Route::get('payrolls/periods', [PayrollController::class, 'periods'])->name('payrolls.periods');
     });
 
@@ -161,6 +164,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('payrolls/generate', [PayrollController::class, 'generateForm'])->name('payrolls.generate');
         Route::post('payrolls/generate', [PayrollController::class, 'generateBulk'])->name('payrolls.generate.bulk');
         Route::get('payrolls/generate/preview', [PayrollController::class, 'generatePreview'])->name('payrolls.generate.preview');
+        Route::post('payrolls/drafts/approve-all', [PayrollController::class, 'approveAll'])->name('payrolls.drafts.approve-all');
+        Route::post('payrolls/approved/mark-paid-all', [PayrollController::class, 'markPaidAll'])->name('payrolls.approved.mark-paid-all');
         Route::post('payrolls/{id}/approve', [PayrollController::class, 'approve'])->name('payrolls.approve');
         Route::post('payrolls/{id}/mark-paid', [PayrollController::class, 'markPaid'])->name('payrolls.mark-paid');
         Route::delete('payrolls/{payroll}', [PayrollController::class, 'destroy'])->name('payrolls.destroy');

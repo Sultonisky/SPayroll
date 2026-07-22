@@ -23,6 +23,7 @@ class PayrollController extends Controller
 
         $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date')
             ->with('employee:id,name,employee_code')
+            ->whereIn('status', ['paid'])
             ->orderByDesc('year')
             ->orderByDesc('month')
             ->orderBy('employee_id');
@@ -38,7 +39,7 @@ class PayrollController extends Controller
         if ($filterYear)  $query->where('year', $filterYear);
         if ($filterMonth) $query->where('month', $filterMonth);
 
-        if ($filterStatus && in_array($filterStatus, ['draft', 'approved', 'paid'])) {
+        if ($filterStatus && in_array($filterStatus, ['paid'])) {
             $query->where('status', $filterStatus);
         }
         if ($filterEmployeeId) {
@@ -51,7 +52,7 @@ class PayrollController extends Controller
             ? \Carbon\Carbon::create($filterYear, $filterMonth)->translatedFormat('F Y')
             : null;
 
-        $allEmployees = Employee::select('id', 'name', 'nik')->orderBy('name')->get();
+        $allEmployees = Employee::select('id', 'name', 'nik', 'employee_code')->orderBy('employee_code')->get();
 
         return view('dashboard.payrolls.index', compact(
             'payrolls', 'periodLabel',
@@ -61,9 +62,62 @@ class PayrollController extends Controller
     }
 
     /**
-     * Payroll Periods — grouped summary view (year + month).
-     * Each row = one period with aggregate stats.
+     * Payroll Approved — shows all approved payroll records ready to be paid.
      */
+    public function approved(Request $request)
+    {
+        Gate::authorize('viewAny', Payroll::class);
+
+        $filterYear       = $request->input('year');
+        $filterMonth      = $request->input('month');
+        $filterEmployeeId = $request->input('employee_id');
+
+        $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date')
+            ->with('employee:id,name,employee_code')
+            ->where('status', 'approved')
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderBy('employee_id');
+
+        if ($filterYear)       $query->where('year', $filterYear);
+        if ($filterMonth)      $query->where('month', $filterMonth);
+        if ($filterEmployeeId) $query->where('employee_id', $filterEmployeeId);
+
+        $payrolls     = $query->get();
+        $allEmployees = Employee::select('id', 'name', 'nik', 'employee_code')->orderBy('name')->get();
+
+        return view('dashboard.payrolls.approved', compact(
+            'payrolls', 'allEmployees',
+            'filterYear', 'filterMonth', 'filterEmployeeId'
+        ));
+    }
+    public function drafts(Request $request)
+    {
+        Gate::authorize('viewAny', Payroll::class);
+
+        $filterYear       = $request->input('year');
+        $filterMonth      = $request->input('month');
+        $filterEmployeeId = $request->input('employee_id');
+
+        $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date')
+            ->with('employee:id,name,employee_code')
+            ->where('status', 'draft')
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderBy('employee_id');
+
+        if ($filterYear)       $query->where('year', $filterYear);
+        if ($filterMonth)      $query->where('month', $filterMonth);
+        if ($filterEmployeeId) $query->where('employee_id', $filterEmployeeId);
+
+        $payrolls     = $query->get();
+        $allEmployees = Employee::select('id', 'name', 'nik', 'employee_code')->orderBy('employee_code')->get();
+
+        return view('dashboard.payrolls.drafts', compact(
+            'payrolls', 'allEmployees',
+            'filterYear', 'filterMonth', 'filterEmployeeId'
+        ));
+    }
     public function periods(Request $request)
     {
         Gate::authorize('viewAny', Payroll::class);
@@ -238,7 +292,10 @@ class PayrollController extends Controller
             $message .= " Skipped (already exists): {$result['skipped']}.";
         }
 
-        return redirect()->route('payrolls.periods')->with('success', $message);
+        return redirect()->route('payrolls.drafts', [
+            'year'  => $validated['year'],
+            'month' => $validated['month'],
+        ])->with('success', $message);
     }
 
     /**
@@ -258,6 +315,7 @@ class PayrollController extends Controller
 
         $employees = Employee::with('position')
             ->where('employee_status', 'active')
+            ->orderBy('name')
             ->get();
 
         $preview = $employees->map(function (Employee $employee) use ($year, $month) {
@@ -276,9 +334,25 @@ class PayrollController extends Controller
         return response()->json($preview);
     }
 
-    // ----------------------------------------------------------------
-    // Approve / Mark Paid
-    // ----------------------------------------------------------------
+    /**
+     * Bulk approve all selected draft payrolls.
+     */
+    public function approveAll(Request $request)
+    {
+        Gate::authorize('create', Payroll::class);
+
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:payrolls,id',
+        ]);
+
+        Payroll::whereIn('id', $request->ids)
+            ->where('status', 'draft')
+            ->update(['status' => 'approved']);
+
+        return redirect()->route('payrolls.drafts')
+            ->with('success', 'All selected draft payrolls have been approved.');
+    }
 
     public function approve(string $id)
     {
@@ -298,6 +372,97 @@ class PayrollController extends Controller
         $payroll->update(['status' => 'paid']);
 
         return redirect()->back()->with('success', 'Payroll marked as paid.');
+    }
+
+    /**
+     * Export approved payrolls as CSV for bank transfer.
+     * Supports same filters as approved() — year, month, employee_id.
+     */
+    public function exportApproved(Request $request)
+    {
+        Gate::authorize('viewAny', Payroll::class);
+
+        $query = Payroll::where('status', 'approved')
+            ->with(['employee:id,name,employee_code,bank_name,bank_account_number,nik'])
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderBy('employee_id');
+
+        if ($request->input('year'))        $query->where('year', $request->input('year'));
+        if ($request->input('month'))       $query->where('month', $request->input('month'));
+        if ($request->input('employee_id')) $query->where('employee_id', $request->input('employee_id'));
+
+        $payrolls = $query->get();
+
+        $periodLabel = ($request->input('year') && $request->input('month'))
+            ? '_' . $request->input('year') . '_' . str_pad($request->input('month'), 2, '0', STR_PAD_LEFT)
+            : '';
+
+        $fileName = 'payroll_transfer' . $periodLabel . '_' . date('Ymd') . '.csv';
+        $headers  = [
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => "attachment; filename={$fileName}",
+            'Pragma'              => 'no-cache',
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires'             => '0',
+        ];
+
+        $callback = function () use ($payrolls) {
+            $file = fopen('php://output', 'w');
+
+            // Header row
+            fputcsv($file, [
+                'No',
+                'Employee Code',
+                'Employee Name',
+                'NIK',
+                'Bank',
+                'Account Number',
+                'Base Salary',
+                'Bonus',
+                'Total Salary',
+                'Period',
+                'Pay Date',
+                'Notes',
+            ]);
+
+            foreach ($payrolls as $i => $payroll) {
+                fputcsv($file, [
+                    $i + 1,
+                    $payroll->employee?->employee_code ?? '-',
+                    $payroll->employee?->name ?? '-',
+                    $payroll->employee?->nik ?? '-',
+                    $payroll->employee?->bank_name ?? '-',
+                    $payroll->employee?->bank_account_number ?? '-',
+                    $payroll->base_salary,
+                    $payroll->bonus,
+                    $payroll->total_salary,
+                    $payroll->monthName(),
+                    $payroll->pay_date?->format('Y-m-d') ?? '-',
+                    $payroll->notes ?? '',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+    public function markPaidAll(Request $request)
+    {
+        Gate::authorize('create', Payroll::class);
+
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:payrolls,id',
+        ]);
+
+        Payroll::whereIn('id', $request->ids)
+            ->where('status', 'approved')
+            ->update(['status' => 'paid']);
+
+        return redirect()->route('payrolls.index')
+            ->with('success', 'All selected payrolls have been marked as paid.');
     }
 
     // ----------------------------------------------------------------

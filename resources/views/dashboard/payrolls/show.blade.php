@@ -7,7 +7,7 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
-                        <i class="fas fa-file-invoice-dollar me-2"></i>Payroll Detail
+                        <i class="fas fa-file-invoice-dollar me-2"></i>Payroll Details
                     </h5>
                     <div class="d-flex flex-wrap gap-2">
                         @if (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager']))
@@ -31,9 +31,9 @@
                     {{-- Status + Actions --}}
                     @php
                         $bannerClass = match($payroll->status) {
-                            'paid'     => 'alert-success',
+                            'paid'     => 'alert-primary',
                             'approved' => 'alert-info',
-                            default    => 'alert-secondary',
+                            default    => 'alert-warning',
                         };
                     @endphp
                     <div class="alert {{ $bannerClass }} d-flex align-items-center justify-content-between mb-4">
@@ -42,7 +42,7 @@
                             @if ($payroll->isDraft() && (auth()->user()->isAdmin() || auth()->user()->role === 'HR'))
                                 <form action="{{ route('payrolls.approve', $payroll->id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-success btn-sm rounded-pill px-3"
+                                    <button type="submit" class="btn bg-primary btn-sm rounded-pill px-3"
                                         onclick="return confirm('Approve this payroll?')">
                                         <i class="fas fa-check me-2"></i>Approve
                                     </button>

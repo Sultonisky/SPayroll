@@ -11,9 +11,9 @@
                         @if (isset($isTrash))
                             Payroll Deleted
                         @elseif ($periodLabel ?? null)
-                            Payroll Records — {{ $periodLabel }}
+                            Payroll Records (Paid) - {{ $periodLabel }}
                         @else
-                            Payroll Records
+                            Payroll Records (Paid)
                         @endif
                     </h5>
                     <div class="d-flex flex-wrap gap-2">
@@ -21,6 +21,7 @@
                             <a href="{{ route('payrolls.index') }}"
                                 class="btn btn-secondary btn-sm rounded-pill px-3 px-md-4 border shadow-sm">
                                 <i class="fas fa-arrow-left me-2"></i>Back
+                            </a>
                         @elseif ($periodLabel ?? null)
                             <a href="{{ route('payrolls.periods') }}"
                                 class="btn btn-secondary btn-sm rounded-pill px-3 px-md-4 border shadow-sm">
@@ -55,7 +56,7 @@
                     <div class="card-body pb-0">
                         <form method="GET" action="{{ route('payrolls.index') }}" id="filter-form">
                             <div class="row g-3 mb-3">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="form-label small fw-bold text-muted">Year</label>
                                     <select name="year" class="form-select form-select-sm rounded-pill shadow-sm">
                                         <option value="">All Years</option>
@@ -64,7 +65,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="form-label small fw-bold text-muted">Month</label>
                                     <select name="month" class="form-select form-select-sm rounded-pill shadow-sm">
                                         <option value="">All Months</option>
@@ -75,24 +76,15 @@
                                         @endfor
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label class="form-label small fw-bold text-muted">Employee</label>
                                     <select name="employee_id" class="form-select form-select-sm rounded-pill shadow-sm">
                                         <option value="">All Employees</option>
                                         @foreach ($allEmployees as $emp)
                                             <option value="{{ $emp->id }}" {{ ($filterEmployeeId ?? '') == $emp->id ? 'selected' : '' }}>
-                                                {{ $emp->name }} ({{ $emp->nik }})
+                                                {{ $emp->name }} ({{ $emp->employee_code }})
                                             </option>
                                         @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted">Status</label>
-                                    <select name="status" class="form-select form-select-sm rounded-pill shadow-sm">
-                                        <option value="">All Status</option>
-                                        <option value="draft"    {{ ($filterStatus ?? '') === 'draft'    ? 'selected' : '' }}>Draft</option>
-                                        <option value="approved" {{ ($filterStatus ?? '') === 'approved' ? 'selected' : '' }}>Approved</option>
-                                        <option value="paid"     {{ ($filterStatus ?? '') === 'paid'     ? 'selected' : '' }}>Paid</option>
                                     </select>
                                 </div>
                                 <div class="d-flex align-items-end justify-content-end gap-2">
@@ -134,7 +126,9 @@
                                         <small class="text-muted font-monospace">{{ $payroll->employee?->employee_code ?? '' }}</small>
                                     </td>
                                     <td class="text-body">
-                                        {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->translatedFormat('F Y') }}
+                                        <span data-order="{{ $payroll->year * 100 + $payroll->month }}">
+                                            {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->translatedFormat('F Y') }}
+                                        </span>
                                     </td>
                                     <td class="text-body">
                                         {{ $payroll->pay_date?->translatedFormat('d M Y') ?? '-' }}
@@ -261,16 +255,22 @@
     <script>
         $(document).ready(function () {
             if (!$.fn.DataTable.isDataTable('#payrollsTable')) {
-                $('#payrollsTable').DataTable({
+                var table = $('#payrollsTable').DataTable({
                     "dom": '<"dt-controls"Bf>r<"table-responsive"t><"dt-footer"ip>',
                     "order": [[2, "desc"]],
-                    "columnDefs": [{ "orderable": false, "targets": [8] }],
+                    "columnDefs": [
+                        { "orderable": false, "targets": [8] },
+                        { "type": "num", "targets": [2] }
+                    ],
                     "language": {
                         "searchPlaceholder": "Search payrolls...",
                         "paginate": {
                             "previous": "<i class='fas fa-chevron-left'></i>",
                             "next": "<i class='fas fa-chevron-right'></i>"
                         }
+                    },
+                    "rowCallback": function(row, data, displayIndex) {
+                        $('td:first', row).html('<strong>' + (displayIndex + 1) + '</strong>');
                     }
                 });
             }
