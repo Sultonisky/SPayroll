@@ -75,19 +75,19 @@
                                     <td class="text-center">
                                         @if ($user->role == 'admin')
                                             <span class="badge bg-danger-subtle text-black rounded-pill px-3">
-                                                <i class="fas fa-shield-alt me-1"></i> Admin
+                                                 Admin
                                             </span>
                                         @elseif($user->role == 'HR')
                                             <span class="badge bg-info text-white rounded-pill px-3">
-                                                <i class="fas fa-user-tie me-1"></i> HR
+                                                 HR
                                             </span>
                                         @elseif($user->role == 'manager')
                                             <span class="badge bg-success text-white rounded-pill px-3">
-                                                <i class="fas fa-chart-line me-1"></i> Manager
+                                                Manager
                                             </span>
                                         @elseif($user->role == 'staff')
-                                            <span class="badge bg-warning text-white rounded-pill px-3">
-                                                <i class="fas fa-user me-1"></i> Staff
+                                            <span class="badge bg-warning text-black rounded-pill px-3">
+                                               Staff
                                             </span>
                                         @endif
                                     </td>
