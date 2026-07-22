@@ -11,13 +11,58 @@
                     </h5>
                     @if (auth()->user()->isAdmin() || auth()->user()->role === 'HR')
                         <a href="{{ route('payrolls.generate') }}"
-                            class="btn btn-success btn-sm rounded-pill px-3 px-md-4 shadow-sm fw-bold">
+                            class="btn bg-primary text-black btn-sm rounded-pill px-3 px-md-4 shadow-sm fw-bold">
                             <i class="fas fa-play-circle me-2"></i>Run Payroll
                         </a>
                     @endif
                 </div>
 
                 <div class="card-body">
+                    <!-- Filter Form -->
+                    <form method="GET" action="{{ route('payrolls.periods') }}" id="filter-form">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Year</label>
+                                <select name="year" class="form-select form-select-sm rounded-pill shadow-sm">
+                                    <option value="">All Years</option>
+                                    @foreach ($availableYears as $y)
+                                        <option value="{{ $y }}" {{ ($filterYear ?? '') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Month</label>
+                                <select name="month" class="form-select form-select-sm rounded-pill shadow-sm">
+                                    <option value="">All Months</option>
+                                    @for ($m = 1; $m <= 12; $m++)
+                                        <option value="{{ $m }}" {{ ($filterMonth ?? '') == $m ? 'selected' : '' }}>
+                                            {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                                        </option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Status</label>
+                                <select name="period_status" class="form-select form-select-sm rounded-pill shadow-sm">
+                                    <option value="">All Status</option>
+                                    <option value="paid"     {{ ($filterStatus ?? '') === 'paid'     ? 'selected' : '' }}>Fully Paid</option>
+                                    <option value="approved" {{ ($filterStatus ?? '') === 'approved' ? 'selected' : '' }}>Approved (not fully paid)</option>
+                                    <option value="draft"    {{ ($filterStatus ?? '') === 'draft'    ? 'selected' : '' }}>Has Draft</option>
+                                </select>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-end gap-2">
+                                <a href="{{ route('payrolls.periods') }}"
+                                    class="btn btn-outline-secondary btn-sm rounded-pill px-4 shadow-sm">
+                                    <i class="fas fa-undo me-2"></i>Reset
+                                </a>
+                                <button type="submit"
+                                    class="btn btn-info text-white btn-sm rounded-pill px-4 fw-bold shadow-sm">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                     @if ($periods->isEmpty())
                         <div class="text-center py-5 text-muted">
                             <i class="fas fa-calendar-times fa-3x mb-3 opacity-50"></i>
