@@ -10,18 +10,39 @@ use Illuminate\Support\Facades\Gate;
 
 class BonusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Bonus::class);
 
-        $bonuses = Bonus::select('id', 'employee_id', 'year', 'month', 'type', 'amount', 'status', 'created_at')
-            ->with('employee:id,name,employee_code')
-            ->orderByDesc('year')
+        $year       = $request->input('year', date('Y'));
+        $month      = $request->input('month', date('n'));
+        $employeeId = $request->input('employee_id');
+        $status     = $request->input('status');
+
+        $query = Bonus::select('id', 'employee_id', 'year', 'month', 'type', 'amount', 'status', 'created_at')
+            ->with('employee:id,name,employee_code');
+
+        if ($year) {
+            $query->where('year', $year);
+        }
+        if ($month) {
+            $query->where('month', $month);
+        }
+        if ($employeeId) {
+            $query->where('employee_id', $employeeId);
+        }
+        if ($status && in_array($status, ['pending', 'approved', 'rejected'])) {
+            $query->where('status', $status);
+        }
+
+        $bonuses = $query->orderByDesc('year')
             ->orderByDesc('month')
             ->orderByDesc('created_at')
             ->get();
 
-        return view('dashboard.bonuses.index', compact('bonuses'));
+        $allEmployees = Employee::select('id', 'name', 'nik')->orderBy('name')->get();
+
+        return view('dashboard.bonuses.index', compact('bonuses', 'year', 'month', 'status', 'employeeId', 'allEmployees'));
     }
 
     public function trash()

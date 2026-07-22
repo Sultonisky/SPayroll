@@ -50,6 +50,64 @@
                             Items in the trash for more than <strong>90 days</strong> will be permanently deleted.
                         </div>
                     </div>
+                @elseif (!($periodLabel ?? null))
+                    {{-- Filter form only on the full records view (not drill-down, not trash) --}}
+                    <div class="card-body pb-0">
+                        <form method="GET" action="{{ route('payrolls.index') }}" id="filter-form">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Year</label>
+                                    <select name="year" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Years</option>
+                                        @foreach (range(date('Y'), date('Y') - 2) as $y)
+                                            <option value="{{ $y }}" {{ ($filterYear ?? '') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Month</label>
+                                    <select name="month" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Months</option>
+                                        @for ($m = 1; $m <= 12; $m++)
+                                            <option value="{{ $m }}" {{ ($filterMonth ?? '') == $m ? 'selected' : '' }}>
+                                                {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Employee</label>
+                                    <select name="employee_id" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Employees</option>
+                                        @foreach ($allEmployees as $emp)
+                                            <option value="{{ $emp->id }}" {{ ($filterEmployeeId ?? '') == $emp->id ? 'selected' : '' }}>
+                                                {{ $emp->name }} ({{ $emp->nik }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Status</label>
+                                    <select name="status" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Status</option>
+                                        <option value="draft"    {{ ($filterStatus ?? '') === 'draft'    ? 'selected' : '' }}>Draft</option>
+                                        <option value="approved" {{ ($filterStatus ?? '') === 'approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="paid"     {{ ($filterStatus ?? '') === 'paid'     ? 'selected' : '' }}>Paid</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex align-items-end justify-content-end gap-2">
+                                    <a href="{{ route('payrolls.index') }}"
+                                        class="btn btn-outline-secondary btn-sm rounded-pill px-4 shadow-sm">
+                                        <i class="fas fa-undo me-2"></i>Reset
+                                    </a>
+                                    <button type="submit"
+                                        class="btn btn-info text-white btn-sm rounded-pill px-4 fw-bold shadow-sm">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 @endif
 
                 <div class="card-body">
