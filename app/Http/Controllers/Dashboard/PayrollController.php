@@ -27,12 +27,23 @@ class PayrollController extends Controller
             ->orderByDesc('month')
             ->orderBy('employee_id');
 
-        // Optional period filter — used when drilling down from Periods view
+        // Period drill-down filter (from Periods view)
         $filterYear  = $request->integer('year') ?: null;
         $filterMonth = $request->integer('month') ?: null;
 
+        // Additional filters
+        $filterStatus     = $request->input('status');
+        $filterEmployeeId = $request->input('employee_id');
+
         if ($filterYear)  $query->where('year', $filterYear);
         if ($filterMonth) $query->where('month', $filterMonth);
+
+        if ($filterStatus && in_array($filterStatus, ['draft', 'approved', 'paid'])) {
+            $query->where('status', $filterStatus);
+        }
+        if ($filterEmployeeId) {
+            $query->where('employee_id', $filterEmployeeId);
+        }
 
         $payrolls = $query->get();
 
@@ -40,18 +51,28 @@ class PayrollController extends Controller
             ? \Carbon\Carbon::create($filterYear, $filterMonth)->translatedFormat('F Y')
             : null;
 
-        return view('dashboard.payrolls.index', compact('payrolls', 'periodLabel'));
+        $allEmployees = Employee::select('id', 'name', 'nik')->orderBy('name')->get();
+
+        return view('dashboard.payrolls.index', compact(
+            'payrolls', 'periodLabel',
+            'filterYear', 'filterMonth', 'filterStatus', 'filterEmployeeId',
+            'allEmployees'
+        ));
     }
 
     /**
      * Payroll Periods — grouped summary view (year + month).
      * Each row = one period with aggregate stats.
      */
-    public function periods()
+    public function periods(Request $request)
     {
         Gate::authorize('viewAny', Payroll::class);
 
-        $periods = Payroll::selectRaw('
+        $filterYear   = $request->input('year');
+        $filterMonth  = $request->input('month');
+        $filterStatus = $request->input('period_status');
+
+        $query = Payroll::selectRaw('
                 year,
                 month,
                 COUNT(*) as total_employees,
@@ -65,10 +86,25 @@ class PayrollController extends Controller
             ')
             ->groupBy('year', 'month')
             ->orderByDesc('year')
-            ->orderByDesc('month')
-            ->get();
+            ->orderByDesc('month');
 
-        return view('dashboard.payrolls.periods', compact('periods'));
+        if ($filterYear)  $query->where('year', $filterYear);
+        if ($filterMonth) $query->where('month', $filterMonth);
+
+        $periods = $query->get();
+
+        // Filter period status in PHP (after aggregation)
+        if ($filterStatus === 'paid') {
+            $periods = $periods->filter(fn($p) => $p->paid_count === $p->total_employees);
+        } elseif ($filterStatus === 'approved') {
+            $periods = $periods->filter(fn($p) => $p->draft_count === 0 && $p->paid_count < $p->total_employees);
+        } elseif ($filterStatus === 'draft') {
+            $periods = $periods->filter(fn($p) => $p->draft_count > 0);
+        }
+
+        $availableYears = Payroll::selectRaw('DISTINCT year')->orderByDesc('year')->pluck('year');
+
+        return view('dashboard.payrolls.periods', compact('periods', 'filterYear', 'filterMonth', 'filterStatus', 'availableYears'));
     }
 
     public function trash()
