@@ -40,7 +40,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('users/trash', [UserController::class, 'trash'])->name('users.trash');
         Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
         Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
-        Route::get('users/{id}/export', [UserController::class, 'export'])->name('users.export');
         Route::resource('users', UserController::class);
     });
 
@@ -63,7 +62,6 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
         Route::get('departments/{department}', [DepartmentController::class, 'show'])->name('departments.show');
-        Route::get('departments/{id}/export', [DepartmentController::class, 'export'])->name('departments.export');
     });
 
     // Position Routes - Admin & HR & Manager (read for staff)
@@ -85,7 +83,6 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('positions', [PositionController::class, 'index'])->name('positions.index');
         Route::get('positions/{position}', [PositionController::class, 'show'])->name('positions.show');
-        Route::get('positions/{id}/export', [PositionController::class, 'export'])->name('positions.export');
     });
 
     // Employee Routes - Admin & HR & Manager (read for staff)
