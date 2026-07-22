@@ -47,6 +47,7 @@
                                 <div class="col-md-3">
                                     <label class="form-label small fw-bold text-muted">Year</label>
                                     <select name="year" id="filterYear" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Years</option>
                                         @for ($y = date('Y') - 2; $y <= date('Y'); $y++)
                                             <option value="{{ $y }}" {{ $y == $year ? 'selected' : '' }}>{{ $y }}</option>
                                         @endfor
@@ -55,6 +56,7 @@
                                 <div class="col-md-3">
                                     <label class="form-label small fw-bold text-muted">Month</label>
                                     <select name="month" id="filterMonth" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Months</option>
                                         @for ($m = 1; $m <= 12; $m++)
                                             <option value="{{ $m }}" {{ $m == $month ? 'selected' : '' }}>
                                                 {{ date('F', mktime(0, 0, 0, $m, 1)) }}
@@ -268,11 +270,12 @@
                             "previous": "<i class='fas fa-chevron-left'></i>",
                             "next": "<i class='fas fa-chevron-right'></i>"
                         }
+                    },
+                    "rowCallback": function(row, data, displayIndex) {
+                        $('td:first', row).html('<strong>' + (displayIndex + 1) + '</strong>');
                     }
                 });
             }
-
-
         });
     </script>
 @endpush
