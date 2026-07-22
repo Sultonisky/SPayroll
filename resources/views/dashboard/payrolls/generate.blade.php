@@ -3,25 +3,21 @@
 
 @section('contents')
     <div class="row justify-content-center">
-        <div class="col-12 col-lg-7">
+        <div class="col-12 col-lg-12">
             <div class="card mb-4 shadow-sm">
                 <div class="card-header d-flex align-items-center justify-content-between py-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
                         <i class="fas fa-play-circle me-2"></i>Run Payroll
                     </h5>
-                    <a href="{{ route('payrolls.index') }}"
-                        class="btn btn-secondary btn-sm rounded-pill px-3 border shadow-sm">
-                        <i class="fas fa-arrow-left me-2"></i>Back
-                    </a>
                 </div>
 
                 <div class="card-body p-4">
-                    <div class="alert alert-info mb-4">
+                    <div class="alert alert-secondary mb-4">
                         <i class="fas fa-info-circle me-2"></i>
                         This will generate <strong>draft payroll records</strong> for all
                         <strong>active employees</strong> for the selected period.<br>
-                        <span class="mt-1 d-block text-muted small">
-                            Formula: <code>Total Salary = Base Salary + Approved Bonuses</code><br>
+                        <span class="mt-3 d-block text-black">
+                            Formula: <span  class="fw-bold">Total Salary = Base Salary + Approved Bonuses</span><br>
                             Employees that already have a payroll record for this period will be skipped.
                         </span>
                     </div>
@@ -73,11 +69,11 @@
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5 pt-4 border-top">
-                            <a href="{{ route('payrolls.index') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-4">
+                            <a href="{{ route('payrolls.index') }}" class="btn btn-sm btn-outline-danger rounded-pill px-4">
                                 <i class="fas fa-times me-2"></i>Cancel
                             </a>
                             <button type="submit"
-                                class="btn btn-sm btn-success rounded-pill px-md-5 shadow-sm fw-bold"
+                                class="btn btn-sm bg-primary rounded-pill px-md-5 shadow-sm fw-bold"
                                 onclick="return confirm('Run payroll for all active employees in this period?')">
                                 <i class="fas fa-play-circle me-2"></i>Run Payroll
                             </button>
