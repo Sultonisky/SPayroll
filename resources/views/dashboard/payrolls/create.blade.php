@@ -7,7 +7,7 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header d-flex align-items-center justify-content-between py-3 gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
-                        <i class="fas fa-plus-circle me-2"></i>Add Payroll Record
+                        <i class="fas fa-plus-circle me-2"></i>Add Manually Payroll Record
                     </h5>
                     <a href="{{ route('payrolls.index') }}"
                         class="btn btn-secondary btn-sm rounded-pill px-3 border shadow-sm">
@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="card-body p-4">
-                    <div class="alert alert-info mb-4">
+                    <div class="alert alert-secondary mb-4">
                         <i class="fas fa-info-circle me-2"></i>
                         For bulk generation, use <a href="{{ route('payrolls.generate') }}" class="alert-link">Run Payroll</a>.
                         This form is for manual single-record entry.
@@ -62,7 +62,7 @@
                             </div>
 
                             {{-- Year --}}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Year <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-calendar"></i></span>
@@ -74,7 +74,7 @@
                             </div>
 
                             {{-- Month --}}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Month <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-calendar-alt"></i></span>
@@ -90,7 +90,7 @@
                             </div>
 
                             {{-- Pay Date --}}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Pay Date <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-calendar-check"></i></span>
@@ -102,7 +102,7 @@
                             </div>
 
                             {{-- Bonus --}}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Bonus</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-gift"></i></span>
@@ -114,20 +114,20 @@
                             </div>
 
                             {{-- Total Salary (calculated) --}}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Total Salary</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-coins"></i></span>
                                     <input type="number" name="total_salary" id="total_salary" step="1000"
-                                        class="form-control border-start-0 bg-light @error('total_salary') is-invalid @enderror"
-                                        value="{{ old('total_salary', 0) }}" min="0" readonly>
+                                        class="form-control border-start-0 @error('total_salary') is-invalid @enderror"
+                                        value="{{ old('total_salary', 0) }}" min="0" readonly disabled>
                                 </div>
                                 <small class="text-muted">Auto-calculated: Base Salary + Bonus</small>
                                 @error('total_salary') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                             </div>
 
                             {{-- Status --}}
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold">Status <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-toggle-on"></i></span>
