@@ -121,10 +121,6 @@
                                                             class="btn btn-white btn-sm px-3" title="Edit">
                                                             <i class="fas fa-edit text-warning"></i>
                                                         </a>
-                                                        <a href="{{ route('users.export', $user->id) }}"
-                                                            class="btn btn-white btn-sm px-3" title="Export">
-                                                            <i class="fas fa-download text-primary"></i>
-                                                        </a>
                                                         <button type="button" class="btn btn-white btn-sm px-3"
                                                             data-coreui-toggle="modal"
                                                             data-coreui-target="#deleteModal{{ $user->id }}"
