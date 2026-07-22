@@ -2,7 +2,7 @@
     <div class="sidebar-header border-bottom px-4" style="height: 64px;">
         <div class="sidebar-brand">
             <div class="sidebar-brand-full d-flex align-items-center">
-                <span class="fw-bold">S-Payroll <span class="text-primary">Dashboard</span></span>
+                <span class="fw-bold">Dashboard <span class="text-primary">SPayroll</span></span>
             </div>
             <div class="sidebar-brand-narrow">
                 <i class="fas fa-calculator" style="font-size: 1.5rem; color: var(--cui-primary);"></i>
@@ -95,24 +95,36 @@
             </a>
         </li> --}}
 
-        <li class="nav-title">Payroll</li>
+        <li class="nav-title">Payroll System</li>
         <!-- Payrolls -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('payrolls.generate') }}">
-                <i class="nav-icon fas fa-money-check-alt"></i>
-                Payrolls Generate
+                <i class="nav-icon fas fa-play-circle"></i>
+                Generate
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('payrolls.drafts') }}">
+                <i class="nav-icon fas fa-inbox"></i>
+                Drafts
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('payrolls.approved') }}">
+                <i class="nav-icon fas fa-user-check"></i>
+                Approved
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('payrolls.periods') }}">
                 <i class="nav-icon fas fa-calendar-check"></i>
-                Payroll Periods
+                Periods
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ route('payrolls.index') }}">
                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                Payroll Records
+                Records (Paid)
             </a>
         </li>
     </ul>
