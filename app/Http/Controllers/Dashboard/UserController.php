@@ -19,7 +19,7 @@ class UserController extends Controller
         $users = User::select('id', 'name', 'email', 'role', 'created_at')
             ->latest()
             ->get();
-            
+
         return view('dashboard.users.index', compact('users'));
     }
 
@@ -33,7 +33,7 @@ class UserController extends Controller
             ->select('id', 'name', 'email', 'role', 'created_at')
             ->latest()
             ->get();
-            
+
         return view('dashboard.users.index', compact('users'))->with('isTrash', true);
     }
 
@@ -171,45 +171,5 @@ class UserController extends Controller
         $user->forceDelete();
 
         return redirect()->route('users.trash')->with('success', 'Success permanently delete user data.');
-    }
-
-    /**
-     * Export single user to CSV.
-     */
-    public function export(string $id)
-    {
-        $user = User::withTrashed()->findOrFail($id);
-        Gate::authorize('view', $user);
-
-        $fileName = 'user_' . $user->id . '_' . date('Y-m-d') . '.csv';
-        $headers  = [
-            'Content-type'        => 'text/csv',
-            'Content-Disposition' => "attachment; filename=$fileName",
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires'             => '0',
-        ];
-
-        $callback = function () use ($user) {
-            $file = fopen('php://output', 'w');
-            
-            // Header
-            fputcsv($file, ['Field', 'Value']);
-            
-            // User details
-            fputcsv($file, ['ID', $user->id]);
-            fputcsv($file, ['Name', $user->name]);
-            fputcsv($file, ['Email', $user->email]);
-            fputcsv($file, ['Role', $user->role]);
-            fputcsv($file, ['Created At', $user->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Updated At', $user->updated_at->format('Y-m-d H:i:s')]);
-            if ($user->deleted_at) {
-                fputcsv($file, ['Deleted At', $user->deleted_at->format('Y-m-d H:i:s')]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
     }
 }

@@ -18,7 +18,7 @@ class DepartmentController extends Controller
         $departments = Department::select('id', 'name', 'description', 'created_at')
             ->latest()
             ->get();
-            
+
         return view('dashboard.departments.index', compact('departments'));
     }
 
@@ -32,7 +32,7 @@ class DepartmentController extends Controller
             ->select('id', 'name', 'description', 'created_at')
             ->latest()
             ->get();
-            
+
         return view('dashboard.departments.index', compact('departments'))->with('isTrash', true);
     }
 
@@ -88,7 +88,7 @@ class DepartmentController extends Controller
     {
         $department = Department::findOrFail($id);
         Gate::authorize('update', $department);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -133,44 +133,5 @@ class DepartmentController extends Controller
         $department->forceDelete();
 
         return redirect()->route('departments.trash')->with('success', 'Success permanently delete department data.');
-    }
-
-    /**
-     * Export single department to CSV.
-     */
-    public function export(string $id)
-    {
-        $department = Department::withTrashed()->findOrFail($id);
-        Gate::authorize('view', $department);
-
-        $fileName = 'department_' . $department->id . '_' . date('Y-m-d') . '.csv';
-        $headers  = [
-            'Content-type'        => 'text/csv',
-            'Content-Disposition' => "attachment; filename=$fileName",
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires'             => '0',
-        ];
-
-        $callback = function () use ($department) {
-            $file = fopen('php://output', 'w');
-            
-            // Header
-            fputcsv($file, ['Field', 'Value']);
-            
-            // Department details
-            fputcsv($file, ['ID', $department->id]);
-            fputcsv($file, ['Name', $department->name]);
-            fputcsv($file, ['Description', $department->description]);
-            fputcsv($file, ['Created At', $department->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Updated At', $department->updated_at->format('Y-m-d H:i:s')]);
-            if ($department->deleted_at) {
-                fputcsv($file, ['Deleted At', $department->deleted_at->format('Y-m-d H:i:s')]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
     }
 }

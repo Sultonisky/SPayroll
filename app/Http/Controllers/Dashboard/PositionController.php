@@ -18,7 +18,7 @@ class PositionController extends Controller
         $positions = Position::select('id', 'name', 'description', 'base_salary_fulltime', 'base_salary_internship', 'created_at')
             ->latest()
             ->get();
-            
+
         return view('dashboard.positions.index', compact('positions'));
     }
 
@@ -32,7 +32,7 @@ class PositionController extends Controller
             ->select('id', 'name', 'description', 'base_salary_fulltime', 'base_salary_internship', 'created_at')
             ->latest()
             ->get();
-            
+
         return view('dashboard.positions.index', compact('positions'))->with('isTrash', true);
     }
 
@@ -90,7 +90,7 @@ class PositionController extends Controller
     {
         $position = Position::findOrFail($id);
         Gate::authorize('update', $position);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -137,46 +137,5 @@ class PositionController extends Controller
         $position->forceDelete();
 
         return redirect()->route('positions.trash')->with('success', 'Success permanently delete position data.');
-    }
-
-    /**
-     * Export single position to CSV.
-     */
-    public function export(string $id)
-    {
-        $position = Position::withTrashed()->findOrFail($id);
-        Gate::authorize('view', $position);
-
-        $fileName = 'position_' . $position->id . '_' . date('Y-m-d') . '.csv';
-        $headers  = [
-            'Content-type'        => 'text/csv',
-            'Content-Disposition' => "attachment; filename=$fileName",
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires'             => '0',
-        ];
-
-        $callback = function () use ($position) {
-            $file = fopen('php://output', 'w');
-            
-            // Header
-            fputcsv($file, ['Field', 'Value']);
-            
-            // Position details
-            fputcsv($file, ['ID', $position->id]);
-            fputcsv($file, ['Position Name', $position->name]);
-            fputcsv($file, ['Description', $position->description]);
-            fputcsv($file, ['Base Salary (Fulltime)', $position->base_salary_fulltime]);
-            fputcsv($file, ['Base Salary (Internship)', $position->base_salary_internship]);
-            fputcsv($file, ['Created At', $position->created_at->format('Y-m-d H:i:s')]);
-            fputcsv($file, ['Updated At', $position->updated_at->format('Y-m-d H:i:s')]);
-            if ($position->deleted_at) {
-                fputcsv($file, ['Deleted At', $position->deleted_at->format('Y-m-d H:i:s')]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
     }
 }
