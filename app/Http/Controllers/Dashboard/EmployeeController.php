@@ -15,15 +15,38 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Employee::class);
-        $employees = Employee::select('id', 'employee_code', 'nik', 'name', 'email', 'department_id', 'position_id', 'employee_status', 'employee_type', 'created_at')
-            ->with(['department', 'position'])
-            ->latest()
-            ->get();
-            
-        return view('dashboard.employees.index', compact('employees'));
+
+        $status        = $request->query('status');
+        $departmentId  = $request->query('department_id');
+        $startDate     = $request->query('start_date');
+        $endDate       = $request->query('end_date');
+
+        $query = Employee::select('id', 'employee_code', 'nik', 'name', 'email', 'department_id', 'position_id', 'employee_status', 'employee_type', 'join_date', 'created_at')
+            ->with(['department', 'position']);
+
+        if ($status && in_array($status, ['active', 'inactive', 'resigned'])) {
+            $query->where('employee_status', $status);
+        }
+
+        if ($departmentId) {
+            $query->where('department_id', $departmentId);
+        }
+
+        if ($startDate) {
+            $query->whereDate('join_date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->whereDate('join_date', '<=', $endDate);
+        }
+
+        $employees   = $query->latest()->get();
+        $departments = Department::orderBy('name')->get();
+
+        return view('dashboard.employees.index', compact('employees', 'departments', 'status', 'departmentId', 'startDate', 'endDate'));
     }
 
     /**

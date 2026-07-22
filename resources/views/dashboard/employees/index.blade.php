@@ -50,6 +50,56 @@
                 @endif
 
                 <div class="card-body">
+                    @if (!isset($isTrash))
+                        <!-- Filter Form -->
+                        <form method="GET" action="{{ route('employees.index') }}" id="filter-form">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Status</label>
+                                    <select name="status" id="filter-status" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Status</option>
+                                        <option value="active"   {{ ($status ?? '') == 'active'   ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive" {{ ($status ?? '') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                                        <option value="resigned" {{ ($status ?? '') == 'resigned' ? 'selected' : '' }}>Resigned</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Department</label>
+                                    <select name="department_id" id="filter-department" class="form-select form-select-sm rounded-pill shadow-sm">
+                                        <option value="">All Departments</option>
+                                        @foreach ($departments as $department)
+                                            <option value="{{ $department->id }}" {{ ($departmentId ?? '') == $department->id ? 'selected' : '' }}>
+                                                {{ $department->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Join Date From</label>
+                                    <input type="date" name="start_date" id="filter-start-date"
+                                        class="form-control form-control-sm rounded-pill shadow-sm"
+                                        value="{{ $startDate ?? '' }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-bold text-muted">Join Date To</label>
+                                    <input type="date" name="end_date" id="filter-end-date"
+                                        class="form-control form-control-sm rounded-pill shadow-sm"
+                                        value="{{ $endDate ?? '' }}">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2 mb-3">
+                                <a href="{{ route('employees.index') }}"
+                                    class="btn btn-outline-secondary btn-sm rounded-pill px-4 shadow-sm">
+                                    <i class="fas fa-undo me-2"></i>Reset
+                                </a>
+                                <button type="submit"
+                                    class="btn btn-info text-white btn-sm rounded-pill px-4 fw-bold shadow-sm">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </form>
+                    @endif
+
                     <table class="table table-hover align-middle" id="employeesTable">
                         <thead class="table-light text-dark small text-uppercase">
                             <tr>
@@ -117,10 +167,6 @@
                                                         <i class="fas fa-edit text-warning"></i>
                                                     </a>
                                                 @endif
-                                                <a href="{{ route('employees.export', $employee->id) }}"
-                                                    class="btn btn-white btn-sm px-3" title="Export">
-                                                    <i class="fas fa-download text-primary"></i>
-                                                </a>
                                                 @if (auth()->user()->isAdmin() || auth()->user()->role == 'HR')
                                                     <button type="button" class="btn btn-white btn-sm px-3"
                                                         data-coreui-toggle="modal"
@@ -132,7 +178,7 @@
                                             @endif
                                         </div>
                                     </td>
-
+                                    
                                     @if (isset($isTrash))
                                         <x-modal id="forceDeleteModal{{ $employee->id }}" title="Permanently Delete"
                                             type="danger" :actionUrl="route('employees.force-delete', $employee->id)" method="DELETE"
