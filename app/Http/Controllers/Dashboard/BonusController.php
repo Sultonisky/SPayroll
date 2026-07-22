@@ -14,8 +14,8 @@ class BonusController extends Controller
     {
         Gate::authorize('viewAny', Bonus::class);
 
-        $year       = $request->input('year', date('Y'));
-        $month      = $request->input('month', date('n'));
+        $year       = $request->input('year');       // null = all years
+        $month      = $request->input('month');      // null = all months
         $employeeId = $request->input('employee_id');
         $status     = $request->input('status');
 
