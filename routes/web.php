@@ -1,21 +1,28 @@
 <?php
 
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\Dashboard\DepartmentController;
-use App\Http\Controllers\Dashboard\PositionController;
-use App\Http\Controllers\Dashboard\EmployeeController;
-// use App\Http\Controllers\Dashboard\AttendanceImportController;
-// use App\Http\Controllers\Dashboard\AttendanceRecordController;
-// use App\Http\Controllers\Dashboard\AttendanceAdjustmentController;
-use App\Http\Controllers\Dashboard\PayrollController;
 use App\Http\Controllers\Dashboard\BonusController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\DepartmentController;
+use App\Http\Controllers\Dashboard\EmployeeController;
+use App\Http\Controllers\Dashboard\PayrollController;
+use App\Http\Controllers\Dashboard\PositionController;
+use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+// Public Legal Pages
+Route::get('/privacy-policy', function () {
+    return view('legal.privacy-policy');
+})->name('privacy-policy');
+
+Route::get('/terms-of-service', function () {
+    return view('legal.terms-of-service');
+})->name('terms-of-service');
 
 // Auth Routes
 Route::get('admin/login', [AuthController::class, 'loginForm'])
@@ -34,6 +41,10 @@ Route::post('admin/logout', [AuthController::class, 'logout'])
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
+    // Profile (all user login)
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+
     // User Routes - Admin Only
     Route::middleware(['role:admin'])->group(function () {
         Route::get('users/trash', [UserController::class, 'trash'])->name('users.trash');
@@ -46,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('departments/trash', [DepartmentController::class, 'trash'])->name('departments.trash');
     });
-    
+
     Route::middleware(['role:admin,HR'])->group(function () {
         Route::get('departments/create', [DepartmentController::class, 'create'])->name('departments.create');
         Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
@@ -57,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('departments/{id}/restore', [DepartmentController::class, 'restore'])->name('departments.restore');
         Route::delete('departments/{id}/force-delete', [DepartmentController::class, 'forceDelete'])->name('departments.force-delete');
     });
-    
+
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
         Route::get('departments/{department}', [DepartmentController::class, 'show'])->name('departments.show');
@@ -67,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('positions/trash', [PositionController::class, 'trash'])->name('positions.trash');
     });
-    
+
     Route::middleware(['role:admin,HR'])->group(function () {
         Route::get('positions/create', [PositionController::class, 'create'])->name('positions.create');
         Route::post('positions', [PositionController::class, 'store'])->name('positions.store');
@@ -78,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('positions/{id}/restore', [PositionController::class, 'restore'])->name('positions.restore');
         Route::delete('positions/{id}/force-delete', [PositionController::class, 'forceDelete'])->name('positions.force-delete');
     });
-    
+
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('positions', [PositionController::class, 'index'])->name('positions.index');
         Route::get('positions/{position}', [PositionController::class, 'show'])->name('positions.show');
@@ -88,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('employees/trash', [EmployeeController::class, 'trash'])->name('employees.trash');
     });
-    
+
     Route::middleware(['role:admin,HR,manager'])->group(function () {
         Route::get('employees/create', [EmployeeController::class, 'create'])->name('employees.create');
         Route::post('employees', [EmployeeController::class, 'store'])->name('employees.store');
@@ -96,13 +107,13 @@ Route::middleware(['auth'])->group(function () {
         Route::put('employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
         Route::patch('employees/{employee}', [EmployeeController::class, 'update']);
     });
-    
+
     Route::middleware(['role:admin,HR'])->group(function () {
         Route::delete('employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
         Route::post('employees/{id}/restore', [EmployeeController::class, 'restore'])->name('employees.restore');
         Route::delete('employees/{id}/force-delete', [EmployeeController::class, 'forceDelete'])->name('employees.force-delete');
     });
-    
+
     Route::middleware(['role:admin,HR,manager,staff'])->group(function () {
         Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
         Route::get('employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
@@ -208,4 +219,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('bonuses', [BonusController::class, 'index'])->name('bonuses.index');
         Route::get('bonuses/{bonus}', [BonusController::class, 'show'])->name('bonuses.show');
     });
+    Route::view('test', 'test');
 });
