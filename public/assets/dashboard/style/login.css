@@ -19,7 +19,7 @@
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #f5f5f5;
+    background-color: var(--text-main);
     color: var(--text-main);
     min-height: 100vh;
     display: flex;
