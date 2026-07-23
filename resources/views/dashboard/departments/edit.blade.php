@@ -5,11 +5,13 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4 shadow-sm">
-                <div class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
+                <div
+                    class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5 fs-md-4">
                         <i class="fas fa-edit me-2"></i>Edit Department
                     </h5>
-                    <a href="{{ route('departments.index') }}" class="btn btn-secondary btn-sm rounded-pill px-3 px-md-4 border shadow-sm">
+                    <a href="{{ route('departments.index') }}"
+                        class="btn btn-secondary btn-sm rounded-pill px-3 px-md-4 border shadow-sm">
                         <i class="fas fa-arrow-left me-2"></i>Back
                     </a>
                 </div>
@@ -21,13 +23,15 @@
 
                         <div class="row g-4">
                             {{-- Name --}}
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label class="form-label fw-bold">Department Name <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-building "></i></span>
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-building "></i></span>
                                     <input type="text" name="name"
                                         class="form-control border-start-0 @error('name') is-invalid @enderror"
-                                        placeholder="Enter department name" value="{{ old('name', $department->name) }}" required>
+                                        placeholder="Enter department name" value="{{ old('name', $department->name) }}"
+                                        required>
                                 </div>
                                 @error('name')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -38,9 +42,9 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">Description</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-primary border-end-0 text-black"><i class="fas fa-align-left"></i></span>
-                                    <textarea name="description"
-                                        class="form-control border-start-0 @error('description') is-invalid @enderror"
+                                    <span class="input-group-text bg-primary border-end-0 text-black"><i
+                                            class="fas fa-align-left"></i></span>
+                                    <textarea name="description" class="form-control border-start-0 @error('description') is-invalid @enderror"
                                         placeholder="Enter department description">{{ old('description', $department->description) }}</textarea>
                                 </div>
                                 @error('description')
@@ -53,7 +57,8 @@
                             <button type="reset" class="btn btn-sm btn-outline-danger rounded-pill px-4 border shadow-sm">
                                 <i class="fas fa-undo me-2"></i>Reset
                             </button>
-                            <button type="submit" class="btn btn-sm bg-primary rounded-pill px-md-5 shadow-sm fw-bold text-black">
+                            <button type="submit"
+                                class="btn btn-sm bg-primary rounded-pill px-md-5 shadow-sm fw-bold text-black">
                                 <i class="fas fa-check-circle me-2"></i>Update Data
                             </button>
                         </div>
