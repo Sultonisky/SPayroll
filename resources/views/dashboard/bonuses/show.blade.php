@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4 shadow-sm">
-                <div class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
+                <div
+                    class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
                         <i class="fas fa-gift me-2"></i>Bonus Detail
                     </h5>
@@ -26,18 +27,19 @@
                 <div class="card-body p-4">
                     {{-- Status banner --}}
                     @php
-                        $bannerClass = match($bonus->status) {
+                        $bannerClass = match ($bonus->status) {
                             'approved' => 'alert-success',
                             'rejected' => 'alert-danger',
-                            default    => 'alert-warning',
+                            default => 'alert-warning',
                         };
                     @endphp
                     <div class="alert {{ $bannerClass }} d-flex align-items-center mb-4">
                         <i class="fas fa-circle me-2"></i>
                         <strong>{{ ucfirst($bonus->status) }}</strong>
                         @if ($bonus->approved_at)
-                            &nbsp;— {{ $bonus->approved_at->translatedFormat('d F Y, H:i') }} WIB
-                            by {{ $bonus->approvedBy?->name ?? '-' }}
+                            &nbsp;- {{ $bonus->approved_at->translatedFormat('d F Y, H:i') }} WIB
+                            by&nbsp; <strong>{{ $bonus->approvedBy?->role ?? '-' }}</strong>&nbsp;-
+                            {{ $bonus->approvedBy?->name ?? '-' }}
                         @endif
                         @if ($bonus->notes && $bonus->isRejected())
                             <span class="ms-2 text-muted">| {{ $bonus->notes }}</span>
@@ -67,7 +69,8 @@
                                 <div class="card-body p-3">
                                     <div class="text-uppercase small fw-bold text-primary mb-2">Employee</div>
                                     <div class="fs-6 fw-bold text-body">{{ $bonus->employee?->name ?? '-' }}</div>
-                                    <small class="text-muted font-monospace">{{ $bonus->employee?->employee_code ?? '' }}</small>
+                                    <small
+                                        class="text-muted font-monospace">{{ $bonus->employee?->employee_code ?? '' }}</small>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +106,8 @@
                             <div class="card h-100 border-0 bg-body-tertiary shadow-sm">
                                 <div class="card-body p-3">
                                     <div class="text-uppercase small fw-bold text-primary mb-2">Submitted At</div>
-                                    <div class="fs-6 fw-bold text-body">{{ $bonus->created_at->translatedFormat('d F Y, H:i') }} WIB</div>
+                                    <div class="fs-6 fw-bold text-body">
+                                        {{ $bonus->created_at->translatedFormat('d F Y, H:i') }} WIB</div>
                                 </div>
                             </div>
                         </div>
@@ -154,11 +158,11 @@
                         </div>
                         <div class="modal-body">
                             <label class="form-label fw-bold">Reason (optional)</label>
-                            <textarea name="notes" class="form-control" rows="3"
-                                placeholder="Enter reason for rejection..."></textarea>
+                            <textarea name="notes" class="form-control" rows="3" placeholder="Enter reason for rejection..."></textarea>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-coreui-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                data-coreui-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger btn-sm">Confirm Reject</button>
                         </div>
                     </div>
