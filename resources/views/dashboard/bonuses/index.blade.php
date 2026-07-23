@@ -168,13 +168,12 @@
                                                     </a>
                                                 @endif
                                                 @if ($bonus->isPending() && (auth()->user()->isAdmin() || auth()->user()->role === 'HR'))
-                                                    <form action="{{ route('bonuses.approve', $bonus->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-white btn-sm px-3" title="Approve"
-                                                            onclick="return confirm('Approve this bonus?')">
-                                                            <i class="fas fa-check text-success"></i>
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-white btn-sm px-3"
+                                                        data-coreui-toggle="modal"
+                                                        data-coreui-target="#approveModal{{ $bonus->id }}"
+                                                        title="Approve">
+                                                        <i class="fas fa-check text-success"></i>
+                                                    </button>
                                                     <button type="button" class="btn btn-white btn-sm px-3"
                                                         data-coreui-toggle="modal"
                                                         data-coreui-target="#rejectModal{{ $bonus->id }}"
@@ -215,6 +214,23 @@
                                                 <p class="text-muted">Move this bonus record to trash?</p>
                                             </div>
                                         </x-modal>
+
+                                        {{-- Approve Modal --}}
+                                        @if ($bonus->isPending() && (auth()->user()->isAdmin() || auth()->user()->role === 'HR'))
+                                            <x-modal id="approveModal{{ $bonus->id }}" title="Approve Bonus"
+                                                type="success" :actionUrl="route('bonuses.approve', $bonus->id)" method="POST"
+                                                confirmText="Yes, Approve" icon="fa-check-circle">
+                                                <div class="text-center py-3">
+                                                    <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                                                    <h5 class="fw-bold">Approve Bonus?</h5>
+                                                    <p class="text-muted">Are you sure you want to approve this bonus for <strong>{{ $bonus->employee?->name }}</strong>?</p>
+                                                    <p class="text-muted small mb-0">
+                                                        Period: {{ \Carbon\Carbon::create($bonus->year, $bonus->month)->translatedFormat('F Y') }} <br>
+                                                        Amount: Rp {{ number_format($bonus->amount, 0, ',', '.') }}
+                                                    </p>
+                                                </div>
+                                            </x-modal>
+                                        @endif
 
                                         {{-- Reject Modal --}}
                                         @if ($bonus->isPending())
