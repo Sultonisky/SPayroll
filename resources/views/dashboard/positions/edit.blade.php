@@ -23,15 +23,15 @@
 
                         <div class="row g-4">
                             {{-- Name --}}
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label class="form-label fw-bold">Position Name <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-briefcase"></i></span>
                                     <input type="text" name="name"
                                         class="form-control border-start-0 @error('name') is-invalid @enderror"
-                                        placeholder="Enter position name"
-                                        value="{{ old('name', $position->name) }}" required>
+                                        placeholder="Enter position name" value="{{ old('name', $position->name) }}"
+                                        required>
                                 </div>
                                 @error('name')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -40,7 +40,8 @@
 
                             {{-- Base Salary Fulltime --}}
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Base Salary (Fulltime) <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Base Salary (Fulltime) <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-money-bill-wave"></i></span>
@@ -56,14 +57,16 @@
 
                             {{-- Base Salary Internship --}}
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Base Salary (Internship) <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold">Base Salary (Internship) <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-money-bill-wave"></i></span>
                                     <input type="number" name="base_salary_internship" step="0.01"
                                         class="form-control border-start-0 @error('base_salary_internship') is-invalid @enderror"
                                         placeholder="Enter base salary for internship"
-                                        value="{{ old('base_salary_internship', $position->base_salary_internship) }}" required>
+                                        value="{{ old('base_salary_internship', $position->base_salary_internship) }}"
+                                        required>
                                 </div>
                                 @error('base_salary_internship')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -76,8 +79,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary border-end-0 text-black"><i
                                             class="fas fa-align-left"></i></span>
-                                    <textarea name="description"
-                                        class="form-control border-start-0 @error('description') is-invalid @enderror"
+                                    <textarea name="description" class="form-control border-start-0 @error('description') is-invalid @enderror"
                                         placeholder="Enter position description">{{ old('description', $position->description) }}</textarea>
                                 </div>
                                 @error('description')
@@ -87,8 +89,7 @@
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5 pt-4 border-top">
-                            <button type="reset"
-                                class="btn btn-sm btn-outline-danger rounded-pill px-4 border shadow-sm">
+                            <button type="reset" class="btn btn-sm btn-outline-danger rounded-pill px-4 border shadow-sm">
                                 <i class="fas fa-undo me-2"></i>Reset
                             </button>
                             <button type="submit"
