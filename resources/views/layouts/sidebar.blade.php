@@ -60,7 +60,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ route('bonuses.index') }}">
                 <i class="nav-icon fas fa-comments-dollar"></i>
-                Bonus
+                EmployeeBonus
             </a>
         </li>
 
