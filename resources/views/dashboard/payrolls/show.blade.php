@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4 shadow-sm">
-                <div class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
+                <div
+                    class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between py-3 gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
                         <i class="fas fa-file-invoice-dollar me-2"></i>Payroll Details
                     </h5>
@@ -30,10 +31,10 @@
                 <div class="card-body p-4">
                     {{-- Status + Actions --}}
                     @php
-                        $bannerClass = match($payroll->status) {
-                            'paid'     => 'alert-primary',
+                        $bannerClass = match ($payroll->status) {
+                            'paid' => 'alert-primary',
                             'approved' => 'alert-info',
-                            default    => 'alert-warning',
+                            default => 'alert-warning',
                         };
                     @endphp
                     <div class="alert {{ $bannerClass }} d-flex align-items-center justify-content-between mb-4">
@@ -66,7 +67,8 @@
                                 <div class="card-body p-3">
                                     <div class="text-uppercase small fw-bold text-primary mb-2">Employee</div>
                                     <div class="fs-6 fw-bold text-body">{{ $payroll->employee?->name ?? '-' }}</div>
-                                    <small class="text-muted font-monospace">{{ $payroll->employee?->employee_code ?? '' }}</small>
+                                    <small
+                                        class="text-muted font-monospace">{{ $payroll->employee?->employee_code ?? '' }}</small>
                                 </div>
                             </div>
                         </div>
