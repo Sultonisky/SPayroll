@@ -51,17 +51,17 @@ body {
     align-items: center;
     justify-content: center;
     background-color: var(--white);
+    gap: 0;
 }
 
 .logo-wrapper {
-    width: 340px;
-    height: 340px;
-    /* background: var(--primary-color); */
+    width: 280px;
+    height: 280px;
     border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 24px;
+    margin: 0 auto 16px;
     padding: 12px;
 }
 
@@ -249,6 +249,23 @@ body {
     color: var(--text-main);
 }
 
+.footer-legal {
+    margin-top: 8px;
+}
+
+.footer-legal a {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.footer-legal a:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
+
+
 /* Responsiveness */
 @media (max-width: 992px) {
     .logo-section {
@@ -281,4 +298,129 @@ body {
     .welcome-text {
         font-size: 20px;
     }
+}
+
+/* ===== Logo Tagline ===== */
+.logo-tagline {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.logo-tagline strong {
+    color: var(--text-main);
+    font-weight: 700;
+}
+
+/* ===== Demo Banner (left side) ===== */
+.demo-banner {
+    width: 100%;
+    background: #f8fafc;
+    border: 3.5px solid var(--primary-color);
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-align: left;
+}
+
+.demo-banner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--primary-color);
+    color: var(--text-main);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+    animation: badge-pulse 2.2s ease-in-out infinite;
+}
+
+.demo-banner-badge::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--text-main);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: dot-ping 2.2s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(30, 41, 59, 0.6);
+}
+
+@keyframes dot-ping {
+    0%   { box-shadow: 0 0 0 0 rgba(30, 41, 59, 0.6); }
+    60%  { box-shadow: 0 0 0 5px rgba(30, 41, 59, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(30, 41, 59, 0); }
+}
+
+@keyframes badge-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.78; }
+}
+
+.demo-banner-desc {
+    font-size: 12.5px;
+    color: var(--text-main);
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.demo-banner-desc strong {
+    color: var(--primary-dark);
+}
+
+.demo-banner-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.demo-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1.5px solid var(--text-main);
+}
+
+.demo-link-github {
+    background: var(--text-main);
+    color: var(--white);
+}
+
+.demo-link-github:hover {
+    background: #0f172a;
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+.demo-link-docs {
+    background: transparent;
+    color: var(--text-main);
+}
+
+.demo-link-docs:hover {
+    background: var(--text-main);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+.demo-link-donate {
+    background: transparent;
+    color: var(--text-main);
+}
+
+.demo-link-donate:hover {
+    background: var(--text-main);
+    color: var(--white);
+    transform: translateY(-1px);
 }
