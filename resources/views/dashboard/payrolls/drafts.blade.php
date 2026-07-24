@@ -72,10 +72,10 @@
                             <i class="fas fa-file-alt fa-3x mb-3 opacity-50"></i>
                             <p class="mb-1 fw-semibold">No draft payroll records found.</p>
                             @if (auth()->user()->isAdmin() || auth()->user()->role === 'HR')
-                                <a href="{{ route('payrolls.generate') }}" class="btn bg-primary text-black fw-bold btn-sm rounded-pill mt-2">
-                                    <i class="fas fa-play-circle me-2"></i>Run Payroll
-                                </a>
-                            @endif
+                            <a href="{{ route('payrolls.generate') }}" class="btn bg-primary text-black fw-bold btn-sm rounded-pill mt-2">
+                                <i class="fas fa-play-circle me-2"></i>Run Payroll
+                            </a>
+                        @endif
                         </div>
                     @else
                         {{-- Bulk approve section --}}
