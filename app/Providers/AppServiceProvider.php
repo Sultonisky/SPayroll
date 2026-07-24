@@ -48,9 +48,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Implicitly grant "Admin" role all permissions
-        // This works in the app by using gate-related functions like auth()->user()->can() and @can()
+        // Demo accounts are excluded — they go through normal policy checks
         Gate::before(function ($user, $ability) {
-            if ($user->isAdmin()) {
+            if ($user->isAdmin() && !$user->isDemo()) {
                 return true;
             }
         });

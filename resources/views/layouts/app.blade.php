@@ -56,6 +56,20 @@
                 {{-- Alert Component --}}
                 <x-alert />
 
+                {{-- Demo Mode Banner --}}
+                @if(auth()->check() && auth()->user()->isDemo())
+                <div class="demo-mode-banner">
+                    <span class="demo-mode-dot"></span>
+                    <span>
+                        You are logged in as a <strong>demo account</strong> — some actions are restricted.
+                        Data resets daily.
+                    </span>
+                    <a href="https://github.com/Sultonisky/s-payroll" target="_blank" rel="noopener noreferrer">
+                        Deploy your own instance →
+                    </a>
+                </div>
+                @endif
+
                 {{-- Main Content --}}
                 @yield('contents')
             </div>

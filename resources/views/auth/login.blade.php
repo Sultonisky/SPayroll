@@ -52,14 +52,41 @@
                         </a>
                     </div>
                 </div>
+
+                {{-- Demo Credentials --}}
+                <div class="demo-credentials">
+                    <p class="demo-credentials-title">
+                        <i class="fas fa-key me-1"></i> Demo Credentials
+                        <span class="demo-credentials-pass">password: <strong>demo12345</strong></span>
+                    </p>
+                    <div class="demo-credentials-list">
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('admin@demo.spayroll.com')">
+                            <span class="demo-cred-role demo-cred-admin">Admin</span>
+                            <span class="demo-cred-email">admin@demo.spayroll.com</span>
+                        </button>
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('hr@demo.spayroll.com')">
+                            <span class="demo-cred-role demo-cred-hr">HR</span>
+                            <span class="demo-cred-email">hr@demo.spayroll.com</span>
+                        </button>
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('manager@demo.spayroll.com')">
+                            <span class="demo-cred-role demo-cred-manager">Manager</span>
+                            <span class="demo-cred-email">manager@demo.spayroll.com</span>
+                        </button>
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('staff@demo.spayroll.com')">
+                            <span class="demo-cred-role demo-cred-staff">Staff</span>
+                            <span class="demo-cred-email">staff@demo.spayroll.com</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="form-section">
-                <div class="login-header">
-                    <p class="welcome-text">Welcome back to S-Payroll!<br><span>Sign in to your account</span></p>
-                </div>
+                <div class="form-center">
+                    <div class="login-header">
+                        <p class="welcome-text">Welcome back to S-Payroll!<br><span>Sign in to your account</span></p>
+                    </div>
 
-                <div class="login-body">
+                    <div class="login-body">
                     @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show">
                             <i class="fas fa-exclamation-circle me-2"></i>
@@ -117,6 +144,7 @@
                         </button>
                     </form>
                 </div>
+                </div>{{-- /.form-center --}}
 
                 <div class="login-footer">
                     <p>&copy; {{ date('Y') }} S-Payroll - Open Source Self-Hosted Payroll System.<br>
@@ -139,6 +167,13 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/js/coreui.bundle.min.js"></script>
     <script src="{{ asset('assets/dashboard/js/login.js') }}" defer></script>
+    <script>
+        function fillLogin(email) {
+            document.querySelector('input[name="email"]').value = email;
+            document.querySelector('input[name="password"]').value = 'demo12345';
+            document.querySelector('input[name="email"]').focus();
+        }
+    </script>
 </body>
 
 </html>

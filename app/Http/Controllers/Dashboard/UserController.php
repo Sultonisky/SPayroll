@@ -102,6 +102,8 @@ class UserController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'You cannot update your account via user management page.');
         }
 
+        Gate::authorize('update', $user);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -109,14 +111,12 @@ class UserController extends Controller
             'role' => 'required|in:admin,HR,manager,staff',
         ]);
 
-
         if ($request->filled('password')) {
             $validated['password'] = Hash::make($request->password);
         } else {
             unset($validated['password']);
         }
 
-        Gate::authorize('update', $user);
         $user->update($validated);
 
         return redirect()->route('users.index')->with('success', 'Success update user data.');

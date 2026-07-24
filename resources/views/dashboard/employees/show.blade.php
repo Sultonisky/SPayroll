@@ -11,7 +11,7 @@
                         <i class="fas fa-id-card me-2"></i>Employee Information
                     </h5>
                     <div class="d-flex flex-wrap gap-2">
-                        @if (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager']))
+                        @if ((auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager'])) && !auth()->user()->isDemo())
                             <a href="{{ route('employees.edit', $employee->id) }}"
                                 class="btn btn-warning btn-sm rounded-pill px-3 px-md-4 border shadow-sm">
                                 <i class="fas fa-edit me-2"></i>Edit

@@ -19,16 +19,18 @@
                             </a>
                         @else
                             @if (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager']))
-                                @if (auth()->user()->isAdmin() || auth()->user()->role == 'HR')
+                                @if ((auth()->user()->isAdmin() || auth()->user()->role == 'HR') && !auth()->user()->isDemo())
                                     <a href="{{ route('employees.trash') }}"
                                         class="btn btn-outline-danger btn-sm rounded-pill px-3 px-md-4 shadow-sm">
                                         <i class="fas fa-trash me-2"></i>Trash
                                     </a>
                                 @endif
-                                <a href="{{ route('employees.create') }}"
-                                    class="btn bg-primary fw-bold text-black btn-sm rounded-pill px-3 px-md-4 shadow-sm">
-                                    <i class="fas fa-plus-circle me-2"></i>Add New
-                                </a>
+                                @if (!auth()->user()->isDemo())
+                                    <a href="{{ route('employees.create') }}"
+                                        class="btn bg-primary fw-bold text-black btn-sm rounded-pill px-3 px-md-4 shadow-sm">
+                                        <i class="fas fa-plus-circle me-2"></i>Add New
+                                    </a>
+                                @endif
                             @endif
                         @endif
                     </div>
@@ -140,7 +142,7 @@
                                     <td class="text-center">
                                         <div class="btn-group shadow-sm rounded-pill overflow-hidden border">
                                             @if (isset($isTrash))
-                                                @if (auth()->user()->isAdmin() || auth()->user()->role == 'HR')
+                                                @if ((auth()->user()->isAdmin() || auth()->user()->role == 'HR') && !auth()->user()->isDemo())
                                                     <form action="{{ route('employees.restore', $employee->id) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
@@ -161,13 +163,13 @@
                                                     class="btn btn-white btn-sm px-3" title="Detail">
                                                     <i class="fas fa-eye text-info"></i>
                                                 </a>
-                                                @if (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager']))
+                                                @if ((auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager'])) && !auth()->user()->isDemo())
                                                     <a href="{{ route('employees.edit', $employee->id) }}"
                                                         class="btn btn-white btn-sm px-3" title="Edit">
                                                         <i class="fas fa-edit text-warning"></i>
                                                     </a>
                                                 @endif
-                                                @if (auth()->user()->isAdmin() || auth()->user()->role == 'HR')
+                                                @if ((auth()->user()->isAdmin() || auth()->user()->role == 'HR') && !auth()->user()->isDemo())
                                                     <button type="button" class="btn btn-white btn-sm px-3"
                                                         data-coreui-toggle="modal"
                                                         data-coreui-target="#deleteModal{{ $employee->id }}"

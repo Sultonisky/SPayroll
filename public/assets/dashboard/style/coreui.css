@@ -539,3 +539,52 @@ pre {
     white-space: pre-wrap;
     word-break: break-word;
 }
+
+/* ===== Demo Mode Banner ===== */
+.demo-mode-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fffbeb;
+    border: 1.5px solid #f59e0b;
+    border-radius: 10px;
+    padding: 9px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #92400e;
+    flex-wrap: wrap;
+}
+
+.demo-mode-dot {
+    width: 8px;
+    height: 8px;
+    background: #f59e0b;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: demo-dot-ping 2s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+}
+
+@keyframes demo-dot-ping {
+    0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+    60%  { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.demo-mode-banner strong {
+    color: #78350f;
+}
+
+.demo-mode-banner a {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: #b45309;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.demo-mode-banner a:hover {
+    text-decoration: underline;
+    color: #78350f;
+}
