@@ -17,13 +17,13 @@
                                 <i class="fas fa-arrow-left me-2"></i>Back
                             </a>
                         @else
-                            @if (auth()->user()->isAdmin() || auth()->user()->role === 'HR')
+                            @if ((auth()->user()->isAdmin() || auth()->user()->role === 'HR') && !auth()->user()->isDemo())
                                 <a href="{{ route('bonuses.trash') }}"
                                     class="btn btn-outline-danger btn-sm rounded-pill px-3 px-md-4 shadow-sm">
                                     <i class="fas fa-trash me-2"></i>Trash
                                 </a>
                             @endif
-                            @if (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager']))
+                            @if ((auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager'])) && !auth()->user()->isDemo())
                                 <a href="{{ route('bonuses.create') }}"
                                     class="btn bg-primary fw-bold text-black btn-sm rounded-pill px-3 px-md-4 shadow-sm">
                                     <i class="fas fa-plus-circle me-2"></i>Add Bonus
@@ -142,7 +142,7 @@
                                     <td class="text-center">
                                         <div class="btn-group shadow-sm rounded-pill overflow-hidden border">
                                             @if (isset($isTrash))
-                                                @if (auth()->user()->isAdmin() || auth()->user()->role === 'HR')
+                                                @if ((auth()->user()->isAdmin() || auth()->user()->role === 'HR') && !auth()->user()->isDemo())
                                                     <form action="{{ route('bonuses.restore', $bonus->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         <button type="submit" class="btn btn-white btn-sm px-3" title="Restore">
@@ -161,13 +161,13 @@
                                                     class="btn btn-white btn-sm px-3" title="Detail">
                                                     <i class="fas fa-eye text-info"></i>
                                                 </a>
-                                                @if ($bonus->isPending() && (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager'])))
+                                                @if ($bonus->isPending() && (auth()->user()->isAdmin() || in_array(auth()->user()->role, ['HR', 'manager'])) && !auth()->user()->isDemo())
                                                     <a href="{{ route('bonuses.edit', $bonus->id) }}"
                                                         class="btn btn-white btn-sm px-3" title="Edit">
                                                         <i class="fas fa-edit text-warning"></i>
                                                     </a>
                                                 @endif
-                                                @if ($bonus->isPending() && (auth()->user()->isAdmin() || auth()->user()->role === 'HR'))
+                                                @if ($bonus->isPending() && (auth()->user()->isAdmin() || auth()->user()->role === 'HR') && !auth()->user()->isDemo())
                                                     <button type="button" class="btn btn-white btn-sm px-3"
                                                         data-coreui-toggle="modal"
                                                         data-coreui-target="#approveModal{{ $bonus->id }}"
@@ -181,7 +181,7 @@
                                                         <i class="fas fa-times text-danger"></i>
                                                     </button>
                                                 @endif
-                                                @if (auth()->user()->isAdmin() || auth()->user()->role === 'HR')
+                                                @if ((auth()->user()->isAdmin() || auth()->user()->role === 'HR') && !auth()->user()->isDemo())
                                                     <button type="button" class="btn btn-white btn-sm px-3"
                                                         data-coreui-toggle="modal"
                                                         data-coreui-target="#deleteModal{{ $bonus->id }}"
