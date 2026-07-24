@@ -30,6 +30,12 @@ class ProfileController extends Controller
             abort(403, 'Unauthorized');
         }
 
+        // Demo accounts cannot change their credentials
+        if ($user->isDemo()) {
+            return redirect()->route('profile.index')
+                ->with('error', 'Demo accounts cannot change profile credentials. Data resets daily.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
