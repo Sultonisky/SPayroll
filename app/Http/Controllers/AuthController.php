@@ -29,7 +29,7 @@ class AuthController extends Controller
             return back()->with('error', 'Password is incorrect.')->withInput($request->only('email'));
         }
 
-        if ($user->role === 'admin' || $user->role === 'staff') {
+        if (in_array($user->role, ['admin', 'HR', 'manager', 'staff'])) {
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
             return redirect()->intended(route('admin.dashboard'));
