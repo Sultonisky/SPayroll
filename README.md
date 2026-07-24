@@ -16,17 +16,17 @@
 </p>
 
 <p align="center">
-  <a href="https://your-demo-url.com">🚀 Live Demo</a> &bull;
   <a href="#-installation">📦 Installation</a> &bull;
   <a href="#-features">✨ Features</a> &bull;
-  <a href="#-limitations">⚠️ Limitations</a>
+  <a href="#-limitations">⚠️ Limitations</a> &bull;
+  <a href="#-legal">⚖️ Legal</a>
 </p>
 
 ---
 
 ## Overview
 
-S-Payroll is a lightweight, self-hosted payroll management system designed for small to mid-sized remote-first companies. It gives your HR and finance team a clean, straightforward interface to manage employees, run monthly payroll, handle bonuses, and export pay data — all on your own infrastructure, with no vendor lock-in.
+S-Payroll is a lightweight, self-hosted payroll management system designed for small to mid-sized remote-first companies. It gives your HR and finance team a clean, straightforward interface to manage employees, run monthly payroll, handle bonuses, and export pay data - all on your own infrastructure, with no vendor lock-in.
 
 Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 
@@ -36,7 +36,7 @@ Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 
 ### Employee Management
 - Add, edit, and archive employees with full profile data (NIK, department, position, join date, bank details)
-- Support for two employee types: **Fulltime** and **Internship** — each with their own base salary per position
+- Support for two employee types: **Fulltime** and **Internship** - each with their own base salary per position
 - Employee code generation
 - Soft delete with trash & restore
 
@@ -46,8 +46,8 @@ Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 - Soft delete with restore support
 
 ### Payroll
-- **Bulk payroll generation** — run payroll for all active employees in one click for a given month/year
-- **Preview before generating** — see a salary breakdown per employee before committing
+- **Bulk payroll generation** - run payroll for all active employees in one click for a given month/year
+- **Preview before generating** - see a salary breakdown per employee before committing
 - Payroll workflow: `Draft → Approved → Paid`
 - Bulk approve drafts and bulk mark-as-paid
 - Period overview with aggregate stats (total employees, total salary, draft/approved/paid counts)
@@ -83,10 +83,10 @@ Before deploying, be aware of the current scope and known limitations:
 
 | Area | Status |
 |---|---|
-| Attendance tracking | 🚧 Work in progress — routes are scaffolded but disabled |
-| Tax calculation (PPh 21) | ❌ Not yet implemented — total salary is base + bonus only |
+| Attendance tracking | 🚧 Work in progress - routes are scaffolded but disabled |
+| Tax calculation (PPh 21) | ❌ Not yet implemented - total salary is base + bonus only |
 | Multi-currency | ❌ Single currency only |
-| Payslip PDF generation | ❌ Not yet — export is CSV only |
+| Payslip PDF generation | ❌ Not yet - export is CSV only |
 | Multi-company / multi-tenant | ❌ Single company per installation |
 | Overtime & deductions | ❌ Not yet implemented |
 | API / mobile access | ❌ Web only |
@@ -213,10 +213,10 @@ php artisan sail:install
 
 | Role | Capabilities |
 |---|---|
-| **Admin** | Full access — all modules including user management |
+| **Admin** | Full access - all modules including user management |
 | **HR** | Employees, departments, positions, payroll (full), bonuses (full) |
 | **Manager** | View employees, departments, positions; create/edit payroll & bonuses |
-| **Staff** | View only — own profile, employees list, payroll (view), attendance (view) |
+| **Staff** | View only - own profile, employees list, payroll (view), attendance (view) |
 
 ---
 
@@ -254,7 +254,7 @@ Contributions, bug reports, and feature requests are welcome.
 4. Push to the branch: `git push origin feature/your-feature`
 5. Open a Pull Request
 
-Please keep PRs focused — one feature or fix per PR.
+Please keep PRs focused - one feature or fix per PR.
 
 ---
 
@@ -267,6 +267,24 @@ For production deployments:
 - Use HTTPS
 - Rotate the `APP_KEY` after initial setup
 - Change default seeded credentials immediately
+- Keep PHP, Laravel, and all dependencies updated with security patches
+- Restrict database access to localhost or a private network
+
+---
+
+## ⚖️ Legal
+
+S-Payroll is provided as open-source software under the **MIT License**. The following legal documents apply to the official demo environment and the software distribution:
+
+| Document | Applies to |
+|---|---|
+| [Privacy Policy](resources/views/legal/privacy-policy.blade.php) | Official demo — describes how personal data is handled |
+| [Terms of Service](resources/views/legal/terms-of-service.blade.php) | Official demo — acceptable use, disclaimers, and liability |
+| [MIT License](LICENSE) | Source code — rights to use, modify, and distribute |
+
+**For self-hosted operators:** You are the data controller for all personal data processed through your installation. You are responsible for establishing your own privacy policy, ensuring compliance with applicable data protection laws (including **UU PDP No. 27/2022** in Indonesia), and securing your infrastructure. The project maintainers have no access to and no responsibility for data in independently operated instances.
+
+> S-Payroll does not implement automated PPh 21 tax calculation. All payroll outputs should be independently verified before disbursement or regulatory submission.
 
 ---
 
@@ -274,7 +292,7 @@ For production deployments:
 
 S-Payroll is open source software released under the [MIT License](LICENSE).
 
-You are free to use, modify, and distribute this software for personal or commercial use. Attribution is appreciated but not required.
+You are free to use, modify, and distribute this software for personal or commercial use, subject to retaining the original copyright notice. Attribution is appreciated but not required beyond that.
 
 ---
 
