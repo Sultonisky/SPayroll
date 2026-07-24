@@ -211,12 +211,109 @@ php artisan sail:install
 
 ## 🔐 Default Roles & Permissions
 
-| Role | Capabilities |
+S-Payroll uses a role-based access control (RBAC) system with four built-in roles. Permissions are enforced at both the backend (Laravel Policies + Gate) and frontend (sidebar visibility + UI element guards).
+
+### Role Overview
+
+| Role | User Mgmt | Departments | Positions | Employees | Bonus | Payroll Generate | Payroll Workflow | Profile |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Admin** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ | ✅ Full | ✅ Edit |
+| **HR** | ❌ | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ | ✅ Full | ✅ Edit |
+| **Manager** | ❌ | 👁 View | 👁 View | ✅ Edit | ✅ Create/Edit | ❌ | ✅ Approve/View | ✅ Edit |
+| **Staff** | ❌ | ❌ | ❌ | 👁 View | ❌ | ❌ | 👁 View | ✅ Edit |
+
+### Detailed Permission Matrix
+
+#### Users
+| Action | Admin | HR | Manager | Staff |
+|---|:---:|:---:|:---:|:---:|
+| View list | ✅ | ❌ | ❌ | ❌ |
+| Create user | ✅ | ❌ | ❌ | ❌ |
+| Edit user | ✅ | ❌ | ❌ | ❌ |
+| Delete / Restore | ✅ | ❌ | ❌ | ❌ |
+| Force delete | ✅ | ❌ | ❌ | ❌ |
+
+#### Departments & Positions
+| Action | Admin | HR | Manager | Staff |
+|---|:---:|:---:|:---:|:---:|
+| View list & detail | ✅ | ✅ | ✅ | ❌ |
+| Create / Edit | ✅ | ✅ | ❌ | ❌ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ |
+
+#### Employees
+| Action | Admin | HR | Manager | Staff |
+|---|:---:|:---:|:---:|:---:|
+| View list & detail | ✅ | ✅ | ✅ | ✅ |
+| Create / Edit | ✅ | ✅ | ✅ | ❌ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ |
+| Export | ✅ | ✅ | ✅ | ✅ |
+
+#### Employee Bonus
+| Action | Admin | HR | Manager | Staff |
+|---|:---:|:---:|:---:|:---:|
+| View list & detail | ✅ | ✅ | ✅ | ❌ |
+| Create / Edit | ✅ | ✅ | ✅ | ❌ |
+| Approve / Reject | ✅ | ✅ | ❌ | ❌ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ |
+
+#### Payroll
+| Action | Admin | HR | Manager | Staff |
+|---|:---:|:---:|:---:|:---:|
+| View (all) | ✅ | ✅ | ✅ | ✅ |
+| Generate bulk | ✅ | ✅ | ❌ | ❌ |
+| Create single | ✅ | ✅ | ✅ | ❌ |
+| Edit draft | ✅ | ✅ | ✅ | ❌ |
+| Approve draft | ✅ | ✅ | ❌ | ❌ |
+| Mark as paid | ✅ | ✅ | ❌ | ❌ |
+| Export CSV | ✅ | ✅ | ✅ | ✅ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ |
+
+---
+
+## 🧪 Live Demo & Demo Accounts
+
+A live demo is available at the official deployment. You can try S-Payroll with any of the following pre-seeded accounts — each representing a different role so you can explore the full permission model.
+
+### Demo Credentials
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@demo.spayroll.com` | `demo12345` |
+| HR | `hr@demo.spayroll.com` | `demo12345` |
+| Manager | `manager@demo.spayroll.com` | `demo12345` |
+| Staff | `staff@demo.spayroll.com` | `demo12345` |
+
+> Click any credential card on the login page to auto-fill the form — no typing required.
+
+### Demo Account Restrictions
+
+Demo accounts carry their full role permissions **except** for the following, which exist to protect demo data integrity for all visitors:
+
+| Feature | Demo restriction |
 |---|---|
-| **Admin** | Full access - all modules including user management |
-| **HR** | Employees, departments, positions, payroll (full), bonuses (full) |
-| **Manager** | View employees, departments, positions; create/edit payroll & bonuses |
-| **Staff** | View only - own profile, employees list, payroll (view), attendance (view) |
+| User management (create / edit / delete) | ❌ Blocked for all demo roles |
+| Employee create / edit / delete | ❌ Blocked |
+| Bonus create / edit / approve / delete | ❌ Blocked |
+| Profile update (name, email, password, photo) | ❌ Full read-only |
+| Payroll engine (generate, approve, mark paid, export) | ✅ **Fully enabled** |
+
+**Why these specific restrictions?**
+- User and employee data are the structural foundation of the demo. Modifying them would break the payroll engine for other visitors.
+- The payroll workflow is intentionally unrestricted so visitors can experience the full generate → approve → mark paid cycle end-to-end.
+- Profile is read-only to prevent visitors from locking each other out by changing credentials.
+
+### Demo Data Reset
+
+The demo environment resets automatically every night at **00:00** via a scheduled `php artisan demo:reset --force` command. This wipes all data and re-seeds fresh dummy employees, departments, positions, payrolls, and bonuses.
+
+Manual reset:
+```bash
+php artisan demo:reset
+```
 
 ---
 
