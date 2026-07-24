@@ -18,7 +18,7 @@
                                 <i class="fas fa-arrow-left me-2"></i>Back
                             </a>
                         @else
-                            @if (auth()->user()->isAdmin())
+                            @if (auth()->user()->isAdmin() && !auth()->user()->isDemo())
                                 <a href="{{ route('users.trash') }}"
                                     class="btn btn-outline-danger btn-sm rounded-pill px-3 px-md-4 shadow-sm">
                                     <i class="fas fa-trash me-2"></i>Trash
@@ -74,7 +74,7 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($user->role == 'admin')
-                                            <span class="badge bg-danger-subtle text-black rounded-pill px-3">
+                                            <span class="badge bg-danger text-black rounded-pill px-3">
                                                  Admin
                                             </span>
                                         @elseif($user->role == 'HR')
@@ -95,7 +95,7 @@
                                         @if (auth()->id() !== $user->id)
                                             <div class="btn-group shadow-sm rounded-pill overflow-hidden border">
                                                 @if (isset($isTrash))
-                                                    @if (auth()->user()->isAdmin())
+                                                    @if (auth()->user()->isAdmin() && !auth()->user()->isDemo())
                                                         <form action="{{ route('users.restore', $user->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
@@ -116,7 +116,7 @@
                                                         class="btn btn-white btn-sm px-3" title="Detail">
                                                         <i class="fas fa-eye text-info"></i>
                                                     </a>
-                                                    @if (auth()->user()->isAdmin())
+                                                    @if (auth()->user()->isAdmin() && !auth()->user()->isDemo())
                                                         <a href="{{ route('users.edit', $user->id) }}"
                                                             class="btn btn-white btn-sm px-3" title="Edit">
                                                             <i class="fas fa-edit text-warning"></i>

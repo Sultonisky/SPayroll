@@ -11,7 +11,7 @@
                     </h5>
                     <div class="d-flex flex-wrap gap-2">
                         @if(auth()->id() !== $user->id)
-                            @if(auth()->user()->isAdmin())
+                            @if(auth()->user()->isAdmin() && !auth()->user()->isDemo())
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm rounded-pill px-3 px-md-4 border shadow-sm">
                                 <i class="fas fa-edit me-2"></i>Edit
                             </a>
