@@ -33,7 +33,31 @@ class DatabaseSeeder extends Seeder
         );
 
         // ----------------------------------------------------------------
-        // 2. Supporting users
+        // 2. Demo accounts (fixed credentials for live demo)
+        // ----------------------------------------------------------------
+        $this->command->info('Seeding demo users...');
+        $demoUsers = [
+            ['name' => 'Demo Admin',   'email' => 'admin@demo.spayroll.com',   'role' => 'admin'],
+            ['name' => 'Demo HR',      'email' => 'hr@demo.spayroll.com',      'role' => 'HR'],
+            ['name' => 'Demo Manager', 'email' => 'manager@demo.spayroll.com', 'role' => 'manager'],
+            ['name' => 'Demo Staff',   'email' => 'staff@demo.spayroll.com',   'role' => 'staff'],
+        ];
+
+        foreach ($demoUsers as $demo) {
+            User::firstOrCreate(
+                ['email' => $demo['email']],
+                [
+                    'name'              => $demo['name'],
+                    'password'          => Hash::make('demo12345'),
+                    'email_verified_at' => now(),
+                    'role'              => $demo['role'],
+                    'is_demo'           => true,
+                ]
+            );
+        }
+
+        // ----------------------------------------------------------------
+        // 3. Supporting users
         // ----------------------------------------------------------------
         $this->command->info('Seeding supporting users...');
         User::factory()->hr()->count(2)->create();
@@ -76,5 +100,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('All seed data created successfully.');
         $this->command->line('  Admin email : ' . env('ADMIN_EMAIL', 'admin@spayroll.com'));
         $this->command->line('  Admin pass  : ' . env('ADMIN_PASSWORD', 'password123'));
+        $this->command->info('');
+        $this->command->info('Demo accounts (password: demo1234):');
+        $this->command->line('  admin@demo.com   → Admin');
+        $this->command->line('  hr@demo.com      → HR');
+        $this->command->line('  manager@demo.com → Manager');
+        $this->command->line('  staff@demo.com   → Staff');
     }
 }
