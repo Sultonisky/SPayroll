@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'is_demo',
         'foto',
         'email_verified_at',
         'remember_token',
@@ -48,16 +49,22 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_demo'  => 'boolean',
         ];
     }
 
     protected $dates = ['deleted_at'];
 
     /**
+     * Check if the user is a demo account.
+     */
+    public function isDemo(): bool
+    {
+        return (bool) $this->is_demo;
+    }
+
+    /**
      * Check if the user has a specific role.
-     *
-     * @param string $role
-     * @return bool
      */
     public function hasRole(string $role): bool
     {
