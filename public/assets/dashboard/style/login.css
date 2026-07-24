@@ -74,6 +74,20 @@ body {
     flex: 1;
     padding: 60px 40px;
     background-color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header,
+.login-body {
+    flex-shrink: 0;
 }
 
 .login-header {
@@ -240,7 +254,8 @@ body {
 }
 
 .login-footer {
-    margin-top: 32px;
+    margin-top: auto;
+    padding-top: 24px;
     text-align: center;
 }
 
@@ -319,7 +334,7 @@ body {
 .demo-banner {
     width: 100%;
     background: #f8fafc;
-    border: 3.5px solid var(--primary-color);
+    border: 1.5px solid var(--primary-color);
     border-radius: 16px;
     padding: 18px 20px;
     text-align: left;
@@ -423,4 +438,92 @@ body {
     background: var(--text-main);
     color: var(--white);
     transform: translateY(-1px);
+}
+
+/* ===== Demo Credentials ===== */
+.demo-credentials {
+    width: 100%;
+    margin-top: 12px;
+    background: #f8fafc;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 16px;
+    padding: 14px 16px;
+}
+
+.demo-credentials-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.demo-credentials-pass {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.demo-credentials-pass strong {
+    color: var(--text-main);
+    font-family: monospace;
+    background: #e2e8f0;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.demo-credentials-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.demo-cred-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--white);
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.demo-cred-item:hover {
+    border-color: var(--primary-color);
+    background: #f1f5f9;
+    transform: translateX(2px);
+}
+
+.demo-cred-item:hover .demo-cred-email {
+    color: var(--text-main);
+}
+
+.demo-cred-role {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.demo-cred-admin   { background: #dc3545; color: #fff; }
+.demo-cred-hr      { background: #0dcaf0; color: #fff; }
+.demo-cred-manager { background: #198754; color: #fff; }
+.demo-cred-staff   { background: #ffc107; color: #000; }
+
+.demo-cred-email {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: monospace;
+    transition: color 0.15s ease;
 }
