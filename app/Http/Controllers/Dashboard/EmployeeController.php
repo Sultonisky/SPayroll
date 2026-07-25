@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\Position;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,10 +19,10 @@ class EmployeeController extends Controller
     {
         Gate::authorize('viewAny', Employee::class);
 
-        $status        = $request->query('status');
-        $departmentId  = $request->query('department_id');
-        $startDate     = $request->query('start_date');
-        $endDate       = $request->query('end_date');
+        $status = $request->query('status');
+        $departmentId = $request->query('department_id');
+        $startDate = $request->query('start_date');
+        $endDate = $request->query('end_date');
 
         $query = Employee::select('id', 'employee_code', 'nik', 'name', 'email', 'department_id', 'position_id', 'employee_status', 'employee_type', 'join_date', 'created_at')
             ->with(['department', 'position']);
@@ -43,7 +43,7 @@ class EmployeeController extends Controller
             $query->whereDate('join_date', '<=', $endDate);
         }
 
-        $employees   = $query->latest()->get();
+        $employees = $query->latest()->get();
         $departments = Department::orderBy('name')->get();
 
         return view('dashboard.employees.index', compact('employees', 'departments', 'status', 'departmentId', 'startDate', 'endDate'));
@@ -60,7 +60,7 @@ class EmployeeController extends Controller
             ->with(['department', 'position'])
             ->latest()
             ->get();
-            
+
         return view('dashboard.employees.index', compact('employees'))->with('isTrash', true);
     }
 
@@ -73,6 +73,7 @@ class EmployeeController extends Controller
         $departments = Department::all();
         $positions = Position::all();
         $users = User::all();
+
         return view('dashboard.employees.create', compact('departments', 'positions', 'users'));
     }
 
@@ -118,6 +119,7 @@ class EmployeeController extends Controller
     {
         $employee = Employee::withTrashed()->with(['department', 'position', 'user'])->findOrFail($id);
         Gate::authorize('view', $employee);
+
         return view('dashboard.employees.show', compact('employee'));
     }
 
@@ -131,6 +133,7 @@ class EmployeeController extends Controller
         $departments = Department::all();
         $positions = Position::all();
         $users = User::all();
+
         return view('dashboard.employees.edit', compact('employee', 'departments', 'positions', 'users'));
     }
 
@@ -141,15 +144,15 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
         Gate::authorize('update', $employee);
-        
+
         $validated = $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'department_id' => 'required|exists:departments,id',
             'position_id' => 'required|exists:positions,id',
-            'nik' => 'required|string|max:50|unique:employees,nik,' . $id,
+            'nik' => 'required|string|max:50|unique:employees,nik,'.$id,
             'name' => 'required|string|max:255',
             'gender' => 'required|in:laki-laki,perempuan',
-            'email' => 'required|email|unique:employees,email,' . $id,
+            'email' => 'required|email|unique:employees,email,'.$id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'join_date' => 'required|date',
@@ -215,21 +218,21 @@ class EmployeeController extends Controller
         $employee = Employee::withTrashed()->with(['department', 'position', 'user'])->findOrFail($id);
         Gate::authorize('view', $employee);
 
-        $fileName = 'employee_' . $employee->id . '_' . date('Y-m-d') . '.csv';
-        $headers  = [
-            'Content-type'        => 'text/csv',
+        $fileName = 'employee_'.$employee->id.'_'.date('Y-m-d').'.csv';
+        $headers = [
+            'Content-type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=$fileName",
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires'             => '0',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
         $callback = function () use ($employee) {
             $file = fopen('php://output', 'w');
-            
+
             // Header
             fputcsv($file, ['Field', 'Value']);
-            
+
             // Employee details
             fputcsv($file, ['ID', $employee->id]);
             fputcsv($file, ['Employee Code', $employee->employee_code ?? '-']);

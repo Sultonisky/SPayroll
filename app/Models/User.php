@@ -5,9 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Relations\HasMany; // TEMPORARILY DISABLED - used by attendance relations
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -49,7 +50,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_demo'  => 'boolean',
+            'is_demo' => 'boolean',
         ];
     }
 
@@ -73,8 +74,6 @@ class User extends Authenticatable
 
     /**
      * Check if the user is an admin.
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {
@@ -83,8 +82,6 @@ class User extends Authenticatable
 
     /**
      * Check if the user is an operator.
-     *
-     * @return bool
      */
     public function isHR(): bool
     {
@@ -93,8 +90,6 @@ class User extends Authenticatable
 
     /**
      * Check if the user is a staff.
-     *
-     * @return bool
      */
     public function isManager(): bool
     {
@@ -103,8 +98,6 @@ class User extends Authenticatable
 
     /**
      * Check if the user is a staff.
-     *
-     * @return bool
      */
     public function isStaff(): bool
     {
@@ -116,11 +109,11 @@ class User extends Authenticatable
      */
     public function getFotoUrlAttribute(): ?string
     {
-        if (!$this->foto) {
+        if (! $this->foto) {
             return null;
         }
-        
-        return \Illuminate\Support\Facades\Storage::disk('supabase')->url($this->foto);
+
+        return Storage::disk('supabase')->url($this->foto);
     }
 
     // TEMPORARILY DISABLED - attendance feature not yet needed

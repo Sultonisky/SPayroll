@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        Gate::authorize('viewAny', \App\Models\User::class);
+        Gate::authorize('viewAny', User::class);
         $users = User::select('id', 'name', 'email', 'role', 'created_at')
             ->latest()
             ->get();
@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function trash()
     {
-        Gate::authorize('viewAny', \App\Models\User::class);
+        Gate::authorize('viewAny', User::class);
         $users = User::onlyTrashed()
             ->select('id', 'name', 'email', 'role', 'created_at')
             ->latest()
@@ -42,7 +42,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create', \App\Models\User::class);
+        Gate::authorize('create', User::class);
+
         return view('dashboard.users.create');
     }
 
@@ -51,7 +52,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', \App\Models\User::class);
+        Gate::authorize('create', User::class);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -73,6 +74,7 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->findOrFail($id);
         Gate::authorize('view', $user);
+
         return view('dashboard.users.show', compact('user'));
     }
 
@@ -88,6 +90,7 @@ class UserController extends Controller
         }
 
         Gate::authorize('update', $user);
+
         return view('dashboard.users.edit', compact('user'));
     }
 
@@ -106,7 +109,7 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:6',
             'role' => 'required|in:admin,HR,manager,staff',
         ]);

@@ -42,6 +42,7 @@ class PositionController extends Controller
     public function create()
     {
         Gate::authorize('create', Position::class);
+
         return view('dashboard.positions.create');
     }
 
@@ -70,6 +71,7 @@ class PositionController extends Controller
     {
         $position = Position::withTrashed()->findOrFail($id);
         Gate::authorize('view', $position);
+
         return view('dashboard.positions.show', compact('position'));
     }
 
@@ -80,6 +82,7 @@ class PositionController extends Controller
     {
         $position = Position::findOrFail($id);
         Gate::authorize('update', $position);
+
         return view('dashboard.positions.edit', compact('position'));
     }
 

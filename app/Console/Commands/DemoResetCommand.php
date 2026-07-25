@@ -4,8 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class DemoResetCommand extends Command
 {
@@ -22,9 +20,10 @@ class DemoResetCommand extends Command
 
     public function handle(): int
     {
-        if (!$this->option('force')) {
-            if (!$this->confirm('This will wipe all demo data and re-seed. Continue?')) {
+        if (! $this->option('force')) {
+            if (! $this->confirm('This will wipe all demo data and re-seed. Continue?')) {
                 $this->info('Aborted.');
+
                 return self::SUCCESS;
             }
         }

@@ -23,7 +23,7 @@ class AttendanceRecordController extends Controller
         $year = $request->year ?? date('Y');
         $employeeId = $request->employee_id ?? null;
 
-        $query = Employee::with(['attendanceRecords' => function($q) use ($month, $year) {
+        $query = Employee::with(['attendanceRecords' => function ($q) use ($month, $year) {
             $q->whereYear('attendance_date', $year)->whereMonth('attendance_date', $month);
         }]);
 
@@ -48,6 +48,7 @@ class AttendanceRecordController extends Controller
     public function show(AttendanceRecord $attendanceRecord)
     {
         $attendanceRecord->load('employee', 'attendanceAdjustments');
+
         return view('dashboard.attendance-records.show', compact('attendanceRecord'));
     }
 

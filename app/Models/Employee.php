@@ -42,14 +42,14 @@ class Employee extends Model
      */
     public function getBaseSalaryAttribute(): ?float
     {
-        if (!$this->position) {
+        if (! $this->position) {
             return null;
         }
 
-        return match($this->employee_type) {
-            'fulltime'    => $this->position->base_salary_fulltime,
-            'internship'  => $this->position->base_salary_internship,
-            default       => null,
+        return match ($this->employee_type) {
+            'fulltime' => $this->position->base_salary_fulltime,
+            'internship' => $this->position->base_salary_internship,
+            default => null,
         };
     }
 

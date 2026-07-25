@@ -21,6 +21,7 @@ class AttendanceAdjustmentController extends Controller
     public function index()
     {
         $adjustments = AttendanceAdjustment::with('attendanceRecord.employee')->orderBy('created_at', 'desc')->get();
+
         return view('dashboard.attendance-adjustments.index', compact('adjustments'));
     }
 
@@ -53,6 +54,7 @@ class AttendanceAdjustmentController extends Controller
     public function show(AttendanceAdjustment $attendanceAdjustment)
     {
         $attendanceAdjustment->load('attendanceRecord.employee');
+
         return view('dashboard.attendance-adjustments.show', compact('attendanceAdjustment'));
     }
 

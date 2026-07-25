@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Payroll;
 use App\Services\PayrollCalculatorService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -29,15 +30,19 @@ class PayrollController extends Controller
             ->orderBy('employee_id');
 
         // Period drill-down filter (from Periods view)
-        $filterYear  = $request->integer('year') ?: null;
+        $filterYear = $request->integer('year') ?: null;
         $filterMonth = $request->integer('month') ?: null;
 
         // Additional filters
-        $filterStatus     = $request->input('status');
+        $filterStatus = $request->input('status');
         $filterEmployeeId = $request->input('employee_id');
 
-        if ($filterYear)  $query->where('year', $filterYear);
-        if ($filterMonth) $query->where('month', $filterMonth);
+        if ($filterYear) {
+            $query->where('year', $filterYear);
+        }
+        if ($filterMonth) {
+            $query->where('month', $filterMonth);
+        }
 
         if ($filterStatus && in_array($filterStatus, ['paid'])) {
             $query->where('status', $filterStatus);
@@ -49,7 +54,7 @@ class PayrollController extends Controller
         $payrolls = $query->get();
 
         $periodLabel = ($filterYear && $filterMonth)
-            ? \Carbon\Carbon::create($filterYear, $filterMonth)->translatedFormat('F Y')
+            ? Carbon::create($filterYear, $filterMonth)->translatedFormat('F Y')
             : null;
 
         $allEmployees = Employee::select('id', 'name', 'nik', 'employee_code')->orderBy('employee_code')->get();
@@ -68,8 +73,8 @@ class PayrollController extends Controller
     {
         Gate::authorize('viewAny', Payroll::class);
 
-        $filterYear       = $request->input('year');
-        $filterMonth      = $request->input('month');
+        $filterYear = $request->input('year');
+        $filterMonth = $request->input('month');
         $filterEmployeeId = $request->input('employee_id');
 
         $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date')
@@ -79,11 +84,17 @@ class PayrollController extends Controller
             ->orderByDesc('month')
             ->orderBy('employee_id');
 
-        if ($filterYear)       $query->where('year', $filterYear);
-        if ($filterMonth)      $query->where('month', $filterMonth);
-        if ($filterEmployeeId) $query->where('employee_id', $filterEmployeeId);
+        if ($filterYear) {
+            $query->where('year', $filterYear);
+        }
+        if ($filterMonth) {
+            $query->where('month', $filterMonth);
+        }
+        if ($filterEmployeeId) {
+            $query->where('employee_id', $filterEmployeeId);
+        }
 
-        $payrolls     = $query->get();
+        $payrolls = $query->get();
         $allEmployees = Employee::select('id', 'name', 'nik', 'employee_code')->orderBy('name')->get();
 
         return view('dashboard.payrolls.approved', compact(
@@ -91,12 +102,13 @@ class PayrollController extends Controller
             'filterYear', 'filterMonth', 'filterEmployeeId'
         ));
     }
+
     public function drafts(Request $request)
     {
         Gate::authorize('viewAny', Payroll::class);
 
-        $filterYear       = $request->input('year');
-        $filterMonth      = $request->input('month');
+        $filterYear = $request->input('year');
+        $filterMonth = $request->input('month');
         $filterEmployeeId = $request->input('employee_id');
 
         $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date')
@@ -106,11 +118,17 @@ class PayrollController extends Controller
             ->orderByDesc('month')
             ->orderBy('employee_id');
 
-        if ($filterYear)       $query->where('year', $filterYear);
-        if ($filterMonth)      $query->where('month', $filterMonth);
-        if ($filterEmployeeId) $query->where('employee_id', $filterEmployeeId);
+        if ($filterYear) {
+            $query->where('year', $filterYear);
+        }
+        if ($filterMonth) {
+            $query->where('month', $filterMonth);
+        }
+        if ($filterEmployeeId) {
+            $query->where('employee_id', $filterEmployeeId);
+        }
 
-        $payrolls     = $query->get();
+        $payrolls = $query->get();
         $allEmployees = Employee::select('id', 'name', 'nik', 'employee_code')->orderBy('employee_code')->get();
 
         return view('dashboard.payrolls.drafts', compact(
@@ -118,12 +136,13 @@ class PayrollController extends Controller
             'filterYear', 'filterMonth', 'filterEmployeeId'
         ));
     }
+
     public function periods(Request $request)
     {
         Gate::authorize('viewAny', Payroll::class);
 
-        $filterYear   = $request->input('year');
-        $filterMonth  = $request->input('month');
+        $filterYear = $request->input('year');
+        $filterMonth = $request->input('month');
         $filterStatus = $request->input('period_status');
 
         $query = Payroll::selectRaw('
@@ -142,18 +161,22 @@ class PayrollController extends Controller
             ->orderByDesc('year')
             ->orderByDesc('month');
 
-        if ($filterYear)  $query->where('year', $filterYear);
-        if ($filterMonth) $query->where('month', $filterMonth);
+        if ($filterYear) {
+            $query->where('year', $filterYear);
+        }
+        if ($filterMonth) {
+            $query->where('month', $filterMonth);
+        }
 
         $periods = $query->get();
 
         // Filter period status in PHP (after aggregation)
         if ($filterStatus === 'paid') {
-            $periods = $periods->filter(fn($p) => $p->paid_count === $p->total_employees);
+            $periods = $periods->filter(fn ($p) => $p->paid_count === $p->total_employees);
         } elseif ($filterStatus === 'approved') {
-            $periods = $periods->filter(fn($p) => $p->draft_count === 0 && $p->paid_count < $p->total_employees);
+            $periods = $periods->filter(fn ($p) => $p->draft_count === 0 && $p->paid_count < $p->total_employees);
         } elseif ($filterStatus === 'draft') {
-            $periods = $periods->filter(fn($p) => $p->draft_count > 0);
+            $periods = $periods->filter(fn ($p) => $p->draft_count > 0);
         }
 
         $availableYears = Payroll::selectRaw('DISTINCT year')->orderByDesc('year')->pluck('year');
@@ -197,14 +220,14 @@ class PayrollController extends Controller
 
         $validated = $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'year'        => 'required|integer|min:2000|max:2100',
-            'month'       => 'required|integer|min:1|max:12',
-            'pay_date'    => 'required|date',
+            'year' => 'required|integer|min:2000|max:2100',
+            'month' => 'required|integer|min:1|max:12',
+            'pay_date' => 'required|date',
             'base_salary' => 'required|numeric|min:0',
-            'bonus'       => 'required|numeric|min:0',
-            'total_salary'=> 'required|numeric|min:0',
-            'notes'       => 'nullable|string',
-            'status'      => 'required|in:draft,approved,paid',
+            'bonus' => 'required|numeric|min:0',
+            'total_salary' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
+            'status' => 'required|in:draft,approved,paid',
         ]);
 
         Payroll::create($validated);
@@ -240,12 +263,12 @@ class PayrollController extends Controller
         Gate::authorize('update', $payroll);
 
         $validated = $request->validate([
-            'pay_date'    => 'required|date',
+            'pay_date' => 'required|date',
             'base_salary' => 'required|numeric|min:0',
-            'bonus'       => 'required|numeric|min:0',
-            'total_salary'=> 'required|numeric|min:0',
-            'notes'       => 'nullable|string',
-            'status'      => 'required|in:draft,approved,paid',
+            'bonus' => 'required|numeric|min:0',
+            'total_salary' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
+            'status' => 'required|in:draft,approved,paid',
         ]);
 
         $payroll->update($validated);
@@ -276,8 +299,8 @@ class PayrollController extends Controller
         Gate::authorize('create', Payroll::class);
 
         $validated = $request->validate([
-            'year'     => 'required|integer|min:2000|max:2100',
-            'month'    => 'required|integer|min:1|max:12',
+            'year' => 'required|integer|min:2000|max:2100',
+            'month' => 'required|integer|min:1|max:12',
             'pay_date' => 'required|date',
         ]);
 
@@ -293,7 +316,7 @@ class PayrollController extends Controller
         }
 
         return redirect()->route('payrolls.drafts', [
-            'year'  => $validated['year'],
+            'year' => $validated['year'],
             'month' => $validated['month'],
         ])->with('success', $message);
     }
@@ -306,11 +329,11 @@ class PayrollController extends Controller
         Gate::authorize('create', Payroll::class);
 
         $request->validate([
-            'year'  => 'required|integer|min:2000|max:2100',
+            'year' => 'required|integer|min:2000|max:2100',
             'month' => 'required|integer|min:1|max:12',
         ]);
 
-        $year  = (int) $request->year;
+        $year = (int) $request->year;
         $month = (int) $request->month;
 
         $employees = Employee::with('position')
@@ -319,14 +342,14 @@ class PayrollController extends Controller
             ->get();
 
         $preview = $employees->map(function (Employee $employee) use ($year, $month) {
-            $components  = $this->calculator->calculate($employee, $year, $month);
+            $components = $this->calculator->calculate($employee, $year, $month);
             $alreadyDone = Payroll::where('employee_id', $employee->id)
                 ->where('year', $year)
                 ->where('month', $month)
                 ->exists();
 
             return array_merge($components, [
-                'employee'     => $employee,
+                'employee' => $employee,
                 'already_done' => $alreadyDone,
             ]);
         });
@@ -342,7 +365,7 @@ class PayrollController extends Controller
         Gate::authorize('create', Payroll::class);
 
         $request->validate([
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'exists:payrolls,id',
         ]);
 
@@ -388,23 +411,29 @@ class PayrollController extends Controller
             ->orderByDesc('month')
             ->orderBy('employee_id');
 
-        if ($request->input('year'))        $query->where('year', $request->input('year'));
-        if ($request->input('month'))       $query->where('month', $request->input('month'));
-        if ($request->input('employee_id')) $query->where('employee_id', $request->input('employee_id'));
+        if ($request->input('year')) {
+            $query->where('year', $request->input('year'));
+        }
+        if ($request->input('month')) {
+            $query->where('month', $request->input('month'));
+        }
+        if ($request->input('employee_id')) {
+            $query->where('employee_id', $request->input('employee_id'));
+        }
 
         $payrolls = $query->get();
 
         $periodLabel = ($request->input('year') && $request->input('month'))
-            ? '_' . $request->input('year') . '_' . str_pad($request->input('month'), 2, '0', STR_PAD_LEFT)
+            ? '_'.$request->input('year').'_'.str_pad($request->input('month'), 2, '0', STR_PAD_LEFT)
             : '';
 
-        $fileName = 'payroll_transfer' . $periodLabel . '_' . date('Ymd') . '.csv';
-        $headers  = [
-            'Content-type'        => 'text/csv',
+        $fileName = 'payroll_transfer'.$periodLabel.'_'.date('Ymd').'.csv';
+        $headers = [
+            'Content-type' => 'text/csv',
             'Content-Disposition' => "attachment; filename={$fileName}",
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires'             => '0',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
         $callback = function () use ($payrolls) {
@@ -448,12 +477,13 @@ class PayrollController extends Controller
 
         return response()->stream($callback, 200, $headers);
     }
+
     public function markPaidAll(Request $request)
     {
         Gate::authorize('create', Payroll::class);
 
         $request->validate([
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'exists:payrolls,id',
         ]);
 
@@ -508,13 +538,13 @@ class PayrollController extends Controller
         $payroll = Payroll::withTrashed()->with('employee')->findOrFail($id);
         Gate::authorize('view', $payroll);
 
-        $fileName = 'payroll_' . $payroll->id . '_' . date('Y-m-d') . '.csv';
-        $headers  = [
-            'Content-type'        => 'text/csv',
+        $fileName = 'payroll_'.$payroll->id.'_'.date('Y-m-d').'.csv';
+        $headers = [
+            'Content-type' => 'text/csv',
             'Content-Disposition' => "attachment; filename={$fileName}",
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires'             => '0',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
         $callback = function () use ($payroll) {

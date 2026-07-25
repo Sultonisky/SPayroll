@@ -26,6 +26,7 @@ class UserPolicy
         if ($user->isDemo()) {
             return Response::deny('Demo accounts cannot create users.');
         }
+
         return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Hanya Admin yang dapat menambah pengguna baru.');
@@ -36,9 +37,10 @@ class UserPolicy
         if ($user->isDemo()) {
             return Response::deny('Demo accounts cannot modify users.');
         }
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             return Response::deny('Hanya Admin yang dapat mengubah data pengguna.');
         }
+
         return $user->id !== $model->id
             ? Response::allow()
             : Response::deny('Anda tidak dapat mengubah akun sendiri melalui manajemen pengguna. Gunakan halaman profil.');
@@ -49,9 +51,10 @@ class UserPolicy
         if ($user->isDemo()) {
             return Response::deny('Demo accounts cannot delete users.');
         }
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             return Response::deny('Hanya Admin yang dapat menghapus pengguna.');
         }
+
         return $user->id !== $model->id
             ? Response::allow()
             : Response::deny('Anda tidak dapat menghapus akun Anda sendiri.');
@@ -62,9 +65,10 @@ class UserPolicy
         if ($user->isDemo()) {
             return Response::deny('Demo accounts cannot restore users.');
         }
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             return Response::deny('Hanya Admin yang dapat memulihkan pengguna.');
         }
+
         return $user->id !== $model->id
             ? Response::allow()
             : Response::deny('Anda tidak dapat memulihkan akun Anda sendiri.');
@@ -75,9 +79,10 @@ class UserPolicy
         if ($user->isDemo()) {
             return Response::deny('Demo accounts cannot permanently delete users.');
         }
-        if (!$user->isAdmin()) {
+        if (! $user->isAdmin()) {
             return Response::deny('Hanya Admin yang dapat menghapus permanen pengguna.');
         }
+
         return $user->id !== $model->id
             ? Response::allow()
             : Response::deny('Anda tidak dapat menghapus permanen akun Anda sendiri.');

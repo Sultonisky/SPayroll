@@ -29,12 +29,12 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         $position = Position::inRandomOrder()->first() ?? Position::factory()->create();
-        $type     = fake()->randomElement(['fulltime', 'internship']);
+        $type = fake()->randomElement(['fulltime', 'internship']);
 
         // Sequential employee_code (e.g. 001, 002, ...)
         static $counter = null;
         if ($counter === null) {
-            $latest  = Employee::withTrashed()
+            $latest = Employee::withTrashed()
                 ->whereNotNull('employee_code')
                 ->orderByDesc('employee_code')
                 ->value('employee_code');
@@ -42,24 +42,24 @@ class EmployeeFactory extends Factory
         }
         $employeeCode = str_pad($counter++, 3, '0', STR_PAD_LEFT);
 
-        $city    = fake()->randomElement(self::$cities);
-        $street  = fake()->streetAddress();
+        $city = fake()->randomElement(self::$cities);
+        $street = fake()->streetAddress();
 
         return [
-            'department_id'       => Department::inRandomOrder()->first()?->id ?? Department::factory()->create()->id,
-            'position_id'         => $position->id,
-            'employee_code'       => $employeeCode,
-            'nik'                 => fake()->unique()->numerify('3###############'), // 16 digit KTP-like
-            'name'                => fake()->name(),
-            'gender'              => fake()->randomElement(['laki-laki', 'perempuan']),
-            'email'               => fake()->unique()->safeEmail(),
-            'phone'               => fake()->unique()->numerify('08##########'),    // Indonesian mobile format
-            'address'             => "{$street}, {$city}",
-            'join_date'           => fake()->dateTimeBetween('-5 years', '-1 month')->format('Y-m-d'),
-            'birth_date'          => fake()->dateTimeBetween('-40 years', '-22 years')->format('Y-m-d'),
-            'employee_status'     => fake()->randomElement(['active', 'active', 'active', 'inactive', 'resigned']), // bias towards active
-            'employee_type'       => $type,
-            'bank_name'           => fake()->randomElement(self::$banks),
+            'department_id' => Department::inRandomOrder()->first()?->id ?? Department::factory()->create()->id,
+            'position_id' => $position->id,
+            'employee_code' => $employeeCode,
+            'nik' => fake()->unique()->numerify('3###############'), // 16 digit KTP-like
+            'name' => fake()->name(),
+            'gender' => fake()->randomElement(['laki-laki', 'perempuan']),
+            'email' => fake()->unique()->safeEmail(),
+            'phone' => fake()->unique()->numerify('08##########'),    // Indonesian mobile format
+            'address' => "{$street}, {$city}",
+            'join_date' => fake()->dateTimeBetween('-5 years', '-1 month')->format('Y-m-d'),
+            'birth_date' => fake()->dateTimeBetween('-40 years', '-22 years')->format('Y-m-d'),
+            'employee_status' => fake()->randomElement(['active', 'active', 'active', 'inactive', 'resigned']), // bias towards active
+            'employee_type' => $type,
+            'bank_name' => fake()->randomElement(self::$banks),
             'bank_account_number' => fake()->unique()->numerify('##########'),
         ];
     }
