@@ -37,7 +37,7 @@ class BonusFactory extends Factory
 
         if ($status === 'approved' || $status === 'rejected') {
             $approvedBy = User::whereIn('role', ['admin', 'HR'])->inRandomOrder()->first()?->id;
-            $approvedAt = fake()->dateTimeBetween("-{$year} years", 'now');
+            $approvedAt = fake()->dateTimeBetween('-2 years', 'now');
         }
 
         return [
@@ -59,11 +59,17 @@ class BonusFactory extends Factory
 
     public function approved(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'status'      => 'approved',
-            'approved_by' => User::whereIn('role', ['admin', 'HR'])->inRandomOrder()->first()?->id,
-            'approved_at' => now(),
-        ]);
+        return $this->state(function (array $attributes) {
+            $approver = User::whereIn('role', ['admin', 'HR'])->inRandomOrder()->first()
+                ?? User::factory()->create(['role' => 'admin']);
+
+            return [
+                'status'      => 'approved',
+                'approved_by' => $approver->id,
+                'approved_at' => now()->subDay(),
+                'notes'       => null,
+            ];
+        });
     }
 
     public function pending(): static
