@@ -19,8 +19,15 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3"
-          extensions: bcmath, ctype, fileinfo, json, mbstring, openssl, pdo, tokenizer, xml
+          extensions: bcmath, ctype, fileinfo, json, mbstring, openssl, pdo, pdo_sqlite, tokenizer, xml
           coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -37,6 +44,11 @@ jobs:
       matrix:
         php: ["8.3"]
 
+    env:
+      # Force SQLite in-memory for all artisan calls in this job
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ":memory:"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -48,6 +60,13 @@ jobs:
           extensions: bcmath, ctype, fileinfo, json, mbstring, openssl, pdo, pdo_sqlite, tokenizer, xml
           coverage: none
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
@@ -57,17 +76,8 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate
 
-      - name: Set up SQLite database
-        run: |
-          touch database/database.sqlite
-          echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=$(pwd)/database/database.sqlite" >> .env
-
-      - name: Run migrations
-        run: php artisan migrate --force
-
       - name: Run tests
-        run: php artisan test --parallel
+        run: php artisan test
 
   build-assets:
     name: Build Frontend Assets
