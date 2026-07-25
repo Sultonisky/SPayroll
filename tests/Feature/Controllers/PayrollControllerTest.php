@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
 use App\Models\Position;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -22,16 +23,16 @@ class PayrollControllerTest extends TestCase
     {
         parent::setUp();
 
-        $dept           = Department::factory()->create();
-        $position       = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+        $dept = Department::factory()->create();
+        $position = Position::factory()->create([
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
         $this->employee = Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
-            'employee_type'   => 'fulltime',
+            'employee_type' => 'fulltime',
         ]);
     }
 
@@ -39,9 +40,9 @@ class PayrollControllerTest extends TestCase
     {
         return Payroll::factory()->create(array_merge([
             'employee_id' => $this->employee->id,
-            'status'      => $status,
-            'year'        => 2025,
-            'month'       => 6,
+            'status' => $status,
+            'year' => 2025,
+            'month' => 6,
         ], $overrides));
     }
 
@@ -106,22 +107,22 @@ class PayrollControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('payrolls.store'), [
-                'employee_id'  => $this->employee->id,
-                'year'         => 2025,
-                'month'        => 7,
-                'pay_date'     => '2025-07-25',
-                'base_salary'  => 10_000_000,
-                'bonus'        => 0,
+                'employee_id' => $this->employee->id,
+                'year' => 2025,
+                'month' => 7,
+                'pay_date' => '2025-07-25',
+                'base_salary' => 10_000_000,
+                'bonus' => 0,
                 'total_salary' => 10_000_000,
-                'status'       => 'draft',
+                'status' => 'draft',
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('payrolls', [
             'employee_id' => $this->employee->id,
-            'year'        => 2025,
-            'month'       => 7,
-            'status'      => 'draft',
+            'year' => 2025,
+            'month' => 7,
+            'status' => 'draft',
         ]);
     }
 
@@ -138,16 +139,16 @@ class PayrollControllerTest extends TestCase
         try {
             $this->actingAs($this->adminUser())
                 ->post(route('payrolls.store'), [
-                    'employee_id'  => $this->employee->id,
-                    'year'         => 2025,
-                    'month'        => 8,
-                    'pay_date'     => '2025-08-25',
-                    'base_salary'  => 10_000_000,
-                    'bonus'        => 0,
+                    'employee_id' => $this->employee->id,
+                    'year' => 2025,
+                    'month' => 8,
+                    'pay_date' => '2025-08-25',
+                    'base_salary' => 10_000_000,
+                    'bonus' => 0,
                     'total_salary' => 10_000_000,
-                    'status'       => 'draft',
+                    'status' => 'draft',
                 ]);
-        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException $e) {
             // Expected — DB constraint prevents duplicate
         }
 
@@ -235,9 +236,9 @@ class PayrollControllerTest extends TestCase
         $p1 = $this->makePayroll('draft', ['month' => 1]);
         $p2 = Payroll::factory()->create([
             'employee_id' => $this->employee->id,
-            'status'      => 'draft',
-            'year'        => 2025,
-            'month'       => 2,
+            'status' => 'draft',
+            'year' => 2025,
+            'month' => 2,
         ]);
 
         $this->actingAs($this->adminUser())
@@ -279,17 +280,17 @@ class PayrollControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('payrolls.generate.bulk'), [
-                'year'     => 2025,
-                'month'    => 9,
+                'year' => 2025,
+                'month' => 9,
                 'pay_date' => '2025-09-25',
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('payrolls', [
             'employee_id' => $this->employee->id,
-            'year'        => 2025,
-            'month'       => 9,
-            'status'      => 'draft',
+            'year' => 2025,
+            'month' => 9,
+            'status' => 'draft',
         ]);
     }
 

@@ -25,9 +25,9 @@ class PayrollFactory extends Factory
 
         $attempt = 0;
         do {
-            $year  = fake()->numberBetween(2024, 2026);
+            $year = fake()->numberBetween(2024, 2026);
             $month = fake()->numberBetween(1, 12);
-            $key   = "{$employee->id}-{$year}-{$month}";
+            $key = "{$employee->id}-{$year}-{$month}";
             $attempt++;
 
             // After a few tries with same employee, pick a different employee
@@ -52,18 +52,18 @@ class PayrollFactory extends Factory
 
         // Pay date: always on the 25th (or last day of month if < 25 days)
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $payDate     = sprintf('%04d-%02d-%02d', $year, $month, min(25, $daysInMonth));
+        $payDate = sprintf('%04d-%02d-%02d', $year, $month, min(25, $daysInMonth));
 
         return [
-            'employee_id'  => $employee->id,
-            'year'         => $year,
-            'month'        => $month,
-            'pay_date'     => $payDate,
-            'base_salary'  => $baseSalary,
-            'bonus'        => $bonus,
+            'employee_id' => $employee->id,
+            'year' => $year,
+            'month' => $month,
+            'pay_date' => $payDate,
+            'base_salary' => $baseSalary,
+            'bonus' => $bonus,
             'total_salary' => $baseSalary + $bonus,
-            'notes'        => fake()->optional(0.2)->sentence(),
-            'status'       => fake()->randomElement(['draft', 'approved', 'approved', 'paid', 'paid']),
+            'notes' => fake()->optional(0.2)->sentence(),
+            'status' => fake()->randomElement(['draft', 'approved', 'approved', 'paid', 'paid']),
         ];
     }
 }

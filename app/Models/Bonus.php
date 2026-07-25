@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 
 class Bonus extends Model
 {
@@ -26,9 +26,9 @@ class Bonus extends Model
     ];
 
     protected $casts = [
-        'amount'      => 'float',
+        'amount' => 'float',
         'approved_at' => 'datetime',
-        'deleted_at'  => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     // ----------------------------------------------------------------
@@ -71,7 +71,18 @@ class Bonus extends Model
     // Helpers
     // ----------------------------------------------------------------
 
-    public function isPending(): bool   { return $this->status === 'pending'; }
-    public function isApproved(): bool  { return $this->status === 'approved'; }
-    public function isRejected(): bool  { return $this->status === 'rejected'; }
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->status === 'approved';
+    }
+
+    public function isRejected(): bool
+    {
+        return $this->status === 'rejected';
+    }
 }

@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
     use ProcessesImages;
+
     public function index()
     {
         $user = auth()->user();
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Unauthorized');
         }
 
@@ -26,7 +26,7 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Unauthorized');
         }
 
@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'current_password' => 'nullable|required_with:password|current_password',
             'password' => ['nullable', 'confirmed', Password::min(8)],
@@ -54,7 +54,7 @@ class ProfileController extends Controller
         if ($request->hasFile('foto')) {
             $newPath = $this->processAndStoreImage($request->file('foto'), 'avatars', 600, 82);
 
-            if (!empty($user->foto)) {
+            if (! empty($user->foto)) {
                 Storage::disk('supabase')->delete($user->foto);
             }
 

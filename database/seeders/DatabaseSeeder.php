@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
         User::firstOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@spayroll.com')],
             [
-                'name'              => env('ADMIN_NAME', 'Administrator'),
-                'password'          => Hash::make(env('ADMIN_PASSWORD', 'password123')),
+                'name' => env('ADMIN_NAME', 'Administrator'),
+                'password' => Hash::make(env('ADMIN_PASSWORD', 'password123')),
                 'email_verified_at' => now(),
-                'role'              => 'admin',
+                'role' => 'admin',
             ]
         );
 
@@ -47,11 +47,11 @@ class DatabaseSeeder extends Seeder
             User::firstOrCreate(
                 ['email' => $demo['email']],
                 [
-                    'name'              => $demo['name'],
-                    'password'          => Hash::make('demo12345'),
+                    'name' => $demo['name'],
+                    'password' => Hash::make('demo12345'),
                     'email_verified_at' => now(),
-                    'role'              => $demo['role'],
-                    'is_demo'           => true,
+                    'role' => $demo['role'],
+                    'is_demo' => true,
                 ]
             );
         }
@@ -98,8 +98,8 @@ class DatabaseSeeder extends Seeder
         // ----------------------------------------------------------------
         $this->command->info('');
         $this->command->info('All seed data created successfully.');
-        $this->command->line('  Admin email : ' . env('ADMIN_EMAIL', 'admin@spayroll.com'));
-        $this->command->line('  Admin pass  : ' . env('ADMIN_PASSWORD', 'password123'));
+        $this->command->line('  Admin email : '.env('ADMIN_EMAIL', 'admin@spayroll.com'));
+        $this->command->line('  Admin pass  : '.env('ADMIN_PASSWORD', 'password123'));
         $this->command->info('');
         $this->command->info('Demo accounts (password: demo1234):');
         $this->command->line('  admin@demo.com   → Admin');

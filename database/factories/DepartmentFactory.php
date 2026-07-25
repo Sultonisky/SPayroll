@@ -51,7 +51,7 @@ class DepartmentFactory extends Factory
         $name = fake()->unique()->randomElement(array_keys(self::$departments));
 
         return [
-            'name'        => $name,
+            'name' => $name,
             'description' => self::$departments[$name]['description'],
         ];
     }

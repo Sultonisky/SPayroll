@@ -12,9 +12,9 @@ class UserModelTest extends TestCase
 {
     private function makeUser(string $role, bool $isDemo = false): User
     {
-        $user           = new User();
-        $user->role     = $role;
-        $user->is_demo  = $isDemo;
+        $user = new User;
+        $user->role = $role;
+        $user->is_demo = $isDemo;
 
         return $user;
     }

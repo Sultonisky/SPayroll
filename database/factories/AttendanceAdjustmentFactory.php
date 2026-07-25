@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\AttendanceAdjustment;
 use App\Models\AttendanceRecord;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\AttendanceAdjustment>
+ * @extends Factory<AttendanceAdjustment>
  */
 class AttendanceAdjustmentFactory extends Factory
 {

@@ -7,6 +7,7 @@ use App\Models\AttendanceRecord;
 class AttendanceService
 {
     const WORK_START_TIME = '08:00:00';
+
     const WORK_END_TIME = '17:00:00';
 
     public function calculateAttendanceData(AttendanceRecord $record): array
@@ -29,7 +30,7 @@ class AttendanceService
             $checkIn = strtotime($record->check_in);
             $workStart = strtotime(self::WORK_START_TIME);
             if ($checkIn > $workStart) {
-                $lateMinutes = (int)round(($checkIn - $workStart) / 60);
+                $lateMinutes = (int) round(($checkIn - $workStart) / 60);
             }
         }
 
@@ -38,14 +39,14 @@ class AttendanceService
             $checkOut = strtotime($record->check_out);
             $workEnd = strtotime(self::WORK_END_TIME);
             if ($checkOut > $workEnd) {
-                $overtimeMinutes = (int)round(($checkOut - $workEnd) / 60);
+                $overtimeMinutes = (int) round(($checkOut - $workEnd) / 60);
             }
         }
 
         // Determine status
-        if (!$record->check_in && !$record->check_out) {
+        if (! $record->check_in && ! $record->check_out) {
             $status = 'absent';
-        } elseif (!$record->check_in || !$record->check_out) {
+        } elseif (! $record->check_in || ! $record->check_out) {
             $status = 'need_review';
         } elseif ($lateMinutes > 0) {
             $status = 'late';

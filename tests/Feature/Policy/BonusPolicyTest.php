@@ -22,14 +22,14 @@ class BonusPolicyTest extends TestCase
 
     private function makeBonus(string $status = 'pending'): Bonus
     {
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 5_000_000,
+            'base_salary_fulltime' => 5_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
         $employee = Employee::factory()->create([
             'department_id' => $dept->id,
-            'position_id'   => $position->id,
+            'position_id' => $position->id,
         ]);
 
         if ($status === 'pending') {
@@ -43,9 +43,9 @@ class BonusPolicyTest extends TestCase
         // rejected — safe date for MySQL
         return Bonus::factory()->create([
             'employee_id' => $employee->id,
-            'status'      => 'rejected',
+            'status' => 'rejected',
             'approved_at' => now()->subDays(5),
-            'notes'       => 'Rejected for test',
+            'notes' => 'Rejected for test',
         ]);
     }
 
@@ -145,7 +145,7 @@ class BonusPolicyTest extends TestCase
 
     public function test_demo_admin_cannot_force_delete_bonus(): void
     {
-        $demo  = $this->demoAdmin();
+        $demo = $this->demoAdmin();
         $bonus = $this->makeBonus();
 
         $this->assertFalse($demo->can('forceDelete', $bonus));

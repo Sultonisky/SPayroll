@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function authLogin(Request $request)
     {
         $credentials = $request->validate([
-            'email'    => 'required|email|exists:users,email',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required|string',
         ], [
             'email.exists' => 'Email not registered in our system.',
@@ -25,17 +25,19 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (! Hash::check($request->password, $user->password)) {
             return back()->with('error', 'Password is incorrect.')->withInput($request->only('email'));
         }
 
         if (in_array($user->role, ['admin', 'HR', 'manager', 'staff'])) {
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
+
             return redirect()->intended(route('admin.dashboard'));
         }
 
         Auth::logout();
+
         return back()->with('error', 'You do not have access to this area yet.')->withInput($request->only('email'));
     }
 

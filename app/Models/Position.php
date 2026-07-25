@@ -19,9 +19,9 @@ class Position extends Model
     ];
 
     protected $casts = [
-        'base_salary_fulltime'   => 'float',
+        'base_salary_fulltime' => 'float',
         'base_salary_internship' => 'float',
-        'deleted_at'             => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     /**
@@ -29,10 +29,10 @@ class Position extends Model
      */
     public function getBaseSalaryFor(string $employeeType): ?float
     {
-        return match($employeeType) {
-            'fulltime'   => $this->base_salary_fulltime,
+        return match ($employeeType) {
+            'fulltime' => $this->base_salary_fulltime,
             'internship' => $this->base_salary_internship,
-            default      => null,
+            default => null,
         };
     }
 

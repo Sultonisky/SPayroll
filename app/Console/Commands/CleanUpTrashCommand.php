@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class CleanUpTrashCommand extends Command
@@ -26,7 +27,7 @@ class CleanUpTrashCommand extends Command
     public function handle()
     {
         $models = [
-            \App\Models\User::class,
+            User::class,
         ];
 
         $days = 90;

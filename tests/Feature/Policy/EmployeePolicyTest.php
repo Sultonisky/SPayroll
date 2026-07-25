@@ -19,8 +19,8 @@ class EmployeePolicyTest extends TestCase
     {
         return Employee::factory()->create([
             'department_id' => Department::factory()->create()->id,
-            'position_id'   => Position::factory()->create([
-                'base_salary_fulltime'   => 5_000_000,
+            'position_id' => Position::factory()->create([
+                'base_salary_fulltime' => 5_000_000,
                 'base_salary_internship' => 2_000_000,
             ])->id,
         ]);
@@ -112,7 +112,7 @@ class EmployeePolicyTest extends TestCase
 
     public function test_demo_admin_cannot_force_delete_employee(): void
     {
-        $demo     = $this->demoAdmin();
+        $demo = $this->demoAdmin();
         $employee = $this->makeEmployee();
 
         $this->assertFalse($demo->can('forceDelete', $employee));

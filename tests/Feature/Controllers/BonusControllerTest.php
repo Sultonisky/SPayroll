@@ -22,14 +22,14 @@ class BonusControllerTest extends TestCase
     {
         parent::setUp();
 
-        $dept           = Department::factory()->create();
-        $position       = Position::factory()->create([
-            'base_salary_fulltime'   => 8_000_000,
+        $dept = Department::factory()->create();
+        $position = Position::factory()->create([
+            'base_salary_fulltime' => 8_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
         $this->employee = Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
         ]);
     }
@@ -39,27 +39,27 @@ class BonusControllerTest extends TestCase
         if ($status === 'pending') {
             return Bonus::factory()->pending()->create([
                 'employee_id' => $this->employee->id,
-                'year'        => 2025,
-                'month'       => 6,
+                'year' => 2025,
+                'month' => 6,
             ]);
         }
 
         if ($status === 'approved') {
             return Bonus::factory()->approved()->create([
                 'employee_id' => $this->employee->id,
-                'year'        => 2025,
-                'month'       => 6,
+                'year' => 2025,
+                'month' => 6,
             ]);
         }
 
         // rejected — safe date for MySQL
         return Bonus::factory()->create([
             'employee_id' => $this->employee->id,
-            'year'        => 2025,
-            'month'       => 6,
-            'status'      => 'rejected',
+            'year' => 2025,
+            'month' => 6,
+            'status' => 'rejected',
             'approved_at' => now()->subDays(5),
-            'notes'       => 'Rejected for test',
+            'notes' => 'Rejected for test',
         ]);
     }
 
@@ -97,18 +97,18 @@ class BonusControllerTest extends TestCase
         $this->actingAs($this->adminUser())
             ->post(route('bonuses.store'), [
                 'employee_id' => $this->employee->id,
-                'year'        => 2025,
-                'month'       => 8,
-                'type'        => 'Performance Bonus',
-                'amount'      => 1_000_000,
+                'year' => 2025,
+                'month' => 8,
+                'type' => 'Performance Bonus',
+                'amount' => 1_000_000,
                 'description' => 'Great work',
             ])
             ->assertRedirect();
 
         $this->assertDatabaseHas('bonuses', [
             'employee_id' => $this->employee->id,
-            'type'        => 'Performance Bonus',
-            'status'      => 'pending',
+            'type' => 'Performance Bonus',
+            'status' => 'pending',
         ]);
     }
 
@@ -124,10 +124,10 @@ class BonusControllerTest extends TestCase
         $this->actingAs($this->staffUser())
             ->post(route('bonuses.store'), [
                 'employee_id' => $this->employee->id,
-                'year'        => 2025,
-                'month'       => 8,
-                'type'        => 'Bonus',
-                'amount'      => 500_000,
+                'year' => 2025,
+                'month' => 8,
+                'type' => 'Bonus',
+                'amount' => 500_000,
             ])
             ->assertForbidden();
     }
@@ -156,10 +156,10 @@ class BonusControllerTest extends TestCase
         $this->actingAs($this->managerUser())
             ->put(route('bonuses.update', $bonus->id), [
                 'employee_id' => $this->employee->id,
-                'year'        => 2025,
-                'month'       => 6,
-                'type'        => 'Annual Bonus',
-                'amount'      => 2_000_000,
+                'year' => 2025,
+                'month' => 6,
+                'type' => 'Annual Bonus',
+                'amount' => 2_000_000,
             ])
             ->assertRedirect();
 
@@ -175,10 +175,10 @@ class BonusControllerTest extends TestCase
             $this->actingAs($user)
                 ->put(route('bonuses.update', $bonus->id), [
                     'employee_id' => $this->employee->id,
-                    'year'        => 2025,
-                    'month'       => 6,
-                    'type'        => 'Changed',
-                    'amount'      => 1,
+                    'year' => 2025,
+                    'month' => 6,
+                    'type' => 'Changed',
+                    'amount' => 1,
                 ])
                 ->assertForbidden();
         }

@@ -12,9 +12,9 @@ class PositionModelTest extends TestCase
 {
     private function makePosition(?float $fulltime, ?float $internship): Position
     {
-        $position                          = new Position();
-        $position->base_salary_fulltime    = $fulltime;
-        $position->base_salary_internship  = $internship;
+        $position = new Position;
+        $position->base_salary_fulltime = $fulltime;
+        $position->base_salary_internship = $internship;
 
         return $position;
     }

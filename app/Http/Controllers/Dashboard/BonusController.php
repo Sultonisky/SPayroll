@@ -14,10 +14,10 @@ class BonusController extends Controller
     {
         Gate::authorize('viewAny', Bonus::class);
 
-        $year       = $request->input('year');       // null = all years
-        $month      = $request->input('month');      // null = all months
+        $year = $request->input('year');       // null = all years
+        $month = $request->input('month');      // null = all months
         $employeeId = $request->input('employee_id');
-        $status     = $request->input('status');
+        $status = $request->input('status');
 
         $query = Bonus::select('id', 'employee_id', 'year', 'month', 'type', 'amount', 'status', 'created_at')
             ->with('employee:id,name,employee_code');
@@ -78,12 +78,12 @@ class BonusController extends Controller
 
         $validated = $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'year'        => 'required|integer|min:2000|max:2100',
-            'month'       => 'required|integer|min:1|max:12',
-            'type'        => 'required|string|max:100',
+            'year' => 'required|integer|min:2000|max:2100',
+            'month' => 'required|integer|min:1|max:12',
+            'type' => 'required|string|max:100',
             'description' => 'nullable|string|max:1000',
-            'amount'      => 'required|numeric|min:1',
-            'notes'       => 'nullable|string|max:500',
+            'amount' => 'required|numeric|min:1',
+            'notes' => 'nullable|string|max:500',
         ]);
 
         Bonus::create($validated);
@@ -120,12 +120,12 @@ class BonusController extends Controller
 
         $validated = $request->validate([
             'employee_id' => 'required|exists:employees,id',
-            'year'        => 'required|integer|min:2000|max:2100',
-            'month'       => 'required|integer|min:1|max:12',
-            'type'        => 'required|string|max:100',
+            'year' => 'required|integer|min:2000|max:2100',
+            'month' => 'required|integer|min:1|max:12',
+            'type' => 'required|string|max:100',
             'description' => 'nullable|string|max:1000',
-            'amount'      => 'required|numeric|min:1',
-            'notes'       => 'nullable|string|max:500',
+            'amount' => 'required|numeric|min:1',
+            'notes' => 'nullable|string|max:500',
         ]);
 
         $bonus->update($validated);
@@ -143,7 +143,7 @@ class BonusController extends Controller
         Gate::authorize('approve', $bonus);
 
         $bonus->update([
-            'status'      => 'approved',
+            'status' => 'approved',
             'approved_by' => auth()->id(),
             'approved_at' => now(),
         ]);
@@ -166,7 +166,7 @@ class BonusController extends Controller
 
         $bonus->update([
             'status' => 'rejected',
-            'notes'  => $request->notes,
+            'notes' => $request->notes,
         ]);
 
         return redirect()->back()

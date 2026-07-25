@@ -16,14 +16,15 @@ class EmployeeControllerTest extends TestCase
     use RefreshDatabase;
 
     private Department $dept;
-    private Position   $position;
+
+    private Position $position;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->dept     = Department::factory()->create();
+        $this->dept = Department::factory()->create();
         $this->position = Position::factory()->create([
-            'base_salary_fulltime'   => 8_000_000,
+            'base_salary_fulltime' => 8_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
     }
@@ -31,20 +32,20 @@ class EmployeeControllerTest extends TestCase
     private function validPayload(array $overrides = []): array
     {
         return array_merge([
-            'department_id'       => $this->dept->id,
-            'position_id'         => $this->position->id,
-            'nik'                 => '3171234567890001',
-            'name'                => 'Test Employee',
-            'email'               => 'emp@test.com',
-            'phone'               => '081234567890',
-            'address'             => 'Jl. Test No. 1',
-            'join_date'           => '2024-01-01',
-            'birth_date'          => '1995-06-15',
-            'employee_status'     => 'active',
-            'employee_type'       => 'fulltime',
-            'bank_name'           => 'BCA',
+            'department_id' => $this->dept->id,
+            'position_id' => $this->position->id,
+            'nik' => '3171234567890001',
+            'name' => 'Test Employee',
+            'email' => 'emp@test.com',
+            'phone' => '081234567890',
+            'address' => 'Jl. Test No. 1',
+            'join_date' => '2024-01-01',
+            'birth_date' => '1995-06-15',
+            'employee_status' => 'active',
+            'employee_type' => 'fulltime',
+            'bank_name' => 'BCA',
             'bank_account_number' => '1234567890',
-            'gender'              => 'laki-laki',
+            'gender' => 'laki-laki',
         ], $overrides);
     }
 
@@ -56,7 +57,7 @@ class EmployeeControllerTest extends TestCase
     {
         Employee::factory()->count(2)->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         foreach ([
@@ -127,8 +128,8 @@ class EmployeeControllerTest extends TestCase
     {
         Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
-            'nik'           => '3171234567890001',
+            'position_id' => $this->position->id,
+            'nik' => '3171234567890001',
         ]);
 
         $this->actingAs($this->adminUser())
@@ -140,7 +141,7 @@ class EmployeeControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('employees.store'), $this->validPayload([
-                'bank_name'       => 'Other',
+                'bank_name' => 'Other',
                 'bank_name_other' => 'Bank Custom',
             ]))
             ->assertRedirect();
@@ -156,7 +157,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         foreach ([
@@ -179,14 +180,14 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         $this->actingAs($this->adminUser())
             ->put(route('employees.update', $employee->id), $this->validPayload([
-                'nik'   => $employee->nik,
+                'nik' => $employee->nik,
                 'email' => $employee->email,
-                'name'  => 'Updated Name',
+                'name' => 'Updated Name',
             ]))
             ->assertRedirect();
 
@@ -197,7 +198,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         $this->actingAs($this->staffUser())
@@ -213,7 +214,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         $this->actingAs($this->adminUser())
@@ -227,7 +228,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         $this->actingAs($this->managerUser())
@@ -239,7 +240,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
         $employee->delete();
 
@@ -254,7 +255,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
         $employee->delete();
 
@@ -271,7 +272,7 @@ class EmployeeControllerTest extends TestCase
     {
         $employee = Employee::factory()->create([
             'department_id' => $this->dept->id,
-            'position_id'   => $this->position->id,
+            'position_id' => $this->position->id,
         ]);
 
         $response = $this->actingAs($this->adminUser())

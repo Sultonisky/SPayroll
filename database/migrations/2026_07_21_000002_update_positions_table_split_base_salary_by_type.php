@@ -22,14 +22,14 @@ return new class extends Migration
 
             // Add separate salary columns per employee type
             $table->decimal('base_salary_fulltime', 15, 2)
-                  ->nullable()
-                  ->after('description')
-                  ->comment('Base salary for fulltime employees (higher)');
+                ->nullable()
+                ->after('description')
+                ->comment('Base salary for fulltime employees (higher)');
 
             $table->decimal('base_salary_internship', 15, 2)
-                  ->nullable()
-                  ->after('base_salary_fulltime')
-                  ->comment('Base salary for internship employees (lower)');
+                ->nullable()
+                ->after('base_salary_fulltime')
+                ->comment('Base salary for internship employees (lower)');
         });
     }
 
@@ -42,8 +42,8 @@ return new class extends Migration
             $table->dropColumn(['base_salary_fulltime', 'base_salary_internship']);
 
             $table->decimal('base_salary', 15, 2)
-                  ->nullable()
-                  ->after('description');
+                ->nullable()
+                ->after('description');
 
             $table->index('base_salary');
         });

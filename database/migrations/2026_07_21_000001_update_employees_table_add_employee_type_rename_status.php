@@ -22,8 +22,8 @@ return new class extends Migration
         Schema::table('employees', function (Blueprint $table) {
             // Add employee_type after employee_status
             $table->enum('employee_type', ['fulltime', 'internship'])
-                  ->default('fulltime')
-                  ->after('employee_status');
+                ->default('fulltime')
+                ->after('employee_status');
 
             $table->index('employee_type');
         });

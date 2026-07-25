@@ -25,7 +25,7 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($user)
             ->put(route('profile.update'), [
-                'name'  => 'New Name',
+                'name' => 'New Name',
                 'email' => $user->email,
             ])
             ->assertRedirect();
@@ -39,7 +39,7 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($demo)
             ->put(route('profile.update'), [
-                'name'  => 'Hacker',
+                'name' => 'Hacker',
                 'email' => $demo->email,
             ])
             ->assertRedirect()
@@ -52,17 +52,17 @@ class ProfileControllerTest extends TestCase
 
         $this->actingAs($user)
             ->put(route('profile.update'), [
-                'name'             => $user->name,
-                'email'            => $user->email,
+                'name' => $user->name,
+                'email' => $user->email,
                 'current_password' => 'oldpassword',
-                'password'         => 'newPassword1!',
+                'password' => 'newPassword1!',
                 'password_confirmation' => 'newPassword1!',
             ])
             ->assertRedirect();
 
         // Ensure password changed
         $this->assertCredentials([
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'newPassword1!',
         ]);
     }

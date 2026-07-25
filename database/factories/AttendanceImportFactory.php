@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\AttendanceImport;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\AttendanceImport>
+ * @extends Factory<AttendanceImport>
  */
 class AttendanceImportFactory extends Factory
 {
@@ -22,7 +23,7 @@ class AttendanceImportFactory extends Factory
         $failedRows = $totalRows - $successRows;
 
         return [
-            'file_name' => fake()->word() . '_' . fake()->date('Y-m-d') . '.' . fake()->randomElement(['xlsx', 'csv']),
+            'file_name' => fake()->word().'_'.fake()->date('Y-m-d').'.'.fake()->randomElement(['xlsx', 'csv']),
             'imported_by' => User::inRandomOrder()->first()?->id ?? User::factory()->create()->id,
             'total_rows' => $totalRows,
             'success_rows' => $successRows,

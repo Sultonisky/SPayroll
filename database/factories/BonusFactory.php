@@ -28,9 +28,9 @@ class BonusFactory extends Factory
     public function definition(): array
     {
         $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();
-        $year     = fake()->numberBetween(2024, 2026);
-        $month    = fake()->numberBetween(1, 12);
-        $status   = fake()->randomElement(['pending', 'approved', 'approved', 'rejected']);
+        $year = fake()->numberBetween(2024, 2026);
+        $month = fake()->numberBetween(1, 12);
+        $status = fake()->randomElement(['pending', 'approved', 'approved', 'rejected']);
 
         $approvedBy = null;
         $approvedAt = null;
@@ -42,18 +42,18 @@ class BonusFactory extends Factory
 
         return [
             'employee_id' => $employee->id,
-            'year'        => $year,
-            'month'       => $month,
-            'type'        => fake()->randomElement(self::$types),
+            'year' => $year,
+            'month' => $month,
+            'type' => fake()->randomElement(self::$types),
             'description' => fake()->optional(0.6)->sentence(),
-            'amount'      => fake()->randomElement([
+            'amount' => fake()->randomElement([
                 500_000, 750_000, 1_000_000, 1_500_000,
                 2_000_000, 2_500_000, 3_000_000,
             ]),
-            'status'      => $status,
+            'status' => $status,
             'approved_by' => $approvedBy,
             'approved_at' => $approvedAt,
-            'notes'       => $status === 'rejected' ? fake()->sentence() : null,
+            'notes' => $status === 'rejected' ? fake()->sentence() : null,
         ];
     }
 
@@ -64,10 +64,10 @@ class BonusFactory extends Factory
                 ?? User::factory()->create(['role' => 'admin']);
 
             return [
-                'status'      => 'approved',
+                'status' => 'approved',
                 'approved_by' => $approver->id,
                 'approved_at' => now()->subDay(),
-                'notes'       => null,
+                'notes' => null,
             ];
         });
     }
@@ -75,7 +75,7 @@ class BonusFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status'      => 'pending',
+            'status' => 'pending',
             'approved_by' => null,
             'approved_at' => null,
         ]);

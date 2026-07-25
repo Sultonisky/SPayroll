@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Bonus;
 use App\Models\Employee;
 use App\Models\Payroll;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PayrollCalculatorService
@@ -37,11 +36,11 @@ class PayrollCalculatorService
             ->sum('amount');
 
         return [
-            'employee_id'  => $employee->id,
-            'year'         => $year,
-            'month'        => $month,
-            'base_salary'  => $baseSalary,
-            'bonus'        => (float) $bonus,
+            'employee_id' => $employee->id,
+            'year' => $year,
+            'month' => $month,
+            'base_salary' => $baseSalary,
+            'bonus' => (float) $bonus,
             'total_salary' => $baseSalary + (float) $bonus,
         ];
     }
@@ -73,20 +72,21 @@ class PayrollCalculatorService
 
                 if ($exists) {
                     $skipped++;
+
                     continue;
                 }
 
                 $components = $this->calculate($employee, $year, $month);
 
                 Payroll::create([
-                    'employee_id'  => $components['employee_id'],
-                    'year'         => $components['year'],
-                    'month'        => $components['month'],
-                    'pay_date'     => $payDate,
-                    'base_salary'  => $components['base_salary'],
-                    'bonus'        => $components['bonus'],
+                    'employee_id' => $components['employee_id'],
+                    'year' => $components['year'],
+                    'month' => $components['month'],
+                    'pay_date' => $payDate,
+                    'base_salary' => $components['base_salary'],
+                    'bonus' => $components['bonus'],
                     'total_salary' => $components['total_salary'],
-                    'status'       => 'draft',
+                    'status' => 'draft',
                 ]);
 
                 $created++;

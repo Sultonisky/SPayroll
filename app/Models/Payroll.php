@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,11 +25,11 @@ class Payroll extends Model
     ];
 
     protected $casts = [
-        'base_salary'  => 'float',
-        'bonus'        => 'float',
+        'base_salary' => 'float',
+        'bonus' => 'float',
         'total_salary' => 'float',
-        'pay_date'     => 'date',
-        'deleted_at'   => 'datetime',
+        'pay_date' => 'date',
+        'deleted_at' => 'datetime',
     ];
 
     // ----------------------------------------------------------------
@@ -44,12 +45,23 @@ class Payroll extends Model
     // Helpers
     // ----------------------------------------------------------------
 
-    public function isDraft(): bool    { return $this->status === 'draft'; }
-    public function isApproved(): bool { return $this->status === 'approved'; }
-    public function isPaid(): bool     { return $this->status === 'paid'; }
+    public function isDraft(): bool
+    {
+        return $this->status === 'draft';
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->status === 'approved';
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->status === 'paid';
+    }
 
     public function monthName(): string
     {
-        return \Carbon\Carbon::create($this->year, $this->month)->translatedFormat('F Y');
+        return Carbon::create($this->year, $this->month)->translatedFormat('F Y');
     }
 }

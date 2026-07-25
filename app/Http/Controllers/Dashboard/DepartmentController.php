@@ -42,6 +42,7 @@ class DepartmentController extends Controller
     public function create()
     {
         Gate::authorize('create', Department::class);
+
         return view('dashboard.departments.create');
     }
 
@@ -68,6 +69,7 @@ class DepartmentController extends Controller
     {
         $department = Department::withTrashed()->findOrFail($id);
         Gate::authorize('view', $department);
+
         return view('dashboard.departments.show', compact('department'));
     }
 
@@ -78,6 +80,7 @@ class DepartmentController extends Controller
     {
         $department = Department::findOrFail($id);
         Gate::authorize('update', $department);
+
         return view('dashboard.departments.edit', compact('department'));
     }
 

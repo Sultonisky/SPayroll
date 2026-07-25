@@ -39,9 +39,9 @@ class PositionControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('positions.store'), [
-                'name'                   => 'Software Engineer',
-                'description'            => 'Develops software',
-                'base_salary_fulltime'   => 10_000_000,
+                'name' => 'Software Engineer',
+                'description' => 'Develops software',
+                'base_salary_fulltime' => 10_000_000,
                 'base_salary_internship' => 2_000_000,
             ])
             ->assertRedirect();
@@ -53,8 +53,8 @@ class PositionControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('positions.store'), [
-                'name'                   => 'Test Role',
-                'base_salary_fulltime'   => 5_000_000,
+                'name' => 'Test Role',
+                'base_salary_fulltime' => 5_000_000,
                 'base_salary_internship' => 9_000_000, // must be <= fulltime
             ])
             ->assertSessionHasErrors('base_salary_internship');
@@ -64,8 +64,8 @@ class PositionControllerTest extends TestCase
     {
         $this->actingAs($this->managerUser())
             ->post(route('positions.store'), [
-                'name'                   => 'Test Role',
-                'base_salary_fulltime'   => 5_000_000,
+                'name' => 'Test Role',
+                'base_salary_fulltime' => 5_000_000,
                 'base_salary_internship' => 2_000_000,
             ])
             ->assertForbidden();
@@ -78,14 +78,14 @@ class PositionControllerTest extends TestCase
     public function test_admin_can_update_position(): void
     {
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
 
         $this->actingAs($this->adminUser())
             ->put(route('positions.update', $position->id), [
-                'name'                   => 'Senior Engineer',
-                'base_salary_fulltime'   => 15_000_000,
+                'name' => 'Senior Engineer',
+                'base_salary_fulltime' => 15_000_000,
                 'base_salary_internship' => 3_000_000,
             ])
             ->assertRedirect();
@@ -100,7 +100,7 @@ class PositionControllerTest extends TestCase
     public function test_admin_can_delete_and_restore_position(): void
     {
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
 

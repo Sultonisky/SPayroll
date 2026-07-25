@@ -55,6 +55,7 @@ class EmployeePolicy
         if ($user->isDemo()) {
             return Response::deny('Demo accounts cannot permanently delete employees.');
         }
+
         return in_array($user->role, ['admin', 'HR'])
             ? Response::allow()
             : Response::deny('Anda tidak memiliki izin untuk menghapus permanen karyawan.');

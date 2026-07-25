@@ -11,7 +11,7 @@ trait ProcessesImages
 {
     private function processAndStoreImage($file, string $directory = 'uploads', int $maxWidth = 1000, int $quality = 80): string
     {
-        $manager = new ImageManager(new Driver());
+        $manager = new ImageManager(new Driver);
         $image = $manager->read($file);
 
         if ($image->width() > $maxWidth) {
@@ -28,7 +28,7 @@ trait ProcessesImages
             $encoded = (string) $image->toJpeg($quality);
         }
 
-        $filename = $directory . '/' . Str::random(40) . '.' . $extension;
+        $filename = $directory.'/'.Str::random(40).'.'.$extension;
         Storage::disk('supabase')->put($filename, $encoded);
 
         return $filename;

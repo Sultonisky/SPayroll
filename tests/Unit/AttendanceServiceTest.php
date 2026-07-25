@@ -17,13 +17,13 @@ class AttendanceServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new AttendanceService();
+        $this->service = new AttendanceService;
     }
 
-    private function makeRecord(string|null $checkIn, string|null $checkOut): AttendanceRecord
+    private function makeRecord(?string $checkIn, ?string $checkOut): AttendanceRecord
     {
-        $record = new AttendanceRecord();
-        $record->check_in  = $checkIn;
+        $record = new AttendanceRecord;
+        $record->check_in = $checkIn;
         $record->check_out = $checkOut;
 
         return $record;
@@ -38,9 +38,9 @@ class AttendanceServiceTest extends TestCase
         $result = $this->service->calculateAttendanceData($this->makeRecord(null, null));
 
         $this->assertSame('absent', $result['attendance_status']);
-        $this->assertEquals(0,  $result['work_hours']);
-        $this->assertSame(0,    $result['late_minutes']);
-        $this->assertSame(0,    $result['overtime_minutes']);
+        $this->assertEquals(0, $result['work_hours']);
+        $this->assertSame(0, $result['late_minutes']);
+        $this->assertSame(0, $result['overtime_minutes']);
     }
 
     public function test_need_review_when_only_check_in(): void
@@ -173,9 +173,9 @@ class AttendanceServiceTest extends TestCase
     {
         $result = $this->service->calculateAttendanceData($this->makeRecord('08:00:00', '17:00:00'));
 
-        $this->assertArrayHasKey('work_hours',         $result);
-        $this->assertArrayHasKey('late_minutes',       $result);
-        $this->assertArrayHasKey('overtime_minutes',   $result);
-        $this->assertArrayHasKey('attendance_status',  $result);
+        $this->assertArrayHasKey('work_hours', $result);
+        $this->assertArrayHasKey('late_minutes', $result);
+        $this->assertArrayHasKey('overtime_minutes', $result);
+        $this->assertArrayHasKey('attendance_status', $result);
     }
 }

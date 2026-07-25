@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Bonus;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Payroll;
 use App\Models\Position;
 use App\Services\PayrollCalculatorService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,22 +24,22 @@ class PayrollCalculatorServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new PayrollCalculatorService();
+        $this->service = new PayrollCalculatorService;
     }
 
     private function createEmployee(string $type, float $fulltime, float $internship): Employee
     {
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => $fulltime,
+            'base_salary_fulltime' => $fulltime,
             'base_salary_internship' => $internship,
         ]);
 
         return Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
-            'employee_type'   => $type,
+            'employee_type' => $type,
         ]);
     }
 
@@ -52,11 +53,11 @@ class PayrollCalculatorServiceTest extends TestCase
 
         $result = $this->service->calculate($employee, 2025, 6);
 
-        $this->assertArrayHasKey('employee_id',  $result);
-        $this->assertArrayHasKey('year',         $result);
-        $this->assertArrayHasKey('month',        $result);
-        $this->assertArrayHasKey('base_salary',  $result);
-        $this->assertArrayHasKey('bonus',        $result);
+        $this->assertArrayHasKey('employee_id', $result);
+        $this->assertArrayHasKey('year', $result);
+        $this->assertArrayHasKey('month', $result);
+        $this->assertArrayHasKey('base_salary', $result);
+        $this->assertArrayHasKey('bonus', $result);
         $this->assertArrayHasKey('total_salary', $result);
     }
 
@@ -93,15 +94,15 @@ class PayrollCalculatorServiceTest extends TestCase
 
         Bonus::factory()->approved()->create([
             'employee_id' => $employee->id,
-            'year'        => 2025,
-            'month'       => 6,
-            'amount'      => 1_000_000,
+            'year' => 2025,
+            'month' => 6,
+            'amount' => 1_000_000,
         ]);
         Bonus::factory()->approved()->create([
             'employee_id' => $employee->id,
-            'year'        => 2025,
-            'month'       => 6,
-            'amount'      => 500_000,
+            'year' => 2025,
+            'month' => 6,
+            'amount' => 500_000,
         ]);
 
         $result = $this->service->calculate($employee, 2025, 6);
@@ -115,9 +116,9 @@ class PayrollCalculatorServiceTest extends TestCase
 
         Bonus::factory()->pending()->create([
             'employee_id' => $employee->id,
-            'year'        => 2025,
-            'month'       => 6,
-            'amount'      => 999_000,
+            'year' => 2025,
+            'month' => 6,
+            'amount' => 999_000,
         ]);
 
         $result = $this->service->calculate($employee, 2025, 6);
@@ -131,9 +132,9 @@ class PayrollCalculatorServiceTest extends TestCase
 
         Bonus::factory()->approved()->create([
             'employee_id' => $employee->id,
-            'year'        => 2025,
-            'month'       => 5, // different month
-            'amount'      => 2_000_000,
+            'year' => 2025,
+            'month' => 5, // different month
+            'amount' => 2_000_000,
         ]);
 
         $result = $this->service->calculate($employee, 2025, 6);
@@ -147,9 +148,9 @@ class PayrollCalculatorServiceTest extends TestCase
 
         Bonus::factory()->approved()->create([
             'employee_id' => $employee->id,
-            'year'        => 2025,
-            'month'       => 6,
-            'amount'      => 1_000_000,
+            'year' => 2025,
+            'month' => 6,
+            'amount' => 1_000_000,
         ]);
 
         $result = $this->service->calculate($employee, 2025, 6);
@@ -159,16 +160,16 @@ class PayrollCalculatorServiceTest extends TestCase
 
     public function test_base_salary_zero_when_no_position(): void
     {
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => null,
+            'base_salary_fulltime' => null,
             'base_salary_internship' => null,
         ]);
         $employee = Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
-            'employee_type'   => 'fulltime',
+            'employee_type' => 'fulltime',
         ]);
 
         $result = $this->service->calculate($employee, 2025, 6);
@@ -185,16 +186,16 @@ class PayrollCalculatorServiceTest extends TestCase
         $active = $this->createEmployee('fulltime', 10_000_000, 2_000_000);
 
         // Create a second employee explicitly as inactive — should be skipped
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 5_000_000,
+            'base_salary_fulltime' => 5_000_000,
             'base_salary_internship' => 1_500_000,
         ]);
         Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'inactive',
-            'employee_type'   => 'fulltime',
+            'employee_type' => 'fulltime',
         ]);
 
         $result = $this->service->generateBulk(2025, 7, '2025-07-25');
@@ -203,9 +204,9 @@ class PayrollCalculatorServiceTest extends TestCase
         $this->assertSame(0, $result['skipped']);
         $this->assertDatabaseHas('payrolls', [
             'employee_id' => $active->id,
-            'year'        => 2025,
-            'month'       => 7,
-            'status'      => 'draft',
+            'year' => 2025,
+            'month' => 7,
+            'status' => 'draft',
         ]);
     }
 
@@ -214,10 +215,10 @@ class PayrollCalculatorServiceTest extends TestCase
         $employee = $this->createEmployee('fulltime', 10_000_000, 2_000_000);
 
         // Pre-existing payroll for same period
-        \App\Models\Payroll::factory()->create([
+        Payroll::factory()->create([
             'employee_id' => $employee->id,
-            'year'        => 2025,
-            'month'       => 7,
+            'year' => 2025,
+            'month' => 7,
         ]);
 
         $result = $this->service->generateBulk(2025, 7, '2025-07-25');

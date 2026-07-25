@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -38,7 +37,7 @@ class AuthenticationTest extends TestCase
         $user = $this->adminUser(['password' => bcrypt('password')]);
 
         $this->post(route('login'), [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'password',
         ])->assertRedirect(route('admin.dashboard'));
 
@@ -50,7 +49,7 @@ class AuthenticationTest extends TestCase
         $user = $this->hrUser(['password' => bcrypt('password')]);
 
         $this->post(route('login'), [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'password',
         ])->assertRedirect();
 
@@ -62,7 +61,7 @@ class AuthenticationTest extends TestCase
         $user = $this->managerUser(['password' => bcrypt('password')]);
 
         $this->post(route('login'), [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'password',
         ])->assertRedirect();
 
@@ -74,7 +73,7 @@ class AuthenticationTest extends TestCase
         $user = $this->staffUser(['password' => bcrypt('password')]);
 
         $this->post(route('login'), [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'password',
         ])->assertRedirect();
 
@@ -90,7 +89,7 @@ class AuthenticationTest extends TestCase
         $user = $this->adminUser(['password' => bcrypt('correctpassword')]);
 
         $this->post(route('login'), [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'wrongpassword',
         ])->assertRedirect();
 
@@ -100,7 +99,7 @@ class AuthenticationTest extends TestCase
     public function test_login_fails_with_nonexistent_email(): void
     {
         $this->post(route('login'), [
-            'email'    => 'nobody@example.com',
+            'email' => 'nobody@example.com',
             'password' => 'password',
         ])->assertSessionHasErrors('email');
 
@@ -155,13 +154,13 @@ class AuthenticationTest extends TestCase
         // Exhaust 5 attempts
         for ($i = 0; $i < 5; $i++) {
             $this->post(route('login'), [
-                'email'    => $user->email,
+                'email' => $user->email,
                 'password' => 'wrong',
             ]);
         }
 
         $response = $this->post(route('login'), [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'wrong',
         ]);
 

@@ -12,7 +12,7 @@ class BonusModelTest extends TestCase
 {
     private function makeBonus(string $status): Bonus
     {
-        $bonus         = new Bonus();
+        $bonus = new Bonus;
         $bonus->status = $status;
 
         return $bonus;

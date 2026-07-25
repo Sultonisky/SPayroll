@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\AttendanceImport;
+use App\Models\AttendanceRecord;
 use App\Models\Employee;
 use App\Services\AttendanceService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<\App\Models\AttendanceRecord>
+ * @extends Factory<AttendanceRecord>
  */
 class AttendanceRecordFactory extends Factory
 {
@@ -21,12 +22,12 @@ class AttendanceRecordFactory extends Factory
     {
         $checkIn = fake()->time('H:i:s', '09:00:00');
         $checkOut = fake()->time('H:i:s', '18:00:00');
-        
-        $record = new \App\Models\AttendanceRecord([
+
+        $record = new AttendanceRecord([
             'check_in' => $checkIn,
             'check_out' => $checkOut,
         ]);
-        $attendanceService = new AttendanceService();
+        $attendanceService = new AttendanceService;
         $calculated = $attendanceService->calculateAttendanceData($record);
 
         return [

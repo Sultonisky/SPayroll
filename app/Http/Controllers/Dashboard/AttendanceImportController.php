@@ -7,6 +7,7 @@ use App\Models\AttendanceImport;
 use App\Models\AttendanceRecord;
 use App\Models\Employee;
 use App\Services\AttendanceService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,6 +24,7 @@ class AttendanceImportController extends Controller
     public function index()
     {
         $imports = AttendanceImport::with('importedBy')->orderBy('created_at', 'desc')->get();
+
         return view('dashboard.attendance-imports.index', compact('imports'));
     }
 
@@ -67,20 +69,20 @@ class AttendanceImportController extends Controller
                 // Validate
                 $errors = [];
 
-                if (!$employeeNik) {
+                if (! $employeeNik) {
                     $errors[] = 'Employee NIK is required';
                 } else {
                     $employee = Employee::where('nik', $employeeNik)->first();
-                    if (!$employee) {
+                    if (! $employee) {
                         $errors[] = 'Employee not found';
                     }
                 }
 
-                if (!$attendanceDate) {
+                if (! $attendanceDate) {
                     $errors[] = 'Attendance date is required';
                 } else {
                     try {
-                        $date = \Carbon\Carbon::parse($attendanceDate)->format('Y-m-d');
+                        $date = Carbon::parse($attendanceDate)->format('Y-m-d');
                         $rowData['attendance_date'] = $date;
                     } catch (\Exception $e) {
                         $errors[] = 'Invalid date format';
@@ -109,14 +111,14 @@ class AttendanceImportController extends Controller
 
             return view('dashboard.attendance-imports.preview', compact('rows', 'valid', 'invalid'));
         } catch (\Exception $e) {
-            return back()->withErrors(['file' => 'Error reading file: ' . $e->getMessage()]);
+            return back()->withErrors(['file' => 'Error reading file: '.$e->getMessage()]);
         }
     }
 
     public function store(Request $request)
     {
         $importData = session()->get('attendance_import_data');
-        if (!$importData) {
+        if (! $importData) {
             return redirect()->route('attendance-imports.create')->with('error', 'No import data found');
         }
 
@@ -136,8 +138,9 @@ class AttendanceImportController extends Controller
 
         foreach ($importData['valid'] as $row) {
             $employee = Employee::where('nik', $row['employee_nik'])->first();
-            if (!$employee) {
+            if (! $employee) {
                 $failedCount++;
+
                 continue;
             }
 
@@ -178,6 +181,7 @@ class AttendanceImportController extends Controller
     public function show(AttendanceImport $attendanceImport)
     {
         $attendanceImport->load('attendanceRecords.employee');
+
         return view('dashboard.attendance-imports.show', compact('attendanceImport'));
     }
 

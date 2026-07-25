@@ -19,7 +19,7 @@ class UserPolicyTest extends TestCase
 
     public function test_non_demo_admin_can_do_everything(): void
     {
-        $admin  = $this->adminUser();
+        $admin = $this->adminUser();
         $target = $this->hrUser();
 
         $this->assertTrue($admin->can('viewAny', User::class));
@@ -78,7 +78,7 @@ class UserPolicyTest extends TestCase
 
     public function test_demo_admin_cannot_update_other_users(): void
     {
-        $demo   = $this->demoAdmin();
+        $demo = $this->demoAdmin();
         $target = $this->hrUser();
 
         $this->assertFalse($demo->can('update', $target));
@@ -97,7 +97,7 @@ class UserPolicyTest extends TestCase
 
     public function test_demo_admin_cannot_delete_others(): void
     {
-        $demo   = $this->demoAdmin();
+        $demo = $this->demoAdmin();
         $target = $this->hrUser();
 
         $this->assertFalse($demo->can('delete', $target));
@@ -123,7 +123,7 @@ class UserPolicyTest extends TestCase
 
     public function test_demo_admin_cannot_force_delete_others(): void
     {
-        $demo   = $this->demoAdmin();
+        $demo = $this->demoAdmin();
         $target = $this->hrUser();
 
         $this->assertFalse($demo->can('forceDelete', $target));

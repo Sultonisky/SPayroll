@@ -41,11 +41,11 @@ class UserControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('users.store'), [
-                'name'                  => 'New User',
-                'email'                 => 'newuser@example.com',
-                'password'              => 'Password123!',
+                'name' => 'New User',
+                'email' => 'newuser@example.com',
+                'password' => 'Password123!',
                 'password_confirmation' => 'Password123!',
-                'role'                  => 'staff',
+                'role' => 'staff',
             ])
             ->assertRedirect();
 
@@ -58,11 +58,11 @@ class UserControllerTest extends TestCase
 
         $this->actingAs($this->adminUser())
             ->post(route('users.store'), [
-                'name'                  => 'Another',
-                'email'                 => 'taken@example.com',
-                'password'              => 'Password123!',
+                'name' => 'Another',
+                'email' => 'taken@example.com',
+                'password' => 'Password123!',
                 'password_confirmation' => 'Password123!',
-                'role'                  => 'staff',
+                'role' => 'staff',
             ])
             ->assertSessionHasErrors('email');
     }
@@ -97,9 +97,9 @@ class UserControllerTest extends TestCase
 
         $this->actingAs($this->adminUser())
             ->put(route('users.update', $target->id), [
-                'name'  => 'Updated Name',
+                'name' => 'Updated Name',
                 'email' => $target->email,
-                'role'  => 'HR',
+                'role' => 'HR',
             ])
             ->assertRedirect();
 
@@ -113,9 +113,9 @@ class UserControllerTest extends TestCase
         // Controller redirects (not 403) when admin tries to update their own account
         $this->actingAs($admin)
             ->put(route('users.update', $admin->id), [
-                'name'  => 'Trying to self-update',
+                'name' => 'Trying to self-update',
                 'email' => $admin->email,
-                'role'  => 'admin',
+                'role' => 'admin',
             ])
             ->assertRedirect()
             ->assertSessionHas('error');
@@ -191,11 +191,11 @@ class UserControllerTest extends TestCase
 
         $this->actingAs($demo)
             ->post(route('users.store'), [
-                'name'                  => 'Test',
-                'email'                 => 'test@example.com',
-                'password'              => 'Password123!',
+                'name' => 'Test',
+                'email' => 'test@example.com',
+                'password' => 'Password123!',
                 'password_confirmation' => 'Password123!',
-                'role'                  => 'staff',
+                'role' => 'staff',
             ])
             ->assertForbidden();
     }

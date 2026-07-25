@@ -55,7 +55,7 @@ class DepartmentControllerTest extends TestCase
     {
         $this->actingAs($this->adminUser())
             ->post(route('departments.store'), [
-                'name'        => 'Engineering',
+                'name' => 'Engineering',
                 'description' => 'Software engineering team',
             ])
             ->assertRedirect();
@@ -80,7 +80,7 @@ class DepartmentControllerTest extends TestCase
 
         $this->actingAs($this->adminUser())
             ->put(route('departments.update', $dept->id), [
-                'name'        => 'Updated Dept',
+                'name' => 'Updated Dept',
                 'description' => 'New desc',
             ])
             ->assertRedirect();

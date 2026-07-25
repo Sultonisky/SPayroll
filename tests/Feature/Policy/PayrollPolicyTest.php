@@ -18,14 +18,14 @@ class PayrollPolicyTest extends TestCase
 
     private function makePayroll(): Payroll
     {
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
         $employee = Employee::factory()->create([
             'department_id' => $dept->id,
-            'position_id'   => $position->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
         ]);
 

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\BonusController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\Dashboard\DepartmentController;
 use App\Http\Controllers\Dashboard\EmployeeController;
 use App\Http\Controllers\Dashboard\PayrollController;
 use App\Http\Controllers\Dashboard\PositionController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
