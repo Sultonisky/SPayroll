@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/assets/images/logo-brand.svg" alt="S-Payroll" height="80">
+  <img src="public/assets/images/logo-brand-white.svg" alt="S-Payroll" height="80">
 </p>
 
 <h1 align="center">S-Payroll</h1>
@@ -9,16 +9,20 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Sultonisky/s-payroll/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
-  <a href="https://github.com/Sultonisky/s-payroll/actions/workflows/ci.yml"><img src="https://github.com/Sultonisky/s-payroll/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Sultonisky/SPayroll/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+  <a href="https://github.com/Sultonisky/SPayroll/actions/workflows/ci.yml"><img src="https://github.com/Sultonisky/SPayroll/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-13.x-red?logo=laravel" alt="Laravel"></a>
   <a href="https://www.php.net"><img src="https://img.shields.io/badge/PHP-8.3+-blue?logo=php" alt="PHP"></a>
   <img src="https://img.shields.io/badge/self--hosted-yes-brightgreen" alt="Self Hosted">
+  <img src="https://img.shields.io/badge/tests-PHPUnit-blue?logo=php" alt="Tests">
+  <img src="https://img.shields.io/badge/code%20style-Laravel%20Pint-orange" alt="Laravel Pint">
 </p>
 
 <p align="center">
   <a href="#-installation">📦 Installation</a> &bull;
   <a href="#-features">✨ Features</a> &bull;
+  <a href="#-testing">🧪 Testing</a> &bull;
+  <a href="#-cicd">🔄 CI/CD</a> &bull;
   <a href="#-limitations">⚠️ Limitations</a> &bull;
   <a href="#-contributing">🤝 Contributing</a> &bull;
   <a href="#-legal">⚖️ Legal</a>
@@ -79,6 +83,92 @@ Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 
 ---
 
+## 🧪 Testing
+
+S-Payroll ships with a comprehensive test suite covering Feature and Unit layers. All tests run against SQLite in-memory — no external database required.
+
+### Running Tests
+
+```bash
+# Run the full test suite
+php artisan test
+
+# Run only unit tests
+php artisan test --testsuite=Unit
+
+# Run only feature tests
+php artisan test --testsuite=Feature
+
+# Run a specific test file
+php artisan test tests/Feature/Controllers/PayrollControllerTest.php
+```
+
+### Test Coverage
+
+#### Unit Tests (`tests/Unit/`)
+
+| File | What it covers |
+|---|---|
+| `UserModelTest` | User model scopes, role helpers, and factory states |
+| `BonusModelTest` | Bonus model relationships, status scopes, and factory states |
+| `PositionModelTest` | Position model salary scopes and relationships |
+| `AttendanceServiceTest` | AttendanceService import/parsing logic |
+| `PayrollCalculatorServiceTest` | Salary calculation, bonus inclusion, and edge cases |
+| `EmployeeObserverTest` | Employee observer — auto-code generation on create |
+
+#### Feature Tests (`tests/Feature/`)
+
+| Directory | What it covers |
+|---|---|
+| `Auth/` | Login, logout, remember-me, and failed authentication |
+| `Commands/` | `CleanUpTrashCommand` and `DemoResetCommand` artisan commands |
+| `Controllers/` | Full CRUD HTTP tests for all dashboard controllers (Bonus, Dashboard, Department, Employee, Payroll, Position, Profile, User) |
+| `Middleware/` | `RoleMiddleware` — route access per role |
+| `Policy/` | Laravel Gate policies for Bonus, Employee, Payroll, and User |
+
+### Test Infrastructure
+
+- **Base class** — `tests/TestCase.php` uses `RefreshDatabase` and provides role-based factory helpers: `adminUser()`, `hrUser()`, `managerUser()`, `staffUser()`, `demoAdmin()`
+- **Database** — SQLite `:memory:` configured in `phpunit.xml` — no setup needed
+- **Framework** — PHPUnit via `php artisan test`
+
+---
+
+## 🔄 CI/CD
+
+Every push and pull request targeting `main` runs three parallel jobs via GitHub Actions:
+
+| Job | What it does |
+|---|---|
+| **Code Style (Pint)** | Runs `./vendor/bin/pint --test` — fails if any file has style violations |
+| **Tests (PHP 8.3)** | Runs the full PHPUnit suite against SQLite in-memory |
+| **Build Frontend Assets** | Runs `npm ci && npm run build` to verify the Vite build passes |
+
+### Pipeline Details
+
+- PHP **8.3** with extensions: `bcmath`, `ctype`, `fileinfo`, `mbstring`, `pdo_sqlite`, and more
+- Composer dependencies are **cached** via `actions/cache@v4` keyed on `composer.lock`
+- Node.js **20** with npm cache enabled
+- Tests use `DB_CONNECTION=sqlite` + `DB_DATABASE=:memory:` — no migration step needed
+
+### Running CI Checks Locally
+
+```bash
+# Code style check (dry run — shows issues without fixing)
+./vendor/bin/pint --test
+
+# Auto-fix all style issues
+./vendor/bin/pint
+
+# Full test suite
+php artisan test
+
+# Frontend build
+npm run build
+```
+
+---
+
 ## ⚠️ Limitations
 
 Before deploying, be aware of the current scope and known limitations:
@@ -123,8 +213,8 @@ Before deploying, be aware of the current scope and known limitations:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Sultonisky/s-payroll.git
-cd s-payroll
+git clone https://github.com/Sultonisky/SPayroll.git
+cd SPayroll
 ```
 
 ### 2. Install PHP dependencies
@@ -323,7 +413,7 @@ php artisan demo:reset
 
 ```
 app/
-├── Console/Commands/       # Artisan commands (cleanup, etc.)
+├── Console/Commands/       # Artisan commands (cleanup, demo reset)
 ├── Http/
 │   ├── Controllers/
 │   │   └── Dashboard/      # Feature controllers
@@ -331,7 +421,7 @@ app/
 ├── Models/                 # Eloquent models
 ├── Observers/              # Model event observers
 ├── Policies/               # Authorization policies
-├── Services/               # Business logic (PayrollCalculatorService, etc.)
+├── Services/               # Business logic (PayrollCalculatorService, AttendanceService)
 └── Traits/                 # Reusable traits (image processing, etc.)
 
 resources/views/
@@ -339,6 +429,25 @@ resources/views/
 ├── dashboard/              # All dashboard views per module
 ├── layouts/                # Shared layouts (sidebar, navbar)
 └── legal/                  # Privacy policy, terms of service
+
+tests/
+├── TestCase.php            # Base class with RefreshDatabase + role helpers
+├── Feature/
+│   ├── Auth/               # Authentication flow tests
+│   ├── Commands/           # Artisan command tests
+│   ├── Controllers/        # HTTP tests for all dashboard controllers
+│   ├── Middleware/         # RoleMiddleware access control tests
+│   └── Policy/             # Laravel Gate policy tests
+└── Unit/
+    ├── AttendanceServiceTest.php
+    ├── BonusModelTest.php
+    ├── EmployeeObserverTest.php
+    ├── PayrollCalculatorServiceTest.php
+    ├── PositionModelTest.php
+    └── UserModelTest.php
+
+.github/workflows/
+└── ci.yml                  # 3-job CI pipeline: Pint, PHPUnit, Vite build
 ```
 
 ---
