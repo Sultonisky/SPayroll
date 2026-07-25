@@ -1,0 +1,65 @@
+name: Feature Request
+description: Suggest a new feature or improvement for S-Payroll
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest an improvement. Before submitting, please check that this hasn't already been requested.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before you submit
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: A clear description of the problem or limitation this feature addresses.
+      placeholder: "I'm always frustrated when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe how you envision this feature working.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any alternative approaches or workarounds?
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area does this feature relate to?
+      options:
+        - Employee management
+        - Department / Position management
+        - Payroll engine
+        - Bonus management
+        - Attendance tracking
+        - User & role management
+        - Notifications
+        - Reporting / Export
+        - Authentication
+        - Installation / DevOps
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Any mockups, references, or other context that would help.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question / General discussion
+    url: https://github.com/Sultonisky/s-payroll/discussions
+    about: Use Discussions for questions, ideas, and general conversation about S-Payroll.
+  - name: Report a security vulnerability
+    url: https://github.com/Sultonisky/s-payroll/security/advisories/new
+    about: Please report security vulnerabilities privately — do not use public issues.
