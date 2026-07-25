@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/Sultonisky/s-payroll/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+  <a href="https://github.com/Sultonisky/s-payroll/actions/workflows/ci.yml"><img src="https://github.com/Sultonisky/s-payroll/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-13.x-red?logo=laravel" alt="Laravel"></a>
   <a href="https://www.php.net"><img src="https://img.shields.io/badge/PHP-8.3+-blue?logo=php" alt="PHP"></a>
   <img src="https://img.shields.io/badge/self--hosted-yes-brightgreen" alt="Self Hosted">
@@ -19,6 +20,7 @@
   <a href="#-installation">📦 Installation</a> &bull;
   <a href="#-features">✨ Features</a> &bull;
   <a href="#-limitations">⚠️ Limitations</a> &bull;
+  <a href="#-contributing">🤝 Contributing</a> &bull;
   <a href="#-legal">⚖️ Legal</a>
 </p>
 
@@ -343,15 +345,17 @@ resources/views/
 
 ## 🤝 Contributing
 
-Contributions, bug reports, and feature requests are welcome.
+Contributions, bug reports, and feature requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide including branching conventions, commit message format, and coding standards.
+
+We follow a [Code of Conduct](CODE_OF_CONDUCT.md) — please read it before contributing.
 
 1. Fork the repository
-2. Create a branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Open a Pull Request
+2. Create a branch: `git checkout -b feat/your-feature`
+3. Commit your changes following [Conventional Commits](https://www.conventionalcommits.org/)
+4. Push to the branch: `git push origin feat/your-feature`
+5. Open a Pull Request using the provided template
 
-Please keep PRs focused - one feature or fix per PR.
+Please keep PRs focused — one feature or fix per PR.
 
 ---
 
@@ -378,6 +382,7 @@ S-Payroll is provided as open-source software under the **MIT License**. The fol
 | [Privacy Policy](resources/views/legal/privacy-policy.blade.php) | Official demo — describes how personal data is handled |
 | [Terms of Service](resources/views/legal/terms-of-service.blade.php) | Official demo — acceptable use, disclaimers, and liability |
 | [MIT License](LICENSE) | Source code — rights to use, modify, and distribute |
+| [Code of Conduct](CODE_OF_CONDUCT.md) | Community — expected behavior for contributors and maintainers |
 
 **For self-hosted operators:** You are the data controller for all personal data processed through your installation. You are responsible for establishing your own privacy policy, ensuring compliance with applicable data protection laws (including **UU PDP No. 27/2022** in Indonesia), and securing your infrastructure. The project maintainers have no access to and no responsibility for data in independently operated instances.
 
