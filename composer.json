@@ -1,10 +1,21 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "sultonisky/s-payroll",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "Open source, self-hosted payroll management system for remote-first companies. Built with Laravel 13.",
+    "keywords": ["payroll", "hrm", "self-hosted", "laravel", "open-source"],
     "license": "MIT",
+    "homepage": "https://github.com/Sultonisky/SPayroll",
+    "support": {
+        "issues": "https://github.com/Sultonisky/SPayroll/issues",
+        "source": "https://github.com/Sultonisky/SPayroll"
+    },
+    "authors": [
+        {
+            "name": "Mohammad Sultoni",
+            "homepage": "https://github.com/Sultonisky"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "intervention/image": "3.0",
