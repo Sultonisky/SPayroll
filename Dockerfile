@@ -51,10 +51,11 @@ WORKDIR /var/www/html
 # Install runtime dependencies only
 RUN apk add --no-cache \
     nginx \
-    supervisor
+    supervisor \
+    gettext
 
 # Copy PHP and Nginx configurations
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
 COPY docker/supervisord.conf /etc/supervisord.conf
 
 # Copy application code
@@ -65,8 +66,11 @@ COPY . .
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+# Set PORT env var (Railway will override this)
+ENV PORT=80
+
 # Expose port
-EXPOSE 80
+EXPOSE ${PORT}
 
 # Entrypoint
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
