@@ -1,10 +1,12 @@
 #!/bin/sh
 
 # Use Railway's PORT env var, default to 80
-export PORT="${PORT:-80}"
+PORT="${PORT:-80}"
 
-# Substitute PORT into nginx config
-envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+# Generate nginx config from template using sed (safe - won't touch nginx $variables)
+sed "s/NGINX_PORT/${PORT}/g" /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+
+echo "Nginx configured to listen on port ${PORT}"
 
 # Run migrations FIRST (before caching config that depends on DB tables)
 if [ "$APP_ENV" != "local" ]; then
