@@ -82,5 +82,8 @@ php artisan view:cache   || echo "view:cache failed, continuing..."
 # Link storage
 php artisan storage:link --force || true
 
+echo "==> Fixing storage permissions..."
+chmod -R 777 storage bootstrap/cache
+
 echo "==> Starting supervisord..."
 exec supervisord -c /etc/supervisord.conf

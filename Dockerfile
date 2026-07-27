@@ -57,14 +57,15 @@ RUN mkdir -p /tmp/client_body /tmp/fastcgi /tmp/proxy /tmp/scgi /tmp/uwsgi
 
 # Copy supervisord config only — nginx.conf is generated at runtime by entrypoint
 COPY docker/supervisord.conf /etc/supervisord.conf
+COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/zz-railway.conf
 
 # Copy application code
 COPY --from=vendor /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
 COPY . .
 
-# Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Set permissions — 777 ensures any user (www-data, root, etc) can write
+RUN chmod -R 777 storage bootstrap/cache
 
 # Copy and prepare entrypoint
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
