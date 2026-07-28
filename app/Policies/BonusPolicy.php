@@ -10,21 +10,21 @@ class BonusPolicy
 {
     public function viewAny(User $user): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
             ? Response::allow()
             : Response::deny('You do not have permission to view bonuses.');
     }
 
     public function view(User $user, Bonus $bonus): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
             ? Response::allow()
             : Response::deny('You do not have permission to view this bonus.');
     }
 
     public function create(User $user): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
             ? Response::allow()
             : Response::deny('You do not have permission to create bonuses.');
     }
@@ -35,7 +35,7 @@ class BonusPolicy
             return Response::deny('Only pending bonuses can be edited.');
         }
 
-        return in_array($user->role, ['admin', 'HR', 'manager'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
             ? Response::allow()
             : Response::deny('You do not have permission to edit bonuses.');
     }
@@ -46,9 +46,9 @@ class BonusPolicy
             return Response::deny('Only pending bonuses can be approved or rejected.');
         }
 
-        return in_array($user->role, ['admin', 'HR'])
+        return in_array($user->role, ['admin', 'HR', 'finance'])
             ? Response::allow()
-            : Response::deny('Only Admin or HR can approve bonuses.');
+            : Response::deny('Only Admin, HR, or Finance can approve bonuses.');
     }
 
     public function delete(User $user, Bonus $bonus): Response

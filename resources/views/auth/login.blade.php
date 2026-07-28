@@ -72,6 +72,10 @@
                             <span class="demo-cred-role demo-cred-manager">Manager</span>
                             <span class="demo-cred-email">manager@demo.spayroll.com</span>
                         </button>
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('finance@demo.spayroll.com')">
+                            <span class="demo-cred-role demo-cred-finance">Finance</span>
+                            <span class="demo-cred-email">finance@demo.spayroll.com</span>
+                        </button>
                         <button type="button" class="demo-cred-item" onclick="fillLogin('staff@demo.spayroll.com')">
                             <span class="demo-cred-role demo-cred-staff">Staff</span>
                             <span class="demo-cred-email">staff@demo.spayroll.com</span>

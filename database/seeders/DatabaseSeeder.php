@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Demo HR',      'email' => 'hr@demo.spayroll.com',      'role' => 'HR'],
             ['name' => 'Demo Manager', 'email' => 'manager@demo.spayroll.com', 'role' => 'manager'],
             ['name' => 'Demo Staff',   'email' => 'staff@demo.spayroll.com',   'role' => 'staff'],
+            ['name' => 'Demo Finance', 'email' => 'finance@demo.spayroll.com', 'role' => 'finance'],
         ];
 
         foreach ($demoUsers as $demo) {
@@ -62,6 +63,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Seeding supporting users...');
         User::factory()->hr()->count(2)->create();
         User::factory()->manager()->count(3)->create();
+        User::factory()->finance()->count(2)->create();
         User::factory()->count(15)->create();
 
         // ----------------------------------------------------------------
@@ -106,5 +108,6 @@ class DatabaseSeeder extends Seeder
         $this->command->line('  hr@demo.com      → HR');
         $this->command->line('  manager@demo.com → Manager');
         $this->command->line('  staff@demo.com   → Staff');
+        $this->command->line('  finance@demo.com → Finance');
     }
 }

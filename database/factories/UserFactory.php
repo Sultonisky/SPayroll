@@ -64,4 +64,15 @@ class UserFactory extends Factory
             'role' => 'HR',
         ]);
     }
+
+    /**
+     * Create a user with finance role.
+     * Finance manages payroll engine and employee bonuses.
+     */
+    public function finance(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'finance',
+        ]);
+    }
 }

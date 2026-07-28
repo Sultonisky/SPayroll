@@ -6,10 +6,11 @@
     $isHR       = $role === 'HR';
     $isManager  = $role === 'manager';
     $isStaff    = $role === 'staff';
-    $canPayroll = in_array($role, ['admin', 'HR', 'manager', 'staff']);
-    $canBonus   = in_array($role, ['admin', 'HR', 'manager']);
+    $isFinance  = $role === 'finance';
+    $canPayroll = in_array($role, ['admin', 'HR', 'manager', 'staff', 'finance']);
+    $canBonus   = in_array($role, ['admin', 'HR', 'manager', 'finance']);
     $canDept    = in_array($role, ['admin', 'HR', 'manager']);
-    $canGenerate = in_array($role, ['admin', 'HR']);
+    $canGenerate = in_array($role, ['admin', 'HR', 'finance']);
 @endphp
 
 <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
@@ -82,7 +83,7 @@
         @if ($canBonus)
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('bonuses.index') }}">
-                    <i class="nav-icon fas fa-comments-dollar"></i>
+                    <i class="nav-icon fas fa-gift"></i>
                     Employee Bonus
                 </a>
             </li>

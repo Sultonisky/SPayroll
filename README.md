@@ -21,6 +21,7 @@
 <p align="center">
   <a href="#-installation">📦 Installation</a> &bull;
   <a href="#-features">✨ Features</a> &bull;
+  <a href="#-customization">🎨 Customization</a> &bull;
   <a href="#-testing">🧪 Testing</a> &bull;
   <a href="#-cicd">🔄 CI/CD</a> &bull;
   <a href="#-limitations">⚠️ Limitations</a> &bull;
@@ -67,7 +68,7 @@ Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 - Soft delete with restore
 
 ### User & Role Management
-- Four built-in roles: **Admin**, **HR**, **Manager**, **Staff**
+- Four built-in roles: **Admin**, **HR**, **Manager**, **Finance**, **Staff**
 - Fine-grained permission control per module per role via policies and middleware
 - Profile management with photo upload
 
@@ -301,9 +302,112 @@ php artisan sail:install
 
 ---
 
+## 🎨 Customization
+
+After installing, you can brand S-Payroll to match your company by swapping the logo and adjusting the primary color. Everything is in plain CSS and SVG — no build step required.
+
+### Logo
+
+S-Payroll uses three logo files, all located in `public/assets/images/`. Replace them with your own files using the exact same filenames so all references update automatically.
+
+| File | Where it appears |
+|---|---|
+| `logo.svg` | Browser favicon (tab icon) across all pages |
+| `logo-brand.svg` | Login page (left panel) and legal pages (Privacy Policy, Terms of Service) |
+| `logo-brand-white.svg` | README header — not rendered in the app itself, referenced for documentation purposes |
+
+**Requirements for replacement files:**
+- Keep the same filenames exactly
+- SVG format is recommended (scales cleanly at any size)
+- `logo.svg` is typically a square icon/mark (no wordmark)
+- `logo-brand.svg` is typically a wider horizontal lockup — the login panel renders it at `280×280px`
+
+After replacing:
+```bash
+# Clear any cached views (optional, recommended)
+php artisan view:clear
+```
+
+---
+
+### App Name
+
+The application name appears in two places in the layout files. Update both to match your company name:
+
+**1. Browser tab title** — `resources/views/layouts/app.blade.php`
+
+```html
+<title>Your Company - Dashboard</title>
+```
+
+**2. Sidebar brand name** — `resources/views/layouts/sidebar.blade.php`
+
+```html
+<span class="fw-bold">Dashboard <span class="text-primary">YourBrand</span></span>
+```
+
+---
+
+### Primary Color
+
+The primary color drives the sidebar accent, active nav links, form labels, login panel background, and interactive element highlights. It is defined in **two separate CSS files** — update both to keep the login page and dashboard in sync.
+
+**1. Dashboard theme** — `public/assets/dashboard/style/coreui.css`
+
+```css
+:root {
+    --cui-primary: #00F260;         /* ← change this */
+    --cui-primary-rgb: 0, 242, 96;  /* ← RGB equivalent for the same color */
+    --cui-link-color: #00F260;      /* ← link color */
+    --cui-link-hover-color: #00c94f; /* ← link hover (slightly darker) */
+}
+
+[data-coreui-theme="dark"] {
+    --cui-primary: #00F260;         /* ← also update for dark mode */
+    --cui-primary-rgb: 0, 242, 96;
+}
+```
+
+**2. Login page theme** — `public/assets/dashboard/style/login.css`
+
+```css
+:root {
+    --primary-color: #00F260;  /* ← login panel background color */
+    --primary-dark: #00c94f;   /* ← used for hover accents and emphasized text */
+}
+```
+
+> **Tip:** To convert a hex color to RGB for `--cui-primary-rgb`, use any online converter (e.g., `#2563EB` → `37, 99, 235`).
+
+**Example — switching to a blue theme:**
+
+```css
+/* coreui.css */
+:root {
+    --cui-primary: #2563EB;
+    --cui-primary-rgb: 37, 99, 235;
+    --cui-link-color: #2563EB;
+    --cui-link-hover-color: #1d4ed8;
+}
+[data-coreui-theme="dark"] {
+    --cui-primary: #2563EB;
+    --cui-primary-rgb: 37, 99, 235;
+}
+
+/* login.css */
+:root {
+    --primary-color: #2563EB;
+    --primary-dark: #1d4ed8;
+}
+```
+
+No rebuild is needed — these are plain CSS files served directly as static assets.
+
+---
+
 ## 🔐 Default Roles & Permissions
 
-S-Payroll uses a role-based access control (RBAC) system with four built-in roles. Permissions are enforced at both the backend (Laravel Policies + Gate) and frontend (sidebar visibility + UI element guards).
+S-Payroll uses a role-based access control (RBAC) system with five built-in roles. Permissions are enforced at both the backend (Laravel Policies + Gate) and frontend (sidebar visibility + UI element guards).
 
 ### Role Overview
 
@@ -312,57 +416,58 @@ S-Payroll uses a role-based access control (RBAC) system with four built-in role
 | **Admin** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ | ✅ Full | ✅ Edit |
 | **HR** | ❌ | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ | ✅ Full | ✅ Edit |
 | **Manager** | ❌ | 👁 View | 👁 View | ✅ Edit | ✅ Create/Edit | ❌ | ✅ Approve/View | ✅ Edit |
+| **Finance** | ❌ | ❌ | ❌ | 👁 View | ✅ Full | ✅ | ✅ Full | ✅ Edit |
 | **Staff** | ❌ | ❌ | ❌ | 👁 View | ❌ | ❌ | 👁 View | ✅ Edit |
 
 ### Detailed Permission Matrix
 
 #### Users
-| Action | Admin | HR | Manager | Staff |
-|---|:---:|:---:|:---:|:---:|
-| View list | ✅ | ❌ | ❌ | ❌ |
-| Create user | ✅ | ❌ | ❌ | ❌ |
-| Edit user | ✅ | ❌ | ❌ | ❌ |
-| Delete / Restore | ✅ | ❌ | ❌ | ❌ |
-| Force delete | ✅ | ❌ | ❌ | ❌ |
+| Action | Admin | HR | Manager | Finance | Staff |
+|---|:---:|:---:|:---:|:---:|:---:|
+| View list | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Create user | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Edit user | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Delete / Restore | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Force delete | ✅ | ❌ | ❌ | ❌ | ❌ |
 
 #### Departments & Positions
-| Action | Admin | HR | Manager | Staff |
-|---|:---:|:---:|:---:|:---:|
-| View list & detail | ✅ | ✅ | ✅ | ❌ |
-| Create / Edit | ✅ | ✅ | ❌ | ❌ |
-| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
-| Force delete | ✅ | ✅ | ❌ | ❌ |
+| Action | Admin | HR | Manager | Finance | Staff |
+|---|:---:|:---:|:---:|:---:|:---:|
+| View list & detail | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Create / Edit | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 #### Employees
-| Action | Admin | HR | Manager | Staff |
-|---|:---:|:---:|:---:|:---:|
-| View list & detail | ✅ | ✅ | ✅ | ✅ |
-| Create / Edit | ✅ | ✅ | ✅ | ❌ |
-| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
-| Force delete | ✅ | ✅ | ❌ | ❌ |
-| Export | ✅ | ✅ | ✅ | ✅ |
+| Action | Admin | HR | Manager | Finance | Staff |
+|---|:---:|:---:|:---:|:---:|:---:|
+| View list & detail | ✅ | ✅ | ✅ | 👁 View | ✅ |
+| Create / Edit | ✅ | ✅ | ✅ | ❌ | ❌ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Export | ✅ | ✅ | ✅ | ❌ | ✅ |
 
 #### Employee Bonus
-| Action | Admin | HR | Manager | Staff |
-|---|:---:|:---:|:---:|:---:|
-| View list & detail | ✅ | ✅ | ✅ | ❌ |
-| Create / Edit | ✅ | ✅ | ✅ | ❌ |
-| Approve / Reject | ✅ | ✅ | ❌ | ❌ |
-| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
-| Force delete | ✅ | ✅ | ❌ | ❌ |
+| Action | Admin | HR | Manager | Finance | Staff |
+|---|:---:|:---:|:---:|:---:|:---:|
+| View list & detail | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Create / Edit | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Approve / Reject | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 #### Payroll
-| Action | Admin | HR | Manager | Staff |
-|---|:---:|:---:|:---:|:---:|
-| View (all) | ✅ | ✅ | ✅ | ✅ |
-| Generate bulk | ✅ | ✅ | ❌ | ❌ |
-| Create single | ✅ | ✅ | ✅ | ❌ |
-| Edit draft | ✅ | ✅ | ✅ | ❌ |
-| Approve draft | ✅ | ✅ | ❌ | ❌ |
-| Mark as paid | ✅ | ✅ | ❌ | ❌ |
-| Export CSV | ✅ | ✅ | ✅ | ✅ |
-| Delete / Restore | ✅ | ✅ | ❌ | ❌ |
-| Force delete | ✅ | ✅ | ❌ | ❌ |
+| Action | Admin | HR | Manager | Finance | Staff |
+|---|:---:|:---:|:---:|:---:|:---:|
+| View (all) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Generate bulk | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Create single | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Edit draft | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Approve draft | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Mark as paid | ✅ | ✅ | ❌ | ✅ | ❌ |
+| Export CSV | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Delete / Restore | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Force delete | ✅ | ✅ | ❌ | ❌ | ❌ |
 
 ---
 
@@ -377,6 +482,7 @@ A live demo is available at the official deployment. You can try S-Payroll with 
 | Admin | `admin@demo.spayroll.com` | `demo12345` |
 | HR | `hr@demo.spayroll.com` | `demo12345` |
 | Manager | `manager@demo.spayroll.com` | `demo12345` |
+| Finance | `finance@demo.spayroll.com` | `demo12345` |
 | Staff | `staff@demo.spayroll.com` | `demo12345` |
 
 > Click any credential card on the login page to auto-fill the form — no typing required.
