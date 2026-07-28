@@ -120,7 +120,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb my-0">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('admin.dashboard') }}" class="text-decoration-none">Home</a>
+                    <a href="{{ route('dashboard') }}" class="text-decoration-none">Home</a>
                 </li>
                 @php
                     $segments = request()->segments();
