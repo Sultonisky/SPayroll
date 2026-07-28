@@ -7,7 +7,7 @@ use Tests\TestCase;
 class ExampleTest extends TestCase
 {
     /**
-     * Verify the login page is accessible (actual route is admin/login).
+     * Verify the login page is accessible.
      */
     public function test_login_page_is_accessible(): void
     {
@@ -17,7 +17,7 @@ class ExampleTest extends TestCase
     }
 
     /**
-     * Verify unauthenticated access to dashboard redirects to admin/login.
+     * Verify unauthenticated access to dashboard redirects to login.
      */
     public function test_dashboard_requires_authentication(): void
     {

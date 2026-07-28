@@ -39,7 +39,7 @@ class AuthenticationTest extends TestCase
         $this->post(route('login'), [
             'email' => $user->email,
             'password' => 'password',
-        ])->assertRedirect(route('admin.dashboard'));
+        ])->assertRedirect(route('dashboard'));
 
         $this->assertAuthenticatedAs($user);
     }
@@ -131,7 +131,7 @@ class AuthenticationTest extends TestCase
         $user = $this->adminUser();
 
         $this->actingAs($user)
-            ->post(route('admin.logout'))
+            ->post(route('auth.logout'))
             ->assertRedirect(route('login'));
 
         $this->assertGuest();
@@ -139,7 +139,7 @@ class AuthenticationTest extends TestCase
 
     public function test_guest_cannot_access_dashboard(): void
     {
-        $this->get(route('admin.dashboard'))
+        $this->get(route('dashboard'))
             ->assertRedirect(route('login'));
     }
 

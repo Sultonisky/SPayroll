@@ -21,21 +21,21 @@ class DashboardControllerTest extends TestCase
             $this->staffUser(),
         ] as $user) {
             $this->actingAs($user)
-                ->get(route('admin.dashboard'))
+                ->get(route('dashboard'))
                 ->assertOk();
         }
     }
 
     public function test_guest_is_redirected_to_login(): void
     {
-        $this->get(route('admin.dashboard'))
+        $this->get(route('dashboard'))
             ->assertRedirect(route('login'));
     }
 
     public function test_dashboard_renders_expected_data(): void
     {
         $this->actingAs($this->adminUser())
-            ->get(route('admin.dashboard'))
+            ->get(route('dashboard'))
             ->assertOk()
             ->assertViewHas('totalEmployees')
             ->assertViewHas('activeEmployees')
