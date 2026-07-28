@@ -519,7 +519,8 @@ body {
 .demo-cred-admin   { background: #dc3545; color: #fff; }
 .demo-cred-hr      { background: #0dcaf0; color: #fff; }
 .demo-cred-manager { background: #198754; color: #fff; }
-.demo-cred-staff   { background: #ffc107; color: #000; }
+.demo-cred-finance { background: #ffc107; color: #000; }
+.demo-cred-staff   { background: #6c757d; color: #fff; }
 
 .demo-cred-email {
     font-size: 12px;
