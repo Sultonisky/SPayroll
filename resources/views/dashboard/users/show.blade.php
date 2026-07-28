@@ -61,8 +61,12 @@
                                         <i class="fas fa-chart-line me-2"></i>Manager
                                     </span>
                                 @elseif ($user->role == 'staff')
-                                    <span class="badge bg-warning text-white rounded-pill px-4 py-2 fs-6">
+                                    <span class="badge bg-secondary text-white rounded-pill px-4 py-2 fs-6">
                                         <i class="fas fa-user me-2"></i>Staff
+                                    </span>
+                                @elseif ($user->role == 'finance')
+                                    <span class="badge bg-warning text-black rounded-pill px-4 py-2 fs-6">
+                                        <i class="fas fa-coins me-2"></i>Finance
                                     </span>
                                 @endif
                                 <span class="badge bg-body text-body border rounded-pill px-4 py-2 fs-6">

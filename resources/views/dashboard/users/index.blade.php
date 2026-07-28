@@ -86,8 +86,12 @@
                                                 Manager
                                             </span>
                                         @elseif($user->role == 'staff')
-                                            <span class="badge bg-warning text-black rounded-pill px-3">
+                                            <span class="badge bg-secondary text-white rounded-pill px-3">
                                                Staff
+                                            </span>
+                                        @elseif($user->role == 'finance')
+                                            <span class="badge bg-warning text-black rounded-pill px-3">
+                                                Finance
                                             </span>
                                         @endif
                                     </td>

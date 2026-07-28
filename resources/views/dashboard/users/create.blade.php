@@ -57,6 +57,7 @@
                                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin (Full Access)</option>
                                         <option value="HR" {{ old('role') == 'HR' ? 'selected' : '' }}>HR (Human Resource)</option>
                                         <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>Manager</option>
+                                        <option value="finance" {{ old('role') == 'finance' ? 'selected' : '' }}>Finance (Payroll & Bonus)</option>
                                         <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
                                     </select>
                                 </div>

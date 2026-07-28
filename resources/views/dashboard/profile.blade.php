@@ -33,7 +33,8 @@
                                             @if($user->role === 'admin') bg-danger text-black
                                             @elseif($user->role === 'HR') bg-info text-white
                                             @elseif($user->role === 'manager') bg-success text-white
-                                            @else bg-warning text-black @endif
+                                            @elseif($user->role === 'finance') bg-warning text-black
+                                            @else bg-secondary text-white @endif
                                             rounded-pill px-3">
                                             {{ ucfirst($user->role) }}
                                         </span>

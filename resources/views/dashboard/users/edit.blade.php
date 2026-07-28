@@ -67,6 +67,8 @@
                                             (Human Resource)</option>
                                         <option value="manager"
                                             {{ old('role', $user->role) == 'manager' ? 'selected' : '' }}>Manager</option>
+                                        <option value="finance"
+                                            {{ old('role', $user->role) == 'finance' ? 'selected' : '' }}>Finance (Payroll & Bonus)</option>
                                         <option value="staff" {{ old('role', $user->role) == 'staff' ? 'selected' : '' }}>
                                             Staff</option>
                                     </select>
