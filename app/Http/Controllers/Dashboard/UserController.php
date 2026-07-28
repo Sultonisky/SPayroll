@@ -86,7 +86,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->route('admin.dashboard')->with('info', 'Please use profile page to edit your account.');
+            return redirect()->route('dashboard')->with('info', 'Please use profile page to edit your account.');
         }
 
         Gate::authorize('update', $user);
@@ -102,7 +102,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->id === auth()->id()) {
-            return redirect()->route('admin.dashboard')->with('error', 'You cannot update your account via user management page.');
+            return redirect()->route('dashboard')->with('error', 'You cannot update your account via user management page.');
         }
 
         Gate::authorize('update', $user);
