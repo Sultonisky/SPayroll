@@ -10,28 +10,28 @@ class PayrollPolicy
 {
     public function viewAny(User $user): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager', 'staff'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'staff', 'finance'])
             ? Response::allow()
             : Response::deny('Anda tidak memiliki izin untuk melihat daftar penggajian.');
     }
 
     public function view(User $user, Payroll $model): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager', 'staff'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'staff', 'finance'])
             ? Response::allow()
             : Response::deny('Anda tidak memiliki izin untuk melihat detail penggajian.');
     }
 
     public function create(User $user): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
             ? Response::allow()
             : Response::deny('Anda tidak memiliki izin untuk menambah data penggajian baru.');
     }
 
     public function update(User $user, Payroll $model): Response
     {
-        return in_array($user->role, ['admin', 'HR', 'manager'])
+        return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
             ? Response::allow()
             : Response::deny('Anda tidak memiliki izin untuk mengubah data penggajian.');
     }

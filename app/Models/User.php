@@ -97,6 +97,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is a finance officer.
+     * Finance manages payroll engine and employee bonuses.
+     */
+    public function isFinance(): bool
+    {
+        return $this->role === 'finance';
+    }
+
+    /**
      * Check if the user is a staff.
      */
     public function isStaff(): bool
