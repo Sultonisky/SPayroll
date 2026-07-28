@@ -89,7 +89,7 @@ class RoleMiddlewareTest extends TestCase
     public function test_guest_cannot_access_any_dashboard_route(): void
     {
         $routes = [
-            route('admin.dashboard'),
+            route('dashboard'),
             route('users.index'),
             route('employees.index'),
             route('payrolls.index'),

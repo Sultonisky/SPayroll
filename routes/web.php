@@ -25,21 +25,21 @@ Route::get('/terms-of-service', function () {
 })->name('terms-of-service');
 
 // Auth Routes
-Route::get('admin/login', [AuthController::class, 'loginForm'])
+Route::get('login', [AuthController::class, 'loginForm'])
     ->name('login')
     ->middleware('guest');
 
-Route::post('admin/login', [AuthController::class, 'authLogin'])
-    ->name('admin.login')
+Route::post('login', [AuthController::class, 'authLogin'])
+    ->name('auth.login')
     ->middleware(['guest', 'throttle:login']);
 
-Route::post('admin/logout', [AuthController::class, 'logout'])
-    ->name('admin.logout')
+Route::post('logout', [AuthController::class, 'logout'])
+    ->name('auth.logout')
     ->middleware('auth');
 
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
     // Profile (all user login)
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');

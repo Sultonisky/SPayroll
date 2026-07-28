@@ -32,7 +32,7 @@
 
         {{-- Dashboard --}}
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">
+            <a class="nav-link" href="{{ route('dashboard') }}">
                 <i class="nav-icon fas fa-home"></i>
                 Dashboard
             </a>

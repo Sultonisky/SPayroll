@@ -80,7 +80,7 @@
     </div>
 
     {{-- Form Logout --}}
-    <form id="keluar-app" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+    <form id="keluar-app" action="{{ route('auth.logout') }}" method="POST" class="d-none">
         @csrf
     </form>
 
