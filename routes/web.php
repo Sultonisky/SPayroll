@@ -198,6 +198,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('payrolls/{id}/export', [PayrollController::class, 'export'])->name('payrolls.export');
     });
 
+    // Payslip: admin, HR, finance (all records) + staff (own only)
+    // Manager excluded — salary figures are need-to-know for HR/Finance only
+    Route::middleware(['role:admin,HR,staff,finance'])->group(function () {
+        Route::get('payslips', [PayrollController::class, 'payslipIndex'])->name('payrolls.payslip');
+        Route::get('payslips/{id}', [PayrollController::class, 'payslipShow'])->name('payrolls.payslip.show');
+    });
+
     // Bonus Routes
     Route::middleware(['role:admin,HR,manager,finance'])->group(function () {
         Route::get('bonuses/trash', [BonusController::class, 'trash'])->name('bonuses.trash');

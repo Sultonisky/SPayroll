@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bonus;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\User;
+use App\Notifications\DashboardNotification;
 use App\Services\PayrollCalculatorService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -369,11 +372,31 @@ class PayrollController extends Controller
             'ids.*' => 'exists:payrolls,id',
         ]);
 
-        Payroll::whereIn('id', $request->ids)
+        $payrolls = Payroll::whereIn('id', $request->ids)
             ->where('status', 'draft')
-            ->update(['status' => 'approved']);
+            ->get();
 
-        return redirect()->route('payrolls.drafts')
+        foreach ($payrolls as $payroll) {
+            $payroll->update(['status' => 'approved']);
+        }
+
+        $count = $payrolls->count();
+
+        // Send a single bulk notification instead of per-record noise
+        $managers = User::whereIn('role', ['admin', 'HR', 'finance'])
+            ->where('id', '!=', auth()->id())
+            ->get();
+
+        foreach ($managers as $user) {
+            $user->notify(new DashboardNotification(
+                'Bulk Payroll Approved',
+                "{$count} draft payroll record(s) have been approved in bulk.",
+                route('payrolls.approved'),
+                'success'
+            ));
+        }
+
+        return redirect()->route('payrolls.approved')
             ->with('success', 'All selected draft payrolls have been approved.');
     }
 
@@ -487,12 +510,113 @@ class PayrollController extends Controller
             'ids.*' => 'exists:payrolls,id',
         ]);
 
-        Payroll::whereIn('id', $request->ids)
+        $payrolls = Payroll::whereIn('id', $request->ids)
             ->where('status', 'approved')
-            ->update(['status' => 'paid']);
+            ->get();
+
+        foreach ($payrolls as $payroll) {
+            $payroll->update(['status' => 'paid']);
+        }
+
+        $count = $payrolls->count();
+
+        // Send a single bulk notification
+        $managers = User::whereIn('role', ['admin', 'HR', 'finance'])
+            ->where('id', '!=', auth()->id())
+            ->get();
+
+        foreach ($managers as $user) {
+            $user->notify(new DashboardNotification(
+                'Bulk Payroll Marked as Paid',
+                "{$count} payroll record(s) have been marked as paid in bulk.",
+                route('payrolls.index'),
+                'success'
+            ));
+        }
 
         return redirect()->route('payrolls.index')
             ->with('success', 'All selected payrolls have been marked as paid.');
+    }
+
+    // ----------------------------------------------------------------
+    // Payslip
+    // ----------------------------------------------------------------
+
+    /**
+     * List all paid payrolls as payslips (with employee filter).
+     * Staff can only see their own payslip.
+     */
+    public function payslipIndex(Request $request)
+    {
+        $user = auth()->user();
+        $isStaff = $user->role === 'staff';
+        $canViewAll = in_array($user->role, ['admin', 'HR', 'finance']);
+
+        $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date', 'notes')
+            ->with('employee:id,name,employee_code,nik,department_id,position_id,employee_type,bank_name,bank_account_number')
+            ->where('status', 'paid')
+            ->orderByDesc('year')
+            ->orderByDesc('month')
+            ->orderBy('employee_id');
+
+        // Staff: only see their own payslip
+        if ($isStaff) {
+            $user->loadMissing('employee');
+            abort_unless($user->employee, 403, 'Akun Anda belum terhubung ke data karyawan.');
+            $query->where('employee_id', $user->employee->id);
+        }
+
+        $filterYear = $request->integer('year') ?: null;
+        $filterMonth = $request->integer('month') ?: null;
+        $filterEmployeeId = $request->input('employee_id');
+
+        if ($filterYear) {
+            $query->where('year', $filterYear);
+        }
+        if ($filterMonth) {
+            $query->where('month', $filterMonth);
+        }
+
+        if ($canViewAll && $filterEmployeeId) {
+            $query->where('employee_id', $filterEmployeeId);
+        }
+
+        $payrolls = $query->get();
+        $allEmployees = $canViewAll
+            ? Employee::select('id', 'name', 'employee_code')->orderBy('employee_code')->get()
+            : collect();
+
+        return view('dashboard.payrolls.payslip', compact(
+            'payrolls', 'allEmployees',
+            'filterYear', 'filterMonth', 'filterEmployeeId',
+            'isStaff', 'canViewAll'
+        ));
+    }
+
+    /**
+     * Show a single payslip detail — printable.
+     */
+    public function payslipShow(string $id)
+    {
+        $payroll = Payroll::where('status', 'paid')
+            ->with([
+                'employee:id,name,employee_code,nik,department_id,position_id,employee_type,bank_name,bank_account_number,join_date',
+                'employee.department:id,name',
+                'employee.position:id,name,base_salary_fulltime,base_salary_internship',
+            ])
+            ->findOrFail($id);
+
+        // Policy enforces: admin/HR/finance = all, staff = own only, manager = denied
+        Gate::authorize('viewPayslip', $payroll);
+
+        // Load bonuses that were included in this payroll period
+        $bonuses = Bonus::where('employee_id', $payroll->employee_id)
+            ->where('year', $payroll->year)
+            ->where('month', $payroll->month)
+            ->where('status', 'approved')
+            ->get();
+
+        return view('dashboard.payrolls.payslip-show', compact('payroll', 'bonuses'));
     }
 
     // ----------------------------------------------------------------

@@ -17,7 +17,7 @@
     <div class="sidebar-header border-bottom px-4" style="height: 64px;">
         <div class="sidebar-brand">
             <div class="sidebar-brand-full d-flex align-items-center">
-                <span class="fw-bold">Dashboard <span class="text-primary">SPayroll</span></span>
+                <span class="fw-bold">Dashboard <span class="text-primary">Scroll</span></span>
             </div>
             <div class="sidebar-brand-narrow">
                 <i class="fas fa-calculator" style="font-size: 1.5rem; color: var(--cui-primary);"></i>
@@ -134,6 +134,16 @@
                     Records (Paid)
                 </a>
             </li>
+
+            {{-- Payslip: admin, HR, finance (all) + staff (own) — manager excluded --}}
+            @if (in_array($role, ['admin', 'HR', 'finance', 'staff']))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('payrolls.payslip') }}">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        Payslip
+                    </a>
+                </li>
+            @endif
         @endif
 
     </ul>
