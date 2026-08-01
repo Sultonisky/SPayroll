@@ -135,4 +135,12 @@ class User extends Authenticatable
     // {
     //     return $this->hasMany(AttendanceAdjustment::class, 'approved_by');
     // }
+
+    /**
+     * Get the employee profile linked to this user.
+     */
+    public function employee(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Employee::class);
+    }
 }

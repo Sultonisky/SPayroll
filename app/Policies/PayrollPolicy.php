@@ -22,6 +22,25 @@ class PayrollPolicy
             : Response::deny('Anda tidak memiliki izin untuk melihat detail penggajian.');
     }
 
+    /**
+     * Payslip access:
+     * - admin, HR, finance: can view all payslips
+     * - staff: can only view their own (enforced in controller)
+     * - manager: no access — salary figures are need-to-know for HR/Finance only
+     */
+    public function viewPayslip(User $user, Payroll $model): Response
+    {
+        if (in_array($user->role, ['admin', 'HR', 'finance'])) {
+            return Response::allow();
+        }
+
+        if ($user->role === 'staff' && $user->employee?->id === $model->employee_id) {
+            return Response::allow();
+        }
+
+        return Response::deny('Anda tidak memiliki izin untuk melihat payslip ini.');
+    }
+
     public function create(User $user): Response
     {
         return in_array($user->role, ['admin', 'HR', 'manager', 'finance'])
