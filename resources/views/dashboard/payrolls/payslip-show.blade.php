@@ -240,7 +240,7 @@
 
             {{-- Footer --}}
             <div class="card-footer bg-light text-center text-muted small py-3">
-                Dokumen ini digenerate secara otomatis oleh sistem S-Payroll.
+                Dokumen ini digenerate secara otomatis oleh sistem Scroll.
                 Dicetak pada {{ now()->translatedFormat('d F Y, H:i') }}.
             </div>
         </div>

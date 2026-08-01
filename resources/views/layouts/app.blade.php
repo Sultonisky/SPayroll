@@ -64,7 +64,7 @@
                         You are logged in as a <strong>demo account</strong> — some actions are restricted.
                         Data resets daily.
                     </span>
-                    <a href="https://github.com/Sultonisky/s-payroll" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">
                         Deploy your own instance →
                     </a>
                 </div>
