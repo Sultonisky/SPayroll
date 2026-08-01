@@ -65,8 +65,8 @@ Before starting significant work, please:
 
 ```bash
 # 1. Fork and clone the repository
-git clone https://github.com/YOUR_USERNAME/s-payroll.git
-cd s-payroll
+git clone https://github.com/YOUR_USERNAME/Scroll.git
+cd Scroll
 
 # 2. Install PHP dependencies
 composer install
@@ -224,7 +224,7 @@ Keep the subject line under 72 characters. Use imperative mood ("add" not "added
 
 ## Reporting Bugs
 
-Open a [GitHub Issue](https://github.com/Sultonisky/SPayroll/issues) with:
+Open a [GitHub Issue](https://github.com/Sultonisky/Scroll/issues) with:
 
 - **Title**: short, descriptive summary
 - **Environment**: PHP version, Laravel version, OS, browser
@@ -237,7 +237,7 @@ Open a [GitHub Issue](https://github.com/Sultonisky/SPayroll/issues) with:
 
 ## Suggesting Features
 
-Open a [GitHub Issue](https://github.com/Sultonisky/SPayroll/issues) with the label `enhancement` and include:
+Open a [GitHub Issue](https://github.com/Sultonisky/Scroll/issues) with the label `enhancement` and include:
 
 - What problem does this feature solve?
 - Who would benefit from it?
@@ -253,7 +253,7 @@ Features that align with the project's focus — **remote-first payroll for smal
 **Please do not open a public issue for security vulnerabilities.**
 
 Instead, report them privately by:
-- Opening a [GitHub Security Advisory](https://github.com/Sultonisky/SPayroll/security/advisories/new)
+- Opening a [GitHub Security Advisory](https://github.com/Sultonisky/Scroll/security/advisories/new)
 - Or contacting the maintainer directly via GitHub
 
 All security reports will be addressed promptly and credited to the reporter.
@@ -262,8 +262,8 @@ All security reports will be addressed promptly and credited to the reporter.
 
 ## Questions?
 
-If you're unsure about something, open a [Discussion](https://github.com/Sultonisky/SPayroll/discussions) or ask in the issue you're working on. We're happy to help.
+If you're unsure about something, open a [Discussion](https://github.com/Sultonisky/Scroll/discussions) or ask in the issue you're working on. We're happy to help.
 
 ---
 
-_Thank you for making S-Payroll better._ 🙏
+_Thank you for making Scroll better._ 🙏

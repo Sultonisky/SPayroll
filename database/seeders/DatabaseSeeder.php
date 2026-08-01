@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         // ----------------------------------------------------------------
         $this->command->info('Seeding admin user...');
         User::firstOrCreate(
-            ['email' => env('ADMIN_EMAIL', 'admin@spayroll.com')],
+            ['email' => env('ADMIN_EMAIL', 'admin@scroll.test')],
             [
                 'name' => env('ADMIN_NAME', 'Administrator'),
                 'password' => Hash::make(env('ADMIN_PASSWORD', 'password123')),
@@ -37,11 +37,11 @@ class DatabaseSeeder extends Seeder
         // ----------------------------------------------------------------
         $this->command->info('Seeding demo users...');
         $demoUsers = [
-            ['name' => 'Demo Admin',   'email' => 'admin@demo.spayroll.com',   'role' => 'admin'],
-            ['name' => 'Demo HR',      'email' => 'hr@demo.spayroll.com',      'role' => 'HR'],
-            ['name' => 'Demo Manager', 'email' => 'manager@demo.spayroll.com', 'role' => 'manager'],
-            ['name' => 'Demo Staff',   'email' => 'staff@demo.spayroll.com',   'role' => 'staff'],
-            ['name' => 'Demo Finance', 'email' => 'finance@demo.spayroll.com', 'role' => 'finance'],
+            ['name' => 'Demo Admin',   'email' => 'admin@demo.scroll.com',   'role' => 'admin'],
+            ['name' => 'Demo HR',      'email' => 'hr@demo.scroll.com',      'role' => 'HR'],
+            ['name' => 'Demo Manager', 'email' => 'manager@demo.scroll.com', 'role' => 'manager'],
+            ['name' => 'Demo Staff',   'email' => 'staff@demo.scroll.com',   'role' => 'staff'],
+            ['name' => 'Demo Finance', 'email' => 'finance@demo.scroll.com', 'role' => 'finance'],
         ];
 
         foreach ($demoUsers as $demo) {
@@ -100,14 +100,14 @@ class DatabaseSeeder extends Seeder
         // ----------------------------------------------------------------
         $this->command->info('');
         $this->command->info('All seed data created successfully.');
-        $this->command->line('  Admin email : '.env('ADMIN_EMAIL', 'admin@spayroll.com'));
+        $this->command->line('  Admin email : '.env('ADMIN_EMAIL', 'admin@scroll.com'));
         $this->command->line('  Admin pass  : '.env('ADMIN_PASSWORD', 'password123'));
         $this->command->info('');
         $this->command->info('Demo accounts (password: demo1234):');
-        $this->command->line('  admin@demo.com   → Admin');
-        $this->command->line('  hr@demo.com      → HR');
-        $this->command->line('  manager@demo.com → Manager');
-        $this->command->line('  staff@demo.com   → Staff');
-        $this->command->line('  finance@demo.com → Finance');
+        $this->command->line('  admin@demo.scroll.com   → Admin');
+        $this->command->line('  hr@demo.scroll.com      → HR');
+        $this->command->line('  manager@demo.scroll.com → Manager');
+        $this->command->line('  staff@demo.scroll.com   → Staff');
+        $this->command->line('  finance@demo.scroll.com → Finance');
     }
 }

@@ -19,7 +19,7 @@ If you discover a security vulnerability in Scroll, please report it responsibly
 
 ### Option 1 — GitHub Security Advisory (preferred)
 
-Open a [private security advisory](https://github.com/Sultonisky/Spayroll/security/advisories/new) directly on GitHub. This keeps the disclosure private until a fix is available.
+Open a [private security advisory](https://github.com/Sultonisky/Scroll/security/advisories/new) directly on GitHub. This keeps the disclosure private until a fix is available.
 
 ### Option 2 — Direct contact
 
@@ -78,7 +78,7 @@ For operators running self-hosted instances:
 - Set `APP_ENV=production` and `APP_DEBUG=false`
 - Use HTTPS with a valid TLS certificate
 - Rotate `APP_KEY` after initial setup
-- Change default seeded credentials immediately (`admin@spayroll.com`)
+- Change default seeded credentials immediately (`admin@scroll.com`)
 - Restrict database access to localhost or a private network
 - Keep PHP, Laravel, and all Composer/npm dependencies updated
 - Configure a firewall — only expose ports 80/443 publicly

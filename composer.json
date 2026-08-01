@@ -1,14 +1,14 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "sultonisky/s-payroll",
+    "name": "sultonisky/scroll",
     "type": "project",
     "description": "Open source, self-hosted payroll management system for remote-first companies. Built with Laravel 13.",
     "keywords": ["payroll", "hrm", "self-hosted", "laravel", "open-source"],
     "license": "MIT",
-    "homepage": "https://github.com/Sultonisky/SPayroll",
+    "homepage": "https://github.com/Sultonisky/Scroll",
     "support": {
-        "issues": "https://github.com/Sultonisky/SPayroll/issues",
-        "source": "https://github.com/Sultonisky/SPayroll"
+        "issues": "https://github.com/Sultonisky/Scroll/issues",
+        "source": "https://github.com/Sultonisky/Scroll"
     },
     "authors": [
         {

@@ -12,10 +12,10 @@ class DemoResetCommand extends Command
     protected $description = 'Reset the live demo environment: wipe all data and re-seed fresh data.';
 
     private array $protectedEmails = [
-        'admin@demo.spayroll.com',
-        'hr@demo.spayroll.com',
-        'manager@demo.spayroll.com',
-        'staff@demo.spayroll.com',
+        'admin@demo.scroll.com',
+        'hr@demo.scroll.com',
+        'manager@demo.scroll.com',
+        'staff@demo.scroll.com',
     ];
 
     public function handle(): int
@@ -38,10 +38,10 @@ class DemoResetCommand extends Command
 
         $this->info('');
         $this->info('Demo reset complete. Demo accounts (password: demo12345):');
-        $this->line('  admin@demo.spayroll.com   → Admin');
-        $this->line('  hr@demo.spayroll.com      → HR');
-        $this->line('  manager@demo.spayroll.com → Manager');
-        $this->line('  staff@demo.spayroll.com   → Staff');
+        $this->line('  admin@demo.scroll.com   → Admin');
+        $this->line('  hr@demo.scroll.com      → HR');
+        $this->line('  manager@demo.scroll.com → Manager');
+        $this->line('  staff@demo.scroll.com   → Staff');
 
         return self::SUCCESS;
     }
