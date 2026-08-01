@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bonus;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\User;
+use App\Notifications\DashboardNotification;
 use App\Services\PayrollCalculatorService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -380,12 +383,12 @@ class PayrollController extends Controller
         $count = $payrolls->count();
 
         // Send a single bulk notification instead of per-record noise
-        $managers = \App\Models\User::whereIn('role', ['admin', 'HR', 'finance'])
+        $managers = User::whereIn('role', ['admin', 'HR', 'finance'])
             ->where('id', '!=', auth()->id())
             ->get();
 
         foreach ($managers as $user) {
-            $user->notify(new \App\Notifications\DashboardNotification(
+            $user->notify(new DashboardNotification(
                 'Bulk Payroll Approved',
                 "{$count} draft payroll record(s) have been approved in bulk.",
                 route('payrolls.approved'),
@@ -518,12 +521,12 @@ class PayrollController extends Controller
         $count = $payrolls->count();
 
         // Send a single bulk notification
-        $managers = \App\Models\User::whereIn('role', ['admin', 'HR', 'finance'])
+        $managers = User::whereIn('role', ['admin', 'HR', 'finance'])
             ->where('id', '!=', auth()->id())
             ->get();
 
         foreach ($managers as $user) {
-            $user->notify(new \App\Notifications\DashboardNotification(
+            $user->notify(new DashboardNotification(
                 'Bulk Payroll Marked as Paid',
                 "{$count} payroll record(s) have been marked as paid in bulk.",
                 route('payrolls.index'),
@@ -545,8 +548,8 @@ class PayrollController extends Controller
      */
     public function payslipIndex(Request $request)
     {
-        $user     = auth()->user();
-        $isStaff  = $user->role === 'staff';
+        $user = auth()->user();
+        $isStaff = $user->role === 'staff';
         $canViewAll = in_array($user->role, ['admin', 'HR', 'finance']);
 
         $query = Payroll::select('id', 'employee_id', 'year', 'month', 'base_salary', 'bonus', 'total_salary', 'status', 'pay_date', 'notes')
@@ -563,18 +566,22 @@ class PayrollController extends Controller
             $query->where('employee_id', $user->employee->id);
         }
 
-        $filterYear       = $request->integer('year') ?: null;
-        $filterMonth      = $request->integer('month') ?: null;
+        $filterYear = $request->integer('year') ?: null;
+        $filterMonth = $request->integer('month') ?: null;
         $filterEmployeeId = $request->input('employee_id');
 
-        if ($filterYear)  $query->where('year', $filterYear);
-        if ($filterMonth) $query->where('month', $filterMonth);
+        if ($filterYear) {
+            $query->where('year', $filterYear);
+        }
+        if ($filterMonth) {
+            $query->where('month', $filterMonth);
+        }
 
         if ($canViewAll && $filterEmployeeId) {
             $query->where('employee_id', $filterEmployeeId);
         }
 
-        $payrolls     = $query->get();
+        $payrolls = $query->get();
         $allEmployees = $canViewAll
             ? Employee::select('id', 'name', 'employee_code')->orderBy('employee_code')->get()
             : collect();
@@ -603,7 +610,7 @@ class PayrollController extends Controller
         Gate::authorize('viewPayslip', $payroll);
 
         // Load bonuses that were included in this payroll period
-        $bonuses = \App\Models\Bonus::where('employee_id', $payroll->employee_id)
+        $bonuses = Bonus::where('employee_id', $payroll->employee_id)
             ->where('year', $payroll->year)
             ->where('month', $payroll->month)
             ->where('status', 'approved')
