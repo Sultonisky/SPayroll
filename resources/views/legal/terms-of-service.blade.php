@@ -210,7 +210,7 @@
         Scroll is distributed as free, open-source software under the
         <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a>.
         The full source code is publicly available on
-        <a href="https://github.com/Sultonisky/SPayroll" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">GitHub</a>.
     </p>
     <p>Under the MIT License, you are free to:</p>
     <ul>
@@ -417,15 +417,15 @@
         <p>
             <i class="fab fa-github me-2" style="color:#64748b;"></i>
             <strong>GitHub Repository:</strong>
-            <a href="https://github.com/Sultonisky/SPayroll" target="_blank" rel="noopener noreferrer">
-                github.com/Sultonisky/SPayroll
+            <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">
+                github.com/Sultonisky/Scroll
             </a>
         </p>
         <p>
             <i class="fas fa-comment-alt me-2" style="color:#64748b;"></i>
             <strong>General Inquiries &amp; Bug Reports:</strong>
             Open an issue on the
-            <a href="https://github.com/Sultonisky/SPayroll/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>
+            <a href="https://github.com/Sultonisky/Scroll/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>
             tracker.
         </p>
         <p>

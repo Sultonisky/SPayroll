@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug or unexpected behavior in S-Payroll
+description: Report a bug or unexpected behavior in Scroll
 title: "[Bug]: "
 labels: ["bug", "triage"]
 body:

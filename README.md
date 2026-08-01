@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Sultonisky/SPayroll/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
-  <a href="https://github.com/Sultonisky/SPayroll/actions/workflows/ci.yml"><img src="https://github.com/Sultonisky/SPayroll/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Sultonisky/Scroll/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+  <a href="https://github.com/Sultonisky/Scroll/actions/workflows/ci.yml"><img src="https://github.com/Sultonisky/Scroll/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-13.x-red?logo=laravel" alt="Laravel"></a>
   <a href="https://www.php.net"><img src="https://img.shields.io/badge/PHP-8.3+-blue?logo=php" alt="PHP"></a>
   <img src="https://img.shields.io/badge/self--hosted-yes-brightgreen" alt="Self Hosted">
@@ -214,8 +214,8 @@ Before deploying, be aware of the current scope and known limitations:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Sultonisky/SPayroll.git
-cd SPayroll
+git clone https://github.com/Sultonisky/Scroll.git
+cd Scroll
 ```
 
 ### 2. Install PHP dependencies
@@ -479,11 +479,11 @@ A live demo is available at the official deployment. You can try Scroll with any
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | `admin@demo.spayroll.com` | `demo12345` |
-| HR | `hr@demo.spayroll.com` | `demo12345` |
-| Manager | `manager@demo.spayroll.com` | `demo12345` |
-| Finance | `finance@demo.spayroll.com` | `demo12345` |
-| Staff | `staff@demo.spayroll.com` | `demo12345` |
+| Admin | `admin@demo.scroll.com` | `demo12345` |
+| HR | `hr@demo.scroll.com` | `demo12345` |
+| Manager | `manager@demo.scroll.com` | `demo12345` |
+| Finance | `finance@demo.scroll.com` | `demo12345` |
+| Staff | `staff@demo.scroll.com` | `demo12345` |
 
 > Click any credential card on the login page to auto-fill the form — no typing required.
 

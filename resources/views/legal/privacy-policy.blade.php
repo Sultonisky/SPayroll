@@ -404,7 +404,7 @@
     <h2 id="open-source">12. Open Source Software</h2>
     <p>
         Scroll is distributed as open-source software under the applicable license specified in the
-        <a href="https://github.com/Sultonisky/SPayroll" target="_blank" rel="noopener noreferrer">project repository</a>.
+        <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">project repository</a>.
         The open-source nature of the software does not transfer privacy or data protection responsibilities from an
         organization operating a self-hosted instance to the Scroll project maintainers. Each organization is
         responsible for how the software is configured and used within its own environment.
@@ -451,12 +451,12 @@
     </p>
     <div class="contact-card">
         <p><i class="fab fa-github me-2" style="color:#64748b;"></i><strong>GitHub Repository:</strong>
-            <a href="https://github.com/Sultonisky/SPayroll" target="_blank" rel="noopener noreferrer">
-                github.com/Sultonisky/SPayroll
+            <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">
+                github.com/Sultonisky/Scroll
             </a>
         </p>
         <p><i class="fas fa-comment-alt me-2" style="color:#64748b;"></i><strong>Privacy &amp; Data Inquiries:</strong>
-            Open a <a href="https://github.com/Sultonisky/SPayroll/issues" target="_blank" rel="noopener noreferrer">GitHub Issue</a>
+            Open a <a href="https://github.com/Sultonisky/Scroll/issues" target="_blank" rel="noopener noreferrer">GitHub Issue</a>
             and label it <code>privacy</code>. For sensitive matters that should not be public, reach out via
             the contact information listed in the repository.
         </p>
