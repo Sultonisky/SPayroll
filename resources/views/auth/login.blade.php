@@ -41,10 +41,10 @@
                         This is a live demo of <strong>Scroll</strong> - an open source, self-hosted payroll system you can deploy on your own server.
                     </p>
                     <div class="demo-banner-links">
-                        <a href="https://github.com/Sultonisky/Spayroll" target="_blank" rel="noopener noreferrer" class="demo-link demo-link-github">
+                        <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer" class="demo-link demo-link-github">
                             <i class="fab fa-github me-1"></i> GitHub
                         </a>
-                        <a href="https://github.com/Sultonisky/Spayroll#readme" target="_blank" rel="noopener noreferrer" class="demo-link demo-link-docs">
+                        <a href="https://github.com/Sultonisky/Scroll#readme" target="_blank" rel="noopener noreferrer" class="demo-link demo-link-docs">
                             <i class="fas fa-book me-1"></i> Documentation
                         </a>
                         <a href="https://saweria.co/sultonisky" target="_blank" rel="noopener noreferrer" class="demo-link demo-link-donate">
@@ -60,25 +60,25 @@
                         <span class="demo-credentials-pass">password: <strong>demo12345</strong></span>
                     </p>
                     <div class="demo-credentials-list">
-                        <button type="button" class="demo-cred-item" onclick="fillLogin('admin@demo.spayroll.com')">
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('admin@demo.scroll.com')">
                             <span class="demo-cred-role demo-cred-admin">Admin</span>
-                            <span class="demo-cred-email">admin@demo.spayroll.com</span>
+                            <span class="demo-cred-email">admin@demo.scroll.com</span>
                         </button>
-                        <button type="button" class="demo-cred-item" onclick="fillLogin('hr@demo.spayroll.com')">
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('hr@demo.scroll.com')">
                             <span class="demo-cred-role demo-cred-hr">HR</span>
-                            <span class="demo-cred-email">hr@demo.spayroll.com</span>
+                            <span class="demo-cred-email">hr@demo.scroll.com</span>
                         </button>
-                        <button type="button" class="demo-cred-item" onclick="fillLogin('manager@demo.spayroll.com')">
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('manager@demo.scroll.com')">
                             <span class="demo-cred-role demo-cred-manager">Manager</span>
-                            <span class="demo-cred-email">manager@demo.spayroll.com</span>
+                            <span class="demo-cred-email">manager@demo.scroll.com</span>
                         </button>
-                        <button type="button" class="demo-cred-item" onclick="fillLogin('finance@demo.spayroll.com')">
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('finance@demo.scroll.com')">
                             <span class="demo-cred-role demo-cred-finance">Finance</span>
-                            <span class="demo-cred-email">finance@demo.spayroll.com</span>
+                            <span class="demo-cred-email">finance@demo.scroll.com</span>
                         </button>
-                        <button type="button" class="demo-cred-item" onclick="fillLogin('staff@demo.spayroll.com')">
+                        <button type="button" class="demo-cred-item" onclick="fillLogin('staff@demo.scroll.com')">
                             <span class="demo-cred-role demo-cred-staff">Staff</span>
-                            <span class="demo-cred-email">staff@demo.spayroll.com</span>
+                            <span class="demo-cred-email">staff@demo.scroll.com</span>
                         </button>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                     <p>&copy; {{ date('Y') }} Scroll - Open Source Self-Hosted Payroll System.<br>
                         Built by <a href="https://github.com/Sultonisky" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-body">Mohammad Sultoni</a>
                         &bull;
-                        <a href="https://github.com/Sultonisky/SPayroll#readme" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-body">
+                        <a href="https://github.com/Sultonisky/Scroll#readme" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-body">
                             <i class="fab fa-github"></i> Source Code
                         </a>
                     </p>
