@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="public/assets/images/logo-brand-white.svg" alt="S-Payroll" height="80">
+  <img src="public/assets/images/logo-brand-white.png" alt="Scroll" height="80">
 </p>
 
-<h1 align="center">S-Payroll</h1>
+<h1 align="center">Scroll</h1>
 
 <p align="center">
   Open source, self-hosted payroll system built for remote-first companies.
@@ -33,7 +33,7 @@
 
 ## Overview
 
-S-Payroll is a lightweight, self-hosted payroll management system designed for small to mid-sized remote-first companies. It gives your HR and finance team a clean, straightforward interface to manage employees, run monthly payroll, handle bonuses, and export pay data - all on your own infrastructure, with no vendor lock-in.
+Scroll is a lightweight, self-hosted payroll management system designed for small to mid-sized remote-first companies. It gives your HR and finance team a clean, straightforward interface to manage employees, run monthly payroll, handle bonuses, and export pay data - all on your own infrastructure, with no vendor lock-in.
 
 Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 
@@ -86,7 +86,7 @@ Built with [Laravel 13](https://laravel.com) and a minimal frontend stack.
 
 ## 🧪 Testing
 
-S-Payroll ships with a comprehensive test suite covering Feature and Unit layers. All tests run against SQLite in-memory — no external database required.
+Scroll ships with a comprehensive test suite covering Feature and Unit layers. All tests run against SQLite in-memory — no external database required.
 
 ### Running Tests
 
@@ -241,7 +241,7 @@ php artisan key:generate
 Open `.env` and set your database, app URL, and storage settings:
 
 ```env
-APP_NAME="S-Payroll"
+APP_NAME="Scroll"
 APP_URL=https://your-domain.com
 
 DB_CONNECTION=mysql
@@ -270,7 +270,7 @@ chmod -R 775 storage bootstrap/cache
 
 ### 7. (Optional) Configure queue worker
 
-S-Payroll uses Laravel queues for background jobs. For production, run a persistent worker:
+Scroll uses Laravel queues for background jobs. For production, run a persistent worker:
 
 ```bash
 php artisan queue:work --tries=3
@@ -304,11 +304,11 @@ php artisan sail:install
 
 ## 🎨 Customization
 
-After installing, you can brand S-Payroll to match your company by swapping the logo and adjusting the primary color. Everything is in plain CSS and SVG — no build step required.
+After installing, you can brand Scroll to match your company by swapping the logo and adjusting the primary color. Everything is in plain CSS and SVG — no build step required.
 
 ### Logo
 
-S-Payroll uses three logo files, all located in `public/assets/images/`. Replace them with your own files using the exact same filenames so all references update automatically.
+Scroll uses three logo files, all located in `public/assets/images/`. Replace them with your own files using the exact same filenames so all references update automatically.
 
 | File | Where it appears |
 |---|---|
@@ -407,7 +407,7 @@ No rebuild is needed — these are plain CSS files served directly as static ass
 
 ## 🔐 Default Roles & Permissions
 
-S-Payroll uses a role-based access control (RBAC) system with five built-in roles. Permissions are enforced at both the backend (Laravel Policies + Gate) and frontend (sidebar visibility + UI element guards).
+Scroll uses a role-based access control (RBAC) system with five built-in roles. Permissions are enforced at both the backend (Laravel Policies + Gate) and frontend (sidebar visibility + UI element guards).
 
 ### Role Overview
 
@@ -473,7 +473,7 @@ S-Payroll uses a role-based access control (RBAC) system with five built-in role
 
 ## 🧪 Live Demo & Demo Accounts
 
-A live demo is available at the official deployment. You can try S-Payroll with any of the following pre-seeded accounts — each representing a different role so you can explore the full permission model.
+A live demo is available at the official deployment. You can try Scroll with any of the following pre-seeded accounts — each representing a different role so you can explore the full permission model.
 
 ### Demo Credentials
 
@@ -590,7 +590,7 @@ For production deployments:
 
 ## ⚖️ Legal
 
-S-Payroll is provided as open-source software under the **MIT License**. The following legal documents apply to the official demo environment and the software distribution:
+Scroll is provided as open-source software under the **MIT License**. The following legal documents apply to the official demo environment and the software distribution:
 
 | Document | Applies to |
 |---|---|
@@ -601,13 +601,13 @@ S-Payroll is provided as open-source software under the **MIT License**. The fol
 
 **For self-hosted operators:** You are the data controller for all personal data processed through your installation. You are responsible for establishing your own privacy policy, ensuring compliance with applicable data protection laws (including **UU PDP No. 27/2022** in Indonesia), and securing your infrastructure. The project maintainers have no access to and no responsibility for data in independently operated instances.
 
-> S-Payroll does not implement automated PPh 21 tax calculation. All payroll outputs should be independently verified before disbursement or regulatory submission.
+> Scroll does not implement automated PPh 21 tax calculation. All payroll outputs should be independently verified before disbursement or regulatory submission.
 
 ---
 
 ## 📄 License
 
-S-Payroll is open source software released under the [MIT License](LICENSE).
+Scroll is open source software released under the [MIT License](LICENSE).
 
 You are free to use, modify, and distribute this software for personal or commercial use, subject to retaining the original copyright notice. Attribution is appreciated but not required beyond that.
 

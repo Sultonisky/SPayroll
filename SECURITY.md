@@ -15,11 +15,11 @@ We only maintain the latest version on the `main` branch. Please update to the l
 
 **Please do not report security vulnerabilities through public GitHub Issues.**
 
-If you discover a security vulnerability in S-Payroll, please report it responsibly:
+If you discover a security vulnerability in Scroll, please report it responsibly:
 
 ### Option 1 — GitHub Security Advisory (preferred)
 
-Open a [private security advisory](https://github.com/Sultonisky/s-payroll/security/advisories/new) directly on GitHub. This keeps the disclosure private until a fix is available.
+Open a [private security advisory](https://github.com/Sultonisky/Spayroll/security/advisories/new) directly on GitHub. This keeps the disclosure private until a fix is available.
 
 ### Option 2 — Direct contact
 
@@ -91,4 +91,4 @@ For operators running self-hosted instances:
 
 We publicly credit security reporters in the release notes and CHANGELOG, unless the reporter prefers to remain anonymous.
 
-Thank you for helping keep S-Payroll and its users safe.
+Thank you for helping keep Scroll and its users safe.

@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="S-Payroll Terms of Service - terms governing use of the official S-Payroll demo environment.">
-    <title>S-Payroll | Terms of Service</title>
+    <meta name="description" content="Scroll Terms of Service - terms governing use of the official Scroll demo environment.">
+    <title>Scroll | Terms of Service</title>
     <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet">
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/logo.svg') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/logo.png') }}">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; }
@@ -60,7 +60,7 @@
     </a>
 
     <div class="legal-logo">
-        <img src="{{ asset('assets/images/logo-brand.svg') }}" alt="S-Payroll">
+        <img src="{{ asset('assets/images/logo-scroll.png') }}" alt="Scroll">
     </div>
 
     <h1>Terms of Service</h1>
@@ -72,8 +72,8 @@
 
     <div class="intro-box">
         <p>
-            These Terms of Service govern your access to and use of the <strong>official S-Payroll live demo</strong>
-            operated by the S-Payroll project maintainers. S-Payroll is an open-source, self-hosted payroll management
+            These Terms of Service govern your access to and use of the <strong>official Scroll live demo</strong>
+            operated by the Scroll project maintainers. Scroll is an open-source, self-hosted payroll management
             system distributed under the <strong>MIT License</strong>. By accessing the demo, you agree to these terms.
         </p>
     </div>
@@ -82,7 +82,7 @@
         <p>
             <i class="fas fa-exclamation-triangle me-1"></i>
             <strong>Self-hosted instances:</strong> These Terms of Service apply only to the official demo.
-            Organizations operating their own S-Payroll installation are independently responsible for establishing
+            Organizations operating their own Scroll installation are independently responsible for establishing
             their own terms, policies, and legal compliance.
         </p>
     </div>
@@ -113,7 +113,7 @@
     <h2 id="scope">1. Scope &amp; Acceptance</h2>
     <p>
         These Terms of Service ("Terms") constitute a legally binding agreement between you ("User") and the
-        S-Payroll project maintainers regarding your access to and use of the official S-Payroll demo environment
+        Scroll project maintainers regarding your access to and use of the official Scroll demo environment
         available at this URL.
     </p>
     <p>
@@ -130,9 +130,9 @@
     <!-- Section 2 -->
     <h2 id="demo">2. The Official Demo Environment</h2>
     <p>
-        The official S-Payroll demo is a publicly accessible, live environment provided solely for
+        The official Scroll demo is a publicly accessible, live environment provided solely for
         <strong>demonstration, evaluation, and educational purposes</strong>. It showcases the features of the
-        S-Payroll application, including employee management, payroll generation, bonus management, and
+        Scroll application, including employee management, payroll generation, bonus management, and
         role-based access control.
     </p>
     <ul>
@@ -146,11 +146,11 @@
     <!-- Section 3 -->
     <h2 id="acceptable-use">3. Acceptable Use</h2>
     <p>
-        You may access and use the official S-Payroll demo only for lawful, legitimate purposes consistent with
+        You may access and use the official Scroll demo only for lawful, legitimate purposes consistent with
         these Terms. Acceptable uses include:
     </p>
     <ul>
-        <li>Evaluating whether S-Payroll meets your organization's requirements before self-hosting.</li>
+        <li>Evaluating whether Scroll meets your organization's requirements before self-hosting.</li>
         <li>Exploring application features, workflows, and user interfaces.</li>
         <li>Educational or personal learning purposes related to payroll system design.</li>
         <li>Demonstrating the software to colleagues or stakeholders using fictional data.</li>
@@ -168,7 +168,7 @@
     <!-- Section 4 -->
     <h2 id="prohibited">4. Prohibited Conduct</h2>
     <p>
-        When using the official S-Payroll demo, you must not engage in any of the following:
+        When using the official Scroll demo, you must not engage in any of the following:
     </p>
 
     <h3>4.1 Security &amp; System Integrity</h3>
@@ -207,14 +207,14 @@
     <!-- Section 5 -->
     <h2 id="open-source-license">5. Open Source License (MIT)</h2>
     <p>
-        S-Payroll is distributed as free, open-source software under the
+        Scroll is distributed as free, open-source software under the
         <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a>.
         The full source code is publicly available on
         <a href="https://github.com/Sultonisky/SPayroll" target="_blank" rel="noopener noreferrer">GitHub</a>.
     </p>
     <p>Under the MIT License, you are free to:</p>
     <ul>
-        <li><strong>Use</strong> - run S-Payroll for any purpose, including commercial use.</li>
+        <li><strong>Use</strong> - run Scroll for any purpose, including commercial use.</li>
         <li><strong>Copy</strong> - reproduce the source code and software.</li>
         <li><strong>Modify</strong> - adapt the software to meet your organization's needs.</li>
         <li><strong>Distribute</strong> - share the original or modified software with others.</li>
@@ -237,7 +237,7 @@
     <!-- Section 6 -->
     <h2 id="self-hosted-use">6. Self-Hosted Use &amp; Operator Responsibilities</h2>
     <p>
-        Organizations that download, install, and operate S-Payroll on their own infrastructure
+        Organizations that download, install, and operate Scroll on their own infrastructure
         ("Operators") do so independently and are solely responsible for:
     </p>
 
@@ -251,7 +251,7 @@
 
     <h3>6.2 Infrastructure &amp; Security</h3>
     <ul>
-        <li>Securing the server, database, and network infrastructure on which S-Payroll is deployed.</li>
+        <li>Securing the server, database, and network infrastructure on which Scroll is deployed.</li>
         <li>Setting <code>APP_ENV=production</code> and <code>APP_DEBUG=false</code> in all production environments.</li>
         <li>Enforcing HTTPS for all access to the application.</li>
         <li>Rotating the <code>APP_KEY</code> and changing default seeded credentials immediately after first deployment.</li>
@@ -262,14 +262,14 @@
     <h3>6.3 Data Accuracy &amp; Payroll</h3>
     <ul>
         <li>Verifying the accuracy of all payroll calculations, tax deductions (PPh 21), and BPJS contribution figures produced by the system before use.</li>
-        <li>S-Payroll does <strong>not</strong> currently implement automated PPh 21 tax calculation. Operators are responsible for ensuring tax compliance through additional processes or integrations.</li>
+        <li>Scroll does <strong>not</strong> currently implement automated PPh 21 tax calculation. Operators are responsible for ensuring tax compliance through additional processes or integrations.</li>
         <li>Ensuring payroll data is accurate, complete, and authorized before disbursement to employees.</li>
     </ul>
 
     <div class="highlight-box">
         <p>
             <i class="fas fa-info-circle me-1" style="color: #92400e;"></i>
-            The S-Payroll project maintainers have no access to, and no responsibility for, data stored in
+            The Scroll project maintainers have no access to, and no responsibility for, data stored in
             independently operated self-hosted instances. All operational, legal, and security responsibilities
             rest entirely with the Operator.
         </p>
@@ -278,18 +278,18 @@
     <!-- Section 7 -->
     <h2 id="intellectual-property">7. Intellectual Property</h2>
     <p>
-        The S-Payroll source code, documentation, and associated materials are the intellectual property of
-        the S-Payroll project maintainers and contributors, and are made available under the MIT License as
+        The Scroll source code, documentation, and associated materials are the intellectual property of
+        the Scroll project maintainers and contributors, and are made available under the MIT License as
         described in Section 5.
     </p>
     <p>
-        The S-Payroll name, logo, and branding are associated with the project. Use of the S-Payroll name or
+        The Scroll name, logo, and branding are associated with the project. Use of the Scroll name or
         logo to represent a modified or forked version of the software should clearly indicate that it is a
-        derivative work and is not the official S-Payroll project, to avoid confusion.
+        derivative work and is not the official Scroll project, to avoid confusion.
     </p>
     <p>
-        Third-party components used in S-Payroll (including Laravel, CoreUI, Maatwebsite Excel, Intervention
-        Image, Font Awesome, and jQuery) are subject to their respective licenses. Use of S-Payroll does not
+        Third-party components used in Scroll (including Laravel, CoreUI, Maatwebsite Excel, Intervention
+        Image, Font Awesome, and jQuery) are subject to their respective licenses. Use of Scroll does not
         grant any rights to those third-party trademarks or intellectual property beyond what their respective
         licenses permit.
     </p>
@@ -297,10 +297,10 @@
     <!-- Section 8 -->
     <h2 id="disclaimer">8. Disclaimer of Warranties</h2>
     <p>
-        The S-Payroll software and the official demo are provided <strong>"as is"</strong> and
+        The Scroll software and the official demo are provided <strong>"as is"</strong> and
         <strong>"as available"</strong>, without warranty of any kind, express or implied.
     </p>
-    <p>To the fullest extent permitted by applicable law, the S-Payroll project maintainers expressly disclaim:</p>
+    <p>To the fullest extent permitted by applicable law, the Scroll project maintainers expressly disclaim:</p>
     <ul>
         <li>Any implied warranty of merchantability, fitness for a particular purpose, or non-infringement.</li>
         <li>Any warranty that the software will be error-free, uninterrupted, secure, or free of bugs or vulnerabilities.</li>
@@ -310,7 +310,7 @@
     <div class="info-box">
         <p>
             <i class="fas fa-info-circle me-1"></i>
-            <strong>Important for Operators:</strong> S-Payroll is a tool to assist payroll processing. It is not a
+            <strong>Important for Operators:</strong> Scroll is a tool to assist payroll processing. It is not a
             certified accounting system or licensed tax software. All payroll outputs must be independently verified
             by qualified personnel before disbursement or regulatory submission.
         </p>
@@ -319,12 +319,12 @@
     <!-- Section 9 -->
     <h2 id="liability">9. Limitation of Liability</h2>
     <p>
-        To the maximum extent permitted by applicable Indonesian law, the S-Payroll project maintainers and
+        To the maximum extent permitted by applicable Indonesian law, the Scroll project maintainers and
         contributors shall not be liable for any direct, indirect, incidental, special, consequential, or
         exemplary damages arising from:
     </p>
     <ul>
-        <li>Your access to or use of (or inability to access or use) the official demo or the S-Payroll software.</li>
+        <li>Your access to or use of (or inability to access or use) the official demo or the Scroll software.</li>
         <li>Any errors, inaccuracies, or omissions in payroll calculations, tax figures, or other outputs of the system.</li>
         <li>Unauthorized access to or alteration of your data.</li>
         <li>Loss of data resulting from demo resets or system changes.</li>
@@ -333,7 +333,7 @@
     </ul>
     <p>
         This limitation applies regardless of the theory of liability (contract, tort, negligence, strict
-        liability, or otherwise) and even if the S-Payroll project maintainers have been advised of the
+        liability, or otherwise) and even if the Scroll project maintainers have been advised of the
         possibility of such damages.
     </p>
     <p>
@@ -344,15 +344,15 @@
     <!-- Section 10 -->
     <h2 id="indemnification">10. Indemnification</h2>
     <p>
-        By using the official S-Payroll demo or operating a self-hosted S-Payroll instance, you agree to
-        defend, indemnify, and hold harmless the S-Payroll project maintainers and contributors from and
+        By using the official Scroll demo or operating a self-hosted Scroll instance, you agree to
+        defend, indemnify, and hold harmless the Scroll project maintainers and contributors from and
         against any claims, damages, losses, liabilities, costs, and expenses (including reasonable legal fees)
         arising from:
     </p>
     <ul>
         <li>Your violation of these Terms.</li>
         <li>Your violation of any applicable law or regulation, including UU ITE or UU PDP.</li>
-        <li>Your use of S-Payroll in a manner that causes harm to a third party.</li>
+        <li>Your use of Scroll in a manner that causes harm to a third party.</li>
         <li>Any data processed through a self-hosted instance you operate.</li>
         <li>Any claims by your employees, contractors, or regulators arising from your use of the software.</li>
     </ul>
@@ -360,7 +360,7 @@
     <!-- Section 11 -->
     <h2 id="termination">11. Termination &amp; Access Revocation</h2>
     <p>
-        The S-Payroll project maintainers reserve the right to suspend or revoke your access to the official
+        The Scroll project maintainers reserve the right to suspend or revoke your access to the official
         demo at any time, without notice, for any reason, including but not limited to:
     </p>
     <ul>
@@ -374,27 +374,27 @@
         arose prior to termination.
     </p>
     <p>
-        Your rights under the MIT License to use, modify, and distribute the S-Payroll source code are
+        Your rights under the MIT License to use, modify, and distribute the Scroll source code are
         unaffected by any revocation of demo access.
     </p>
 
     <!-- Section 12 -->
     <h2 id="privacy">12. Privacy</h2>
     <p>
-        Your use of the official S-Payroll demo is also governed by the
+        Your use of the official Scroll demo is also governed by the
         <a href="{{ route('privacy-policy') }}">Privacy Policy</a>, which describes how personal data is
         collected, used, and protected in connection with the demo. The Privacy Policy is incorporated into
         these Terms by reference.
     </p>
     <p>
-        For self-hosted S-Payroll installations, the Operator is the data controller under UU PDP and is
+        For self-hosted Scroll installations, the Operator is the data controller under UU PDP and is
         solely responsible for their own privacy practices and compliance.
     </p>
 
     <!-- Section 13 -->
     <h2 id="changes">13. Changes to These Terms</h2>
     <p>
-        The S-Payroll project maintainers may update these Terms from time to time to reflect changes in the
+        The Scroll project maintainers may update these Terms from time to time to reflect changes in the
         demo environment, the software, applicable law, or project practices. When changes are made, the
         "Last Updated" date at the top of this page will be updated.
     </p>
@@ -411,7 +411,7 @@
     <h2 id="contact">14. Contact</h2>
     <p>
         For questions or concerns about these Terms, or to report a violation, please contact the
-        S-Payroll project maintainers through the official project channels:
+        Scroll project maintainers through the official project channels:
     </p>
     <div class="contact-card">
         <p>
@@ -450,7 +450,7 @@
     </ul>
     <p>
         In the event of any dispute arising from or in connection with these Terms or the use of the official
-        S-Payroll demo, the parties shall first attempt to resolve the dispute through good-faith discussion.
+        Scroll demo, the parties shall first attempt to resolve the dispute through good-faith discussion.
     </p>
     <p>
         If a dispute cannot be resolved through discussion, it shall be subject to the jurisdiction of the
@@ -464,7 +464,7 @@
     <!-- Footer -->
     <div class="footer-legal">
         <p>
-            &copy; {{ date('Y') }} S-Payroll &bull; Open Source Self-Hosted Payroll System &bull;
+            &copy; {{ date('Y') }} Scroll &bull; Open Source Self-Hosted Payroll System &bull;
             Built by <a href="https://github.com/Sultonisky" target="_blank" rel="noopener noreferrer">Mohammad Sultoni</a>
         </p>
         <p>

@@ -23,7 +23,7 @@
                             <div class="col-md-12 mb-4">
                                 <div class="d-flex align-items-center gap-4">
                                     <img class="rounded-circle shadow-sm border"
-                                        src="{{ $user->foto_url ?: asset('assets/images/logo.svg') }}"
+                                        src="{{ $user->foto_url ?: asset('assets/images/logo-scroll.svg') }}"
                                         alt="Profile Photo"
                                         style="width:120px;height:120px;object-fit:cover;">
                                     <div>
@@ -86,7 +86,7 @@
                                     <div class="d-flex align-items-center gap-4">
                                         <div class="position-relative">
                                             <img id="avatarPreview" class="avatar-preview rounded-circle shadow-sm border"
-                                                src="{{ $user->foto_url ?: asset('assets/images/logo.svg') }}" alt="Foto Profil"
+                                                src="{{ $user->foto_url ?: asset('assets/images/logo.png') }}" alt="Foto Profil"
                                                 style="width: 120px; height: 120px; object-fit: cover;">
                                         </div>
                                         <div>

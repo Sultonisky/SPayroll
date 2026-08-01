@@ -94,7 +94,7 @@
                     aria-haspopup="true" aria-expanded="false">
                     <div class="avatar avatar-md">
                         <img class="avatar-img rounded-circle"
-                            src="{{ auth()->user()->foto_url ?? asset('assets/images/logo.svg') }}">
+                            src="{{ auth()->user()->foto_url ?? asset('assets/images/logo.png') }}">
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end pt-0 shadow">

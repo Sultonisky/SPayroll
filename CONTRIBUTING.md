@@ -1,6 +1,6 @@
-# Contributing to S-Payroll
+# Contributing to Scroll
 
-First off — thank you for taking the time to contribute. S-Payroll is an open source, self-hosted payroll system and every contribution, no matter how small, makes a difference.
+First off — thank you for taking the time to contribute. Scroll is an open source, self-hosted payroll system and every contribution, no matter how small, makes a difference.
 
 This guide covers everything you need to know to contribute effectively.
 
