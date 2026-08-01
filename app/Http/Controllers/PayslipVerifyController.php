@@ -14,15 +14,15 @@ class PayslipVerifyController extends Controller
     public static function generateDocId(Payroll $payroll): string
     {
         $hash = strtoupper(substr(hash('sha256',
-            $payroll->id .
-            $payroll->employee_id .
-            $payroll->year .
-            $payroll->month .
-            $payroll->total_salary .
+            $payroll->id.
+            $payroll->employee_id.
+            $payroll->year.
+            $payroll->month.
+            $payroll->total_salary.
             $payroll->pay_date
         ), 0, 12));
 
-        return 'SCR-' . str_pad($payroll->id, 5, '0', STR_PAD_LEFT) . '-' . $hash;
+        return 'SCR-'.str_pad($payroll->id, 5, '0', STR_PAD_LEFT).'-'.$hash;
     }
 
     /**
@@ -52,8 +52,8 @@ class PayslipVerifyController extends Controller
         // $parts = ['SCR', '00042', 'A3F9C1D82E4B']
         if (count($parts) !== 3) {
             return back()->withInput()->with('result', [
-                'valid'   => false,
-                'doc_id'  => $docId,
+                'valid' => false,
+                'doc_id' => $docId,
                 'message' => 'Format Doc ID tidak dikenali.',
             ]);
         }
@@ -68,8 +68,8 @@ class PayslipVerifyController extends Controller
 
         if (! $payroll) {
             return back()->withInput()->with('result', [
-                'valid'   => false,
-                'doc_id'  => $docId,
+                'valid' => false,
+                'doc_id' => $docId,
                 'message' => 'Dokumen tidak ditemukan dalam sistem.',
             ]);
         }
@@ -78,24 +78,24 @@ class PayslipVerifyController extends Controller
 
         if (! hash_equals($expected, $docId)) {
             return back()->withInput()->with('result', [
-                'valid'   => false,
-                'doc_id'  => $docId,
+                'valid' => false,
+                'doc_id' => $docId,
                 'message' => 'Doc ID tidak cocok — dokumen mungkin telah dimodifikasi.',
             ]);
         }
 
         return back()->withInput()->with('result', [
-            'valid'        => true,
-            'doc_id'       => $docId,
-            'employee'     => $payroll->employee?->name ?? '-',
-            'employee_code'=> $payroll->employee?->employee_code ?? '-',
-            'department'   => $payroll->employee?->department?->name ?? '-',
-            'position'     => $payroll->employee?->position?->name ?? '-',
-            'period'       => $payroll->monthName(),
-            'pay_date'     => $payroll->pay_date?->translatedFormat('d F Y') ?? '-',
-            'total_salary' => 'Rp ' . number_format($payroll->total_salary, 0, ',', '.'),
-            'status'       => ucfirst($payroll->status),
-            'verified_at'  => now()->translatedFormat('d F Y, H:i:s'),
+            'valid' => true,
+            'doc_id' => $docId,
+            'employee' => $payroll->employee?->name ?? '-',
+            'employee_code' => $payroll->employee?->employee_code ?? '-',
+            'department' => $payroll->employee?->department?->name ?? '-',
+            'position' => $payroll->employee?->position?->name ?? '-',
+            'period' => $payroll->monthName(),
+            'pay_date' => $payroll->pay_date?->translatedFormat('d F Y') ?? '-',
+            'total_salary' => 'Rp '.number_format($payroll->total_salary, 0, ',', '.'),
+            'status' => ucfirst($payroll->status),
+            'verified_at' => now()->translatedFormat('d F Y, H:i:s'),
         ]);
     }
 }

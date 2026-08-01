@@ -31,27 +31,27 @@ class PayslipVerifyControllerTest extends TestCase
     {
         parent::setUp();
 
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
         $employee = Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
-            'employee_type'   => 'fulltime',
+            'employee_type' => 'fulltime',
         ]);
 
         $this->paidPayroll = Payroll::factory()->create([
-            'employee_id'  => $employee->id,
-            'status'       => 'paid',
-            'year'         => 2025,
-            'month'        => 6,
-            'base_salary'  => 10_000_000,
-            'bonus'        => 500_000,
+            'employee_id' => $employee->id,
+            'status' => 'paid',
+            'year' => 2025,
+            'month' => 6,
+            'base_salary' => 10_000_000,
+            'bonus' => 500_000,
             'total_salary' => 10_500_000,
-            'pay_date'     => '2025-06-25',
+            'pay_date' => '2025-06-25',
         ]);
     }
 
@@ -95,11 +95,11 @@ class PayslipVerifyControllerTest extends TestCase
         $result = $response->getSession()->get('result');
 
         $this->assertTrue($result['valid']);
-        $this->assertSame($this->paidPayroll->employee->name,         $result['employee']);
+        $this->assertSame($this->paidPayroll->employee->name, $result['employee']);
         $this->assertSame($this->paidPayroll->employee->employee_code, $result['employee_code']);
-        $this->assertSame($this->paidPayroll->monthName(),             $result['period']);
-        $this->assertSame('Paid',                                      $result['status']);
-        $this->assertSame($docId,                                      $result['doc_id']);
+        $this->assertSame($this->paidPayroll->monthName(), $result['period']);
+        $this->assertSame('Paid', $result['status']);
+        $this->assertSame($docId, $result['doc_id']);
     }
 
     public function test_verification_is_case_insensitive_for_submitted_doc_id(): void
@@ -119,7 +119,7 @@ class PayslipVerifyControllerTest extends TestCase
     {
         $docId = PayslipVerifyController::generateDocId($this->paidPayroll);
         // Flip last character to simulate tampering
-        $tampered = substr($docId, 0, -1) . (str_ends_with($docId, 'A') ? 'B' : 'A');
+        $tampered = substr($docId, 0, -1).(str_ends_with($docId, 'A') ? 'B' : 'A');
 
         $this->post(route('verify.payslip'), ['doc_id' => $tampered])
             ->assertSessionHas('result.valid', false);
@@ -138,14 +138,14 @@ class PayslipVerifyControllerTest extends TestCase
     {
         // Create a draft payroll and generate its doc ID manually
         $draft = Payroll::factory()->create([
-            'employee_id'  => $this->paidPayroll->employee_id,
-            'status'       => 'draft',
-            'year'         => 2025,
-            'month'        => 8,
-            'base_salary'  => 10_000_000,
-            'bonus'        => 0,
+            'employee_id' => $this->paidPayroll->employee_id,
+            'status' => 'draft',
+            'year' => 2025,
+            'month' => 8,
+            'base_salary' => 10_000_000,
+            'bonus' => 0,
             'total_salary' => 10_000_000,
-            'pay_date'     => '2025-08-25',
+            'pay_date' => '2025-08-25',
         ]);
 
         // Hash matches, but status is not 'paid' — query scopes out
@@ -202,7 +202,7 @@ class PayslipVerifyControllerTest extends TestCase
 
     public function test_generate_doc_id_is_deterministic(): void
     {
-        $first  = PayslipVerifyController::generateDocId($this->paidPayroll);
+        $first = PayslipVerifyController::generateDocId($this->paidPayroll);
         $second = PayslipVerifyController::generateDocId($this->paidPayroll);
 
         $this->assertSame($first, $second);
@@ -211,14 +211,14 @@ class PayslipVerifyControllerTest extends TestCase
     public function test_different_payrolls_produce_different_doc_ids(): void
     {
         $other = Payroll::factory()->create([
-            'employee_id'  => $this->paidPayroll->employee_id,
-            'status'       => 'paid',
-            'year'         => 2025,
-            'month'        => 7,
-            'base_salary'  => 10_000_000,
-            'bonus'        => 0,
+            'employee_id' => $this->paidPayroll->employee_id,
+            'status' => 'paid',
+            'year' => 2025,
+            'month' => 7,
+            'base_salary' => 10_000_000,
+            'bonus' => 0,
             'total_salary' => 10_000_000,
-            'pay_date'     => '2025-07-25',
+            'pay_date' => '2025-07-25',
         ]);
 
         $this->assertNotSame(

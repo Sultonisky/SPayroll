@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Controllers;
 
-use App\Http\Controllers\PayslipVerifyController;
 use App\Models\Bonus;
 use App\Models\Department;
 use App\Models\Employee;
@@ -32,34 +31,35 @@ class PayslipControllerTest extends TestCase
     // -----------------------------------------------------------------------
 
     private Employee $employee;
-    private Payroll  $paidPayroll;
+
+    private Payroll $paidPayroll;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
 
         $this->employee = Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
-            'employee_type'   => 'fulltime',
+            'employee_type' => 'fulltime',
         ]);
 
         $this->paidPayroll = Payroll::factory()->create([
-            'employee_id'  => $this->employee->id,
-            'status'       => 'paid',
-            'year'         => 2025,
-            'month'        => 6,
-            'base_salary'  => 10_000_000,
-            'bonus'        => 0,
+            'employee_id' => $this->employee->id,
+            'status' => 'paid',
+            'year' => 2025,
+            'month' => 6,
+            'base_salary' => 10_000_000,
+            'bonus' => 0,
             'total_salary' => 10_000_000,
-            'pay_date'     => '2025-06-25',
+            'pay_date' => '2025-06-25',
         ]);
     }
 
@@ -68,13 +68,14 @@ class PayslipControllerTest extends TestCase
     {
         $user = $this->staffUser();
         $this->employee->update(['user_id' => $user->id]);
+
         return $user;
     }
 
     /** Create a finance user. */
-    private function financeUser(): \App\Models\User
+    private function financeUser(): User
     {
-        return \App\Models\User::factory()->finance()->create();
+        return User::factory()->finance()->create();
     }
 
     // -----------------------------------------------------------------------
@@ -130,17 +131,17 @@ class PayslipControllerTest extends TestCase
     {
         // Another employee + their paid payroll
         $otherEmployee = Employee::factory()->create([
-            'department_id'   => $this->employee->department_id,
-            'position_id'     => $this->employee->position_id,
+            'department_id' => $this->employee->department_id,
+            'position_id' => $this->employee->position_id,
             'employee_status' => 'active',
         ]);
         Payroll::factory()->create([
-            'employee_id'  => $otherEmployee->id,
-            'status'       => 'paid',
-            'year'         => 2025,
-            'month'        => 7,
-            'base_salary'  => 8_000_000,
-            'bonus'        => 0,
+            'employee_id' => $otherEmployee->id,
+            'status' => 'paid',
+            'year' => 2025,
+            'month' => 7,
+            'base_salary' => 8_000_000,
+            'bonus' => 0,
             'total_salary' => 8_000_000,
         ]);
 
@@ -160,17 +161,17 @@ class PayslipControllerTest extends TestCase
     public function test_admin_sees_all_payslips_in_index(): void
     {
         $otherEmployee = Employee::factory()->create([
-            'department_id'   => $this->employee->department_id,
-            'position_id'     => $this->employee->position_id,
+            'department_id' => $this->employee->department_id,
+            'position_id' => $this->employee->position_id,
             'employee_status' => 'active',
         ]);
         Payroll::factory()->create([
-            'employee_id'  => $otherEmployee->id,
-            'status'       => 'paid',
-            'year'         => 2025,
-            'month'        => 7,
-            'base_salary'  => 8_000_000,
-            'bonus'        => 0,
+            'employee_id' => $otherEmployee->id,
+            'status' => 'paid',
+            'year' => 2025,
+            'month' => 7,
+            'base_salary' => 8_000_000,
+            'bonus' => 0,
             'total_salary' => 8_000_000,
         ]);
 
@@ -190,15 +191,15 @@ class PayslipControllerTest extends TestCase
     {
         $draftPayroll = Payroll::factory()->create([
             'employee_id' => $this->employee->id,
-            'status'      => 'draft',
-            'year'        => 2025,
-            'month'       => 8,
+            'status' => 'draft',
+            'year' => 2025,
+            'month' => 8,
         ]);
         $approvedPayroll = Payroll::factory()->create([
             'employee_id' => $this->employee->id,
-            'status'      => 'approved',
-            'year'        => 2025,
-            'month'       => 9,
+            'status' => 'approved',
+            'year' => 2025,
+            'month' => 9,
         ]);
 
         $this->actingAs($this->adminUser())
@@ -246,8 +247,8 @@ class PayslipControllerTest extends TestCase
     {
         // Staff linked to a DIFFERENT employee
         $otherEmployee = Employee::factory()->create([
-            'department_id'   => $this->employee->department_id,
-            'position_id'     => $this->employee->position_id,
+            'department_id' => $this->employee->department_id,
+            'position_id' => $this->employee->position_id,
             'employee_status' => 'active',
         ]);
         $otherStaff = $this->staffUser();
@@ -270,9 +271,9 @@ class PayslipControllerTest extends TestCase
     {
         $draft = Payroll::factory()->create([
             'employee_id' => $this->employee->id,
-            'status'      => 'draft',
-            'year'        => 2025,
-            'month'       => 10,
+            'status' => 'draft',
+            'year' => 2025,
+            'month' => 10,
         ]);
 
         $this->actingAs($this->adminUser())
@@ -323,8 +324,8 @@ class PayslipControllerTest extends TestCase
     public function test_staff_cannot_download_another_employees_payslip_pdf(): void
     {
         $otherEmployee = Employee::factory()->create([
-            'department_id'   => $this->employee->department_id,
-            'position_id'     => $this->employee->position_id,
+            'department_id' => $this->employee->department_id,
+            'position_id' => $this->employee->position_id,
             'employee_status' => 'active',
         ]);
         $otherStaff = $this->staffUser();
@@ -350,10 +351,10 @@ class PayslipControllerTest extends TestCase
         $response->assertOk();
 
         $disposition = $response->headers->get('Content-Disposition');
-        $expectedCode   = $this->employee->employee_code;
+        $expectedCode = $this->employee->employee_code;
         $expectedPeriod = '202506';
 
-        $this->assertStringContainsString($expectedCode,   $disposition);
+        $this->assertStringContainsString($expectedCode, $disposition);
         $this->assertStringContainsString($expectedPeriod, $disposition);
     }
 
@@ -365,12 +366,12 @@ class PayslipControllerTest extends TestCase
     {
         // Extra paid payroll in a different period
         Payroll::factory()->create([
-            'employee_id'  => $this->employee->id,
-            'status'       => 'paid',
-            'year'         => 2024,
-            'month'        => 1,
-            'base_salary'  => 10_000_000,
-            'bonus'        => 0,
+            'employee_id' => $this->employee->id,
+            'status' => 'paid',
+            'year' => 2024,
+            'month' => 1,
+            'base_salary' => 10_000_000,
+            'bonus' => 0,
             'total_salary' => 10_000_000,
         ]);
 
@@ -391,12 +392,12 @@ class PayslipControllerTest extends TestCase
     {
         Bonus::factory()->create([
             'employee_id' => $this->employee->id,
-            'year'        => 2025,
-            'month'       => 6,
-            'type'        => 'performance',
+            'year' => 2025,
+            'month' => 6,
+            'type' => 'performance',
             'description' => 'Q2 bonus',
-            'amount'      => 1_500_000,
-            'status'      => 'approved',
+            'amount' => 1_500_000,
+            'status' => 'approved',
         ]);
 
         $response = $this->actingAs($this->adminUser())

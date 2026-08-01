@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
 use App\Models\Position;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,7 +32,7 @@ class PayrollPolicyTest extends TestCase
 
         return Payroll::factory()->create([
             'employee_id' => $employee->id,
-            'status'      => $status,
+            'status' => $status,
         ]);
     }
 
@@ -125,7 +126,7 @@ class PayrollPolicyTest extends TestCase
     {
         $payroll = $this->makePayroll('paid');
 
-        $financeUser = \App\Models\User::factory()->create(['role' => 'finance']);
+        $financeUser = User::factory()->create(['role' => 'finance']);
 
         foreach ([$this->adminUser(), $this->hrUser(), $financeUser] as $user) {
             $this->assertTrue(
@@ -137,30 +138,30 @@ class PayrollPolicyTest extends TestCase
 
     public function test_staff_can_view_own_payslip_via_policy(): void
     {
-        $dept     = Department::factory()->create();
+        $dept = Department::factory()->create();
         $position = Position::factory()->create([
-            'base_salary_fulltime'   => 10_000_000,
+            'base_salary_fulltime' => 10_000_000,
             'base_salary_internship' => 2_000_000,
         ]);
         $employee = Employee::factory()->create([
-            'department_id'   => $dept->id,
-            'position_id'     => $position->id,
+            'department_id' => $dept->id,
+            'position_id' => $position->id,
             'employee_status' => 'active',
         ]);
 
-        $staff = \App\Models\User::factory()->create(['role' => 'staff']);
+        $staff = User::factory()->create(['role' => 'staff']);
         $employee->update(['user_id' => $staff->id]);
         $staff->load('employee');
 
         $payroll = Payroll::factory()->create([
-            'employee_id'  => $employee->id,
-            'status'       => 'paid',
-            'year'         => 2025,
-            'month'        => 6,
-            'base_salary'  => 10_000_000,
-            'bonus'        => 0,
+            'employee_id' => $employee->id,
+            'status' => 'paid',
+            'year' => 2025,
+            'month' => 6,
+            'base_salary' => 10_000_000,
+            'bonus' => 0,
             'total_salary' => 10_000_000,
-            'pay_date'     => '2025-06-25',
+            'pay_date' => '2025-06-25',
         ]);
 
         $this->assertTrue($staff->can('viewPayslip', $payroll));
@@ -171,7 +172,7 @@ class PayrollPolicyTest extends TestCase
         $payroll = $this->makePayroll('paid');
 
         // Staff not linked to $payroll->employee
-        $staff = \App\Models\User::factory()->create(['role' => 'staff']);
+        $staff = User::factory()->create(['role' => 'staff']);
 
         $this->assertFalse($staff->can('viewPayslip', $payroll));
     }
