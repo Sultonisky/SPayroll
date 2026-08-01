@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\PayrollController;
 use App\Http\Controllers\Dashboard\PositionController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\PayslipVerifyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +24,10 @@ Route::get('/privacy-policy', function () {
 Route::get('/terms-of-service', function () {
     return view('legal.terms-of-service');
 })->name('terms-of-service');
+
+// Public Payslip Verification (no auth required)
+Route::get('/verify', [PayslipVerifyController::class, 'index'])->name('verify.payslip.form');
+Route::post('/verify', [PayslipVerifyController::class, 'verify'])->name('verify.payslip');
 
 // Auth Routes
 Route::get('login', [AuthController::class, 'loginForm'])
@@ -203,6 +208,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,HR,staff,finance'])->group(function () {
         Route::get('payslips', [PayrollController::class, 'payslipIndex'])->name('payrolls.payslip');
         Route::get('payslips/{id}', [PayrollController::class, 'payslipShow'])->name('payrolls.payslip.show');
+        Route::get('payslips/{id}/download', [PayrollController::class, 'payslipDownload'])->name('payrolls.payslip.download');
     });
 
     // Bonus Routes
