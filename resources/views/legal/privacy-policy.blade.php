@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="S-Payroll Privacy Policy - how personal data is handled on the official demo environment.">
-    <title>S-Payroll | Privacy Policy</title>
+    <meta name="description" content="Scroll Privacy Policy - how personal data is handled on the official demo environment.">
+    <title>Scroll | Privacy Policy</title>
     <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet">
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/logo.svg') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/logo.png') }}">
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; }
@@ -56,7 +56,7 @@
     </a>
 
     <div class="legal-logo">
-        <img src="{{ asset('assets/images/logo-brand.svg') }}" alt="S-Payroll">
+        <img src="{{ asset('assets/images/logo-scroll.png') }}" alt="Scroll">
     </div>
 
     <h1>Privacy Policy</h1>
@@ -67,10 +67,10 @@
 
     <div class="intro-box">
         <p>
-            S-Payroll is an open-source, self-hosted payroll management system designed to help organizations manage
+            Scroll is an open-source, self-hosted payroll management system designed to help organizations manage
             employee and payroll information on their own infrastructure. This Privacy Policy explains how personal
-            data is handled when you access the <strong>official S-Payroll live demo</strong> operated by the
-            S-Payroll project maintainers. It is intended to comply with applicable Indonesian law, including
+            data is handled when you access the <strong>official Scroll live demo</strong> operated by the
+            Scroll project maintainers. It is intended to comply with applicable Indonesian law, including
             <strong>Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)</strong>.
         </p>
     </div>
@@ -79,7 +79,7 @@
         <p>
             <i class="fas fa-exclamation-triangle me-1"></i>
             <strong>Self-hosted instances:</strong> This Privacy Policy applies only to the official demo.
-            Organizations operating their own S-Payroll installation are independently responsible for their own
+            Organizations operating their own Scroll installation are independently responsible for their own
             privacy practices and for complying with UU PDP and all other applicable laws.
         </p>
     </div>
@@ -98,7 +98,7 @@
             <li><a href="#security">Data Security</a></li>
             <li><a href="#incident">Security Incident Response</a></li>
             <li><a href="#rights">Your Privacy Rights</a></li>
-            <li><a href="#self-hosted">Self-Hosted S-Payroll Instances</a></li>
+            <li><a href="#self-hosted">Self-Hosted Scroll Instances</a></li>
             <li><a href="#open-source">Open Source Software</a></li>
             <li><a href="#external-links">External Links</a></li>
             <li><a href="#children">Children's Privacy</a></li>
@@ -111,18 +111,18 @@
     <!-- Section 1 -->
     <h2 id="scope">1. Scope of This Privacy Policy</h2>
     <p>
-        This Privacy Policy applies only to the <strong>official S-Payroll demo environment</strong> operated by the
-        S-Payroll project maintainers. The demo is provided for demonstration, evaluation, and educational purposes,
+        This Privacy Policy applies only to the <strong>official Scroll demo environment</strong> operated by the
+        Scroll project maintainers. The demo is provided for demonstration, evaluation, and educational purposes,
         and may contain sample or dummy employee, payroll, and company data to showcase application functionality.
     </p>
     <p>This Privacy Policy does <strong>not</strong> apply to:</p>
     <ul>
-        <li>Independently deployed, self-hosted S-Payroll instances.</li>
-        <li>Third-party websites or services linked from the S-Payroll project.</li>
-        <li>Services not operated or controlled by the S-Payroll project maintainers.</li>
+        <li>Independently deployed, self-hosted Scroll instances.</li>
+        <li>Third-party websites or services linked from the Scroll project.</li>
+        <li>Services not operated or controlled by the Scroll project maintainers.</li>
     </ul>
     <p>
-        By accessing the official S-Payroll demo, you acknowledge and agree to the practices described in this
+        By accessing the official Scroll demo, you acknowledge and agree to the practices described in this
         Privacy Policy.
     </p>
 
@@ -177,7 +177,7 @@
 
     <h3>2.4 Information You Choose to Submit</h3>
     <p>
-        If you voluntarily contact the S-Payroll project maintainers through available communication channels,
+        If you voluntarily contact the Scroll project maintainers through available communication channels,
         we may process the information you provide in order to respond to your inquiry.
     </p>
     <div class="warn-box">
@@ -191,7 +191,7 @@
     <!-- Section 3 -->
     <h2 id="demo-data">3. Demo Data &amp; Prohibited Information</h2>
     <p>
-        The official S-Payroll demo is strictly intended for demonstration and evaluation. Because the demo is a
+        The official Scroll demo is strictly intended for demonstration and evaluation. Because the demo is a
         <strong>publicly accessible environment</strong>:
     </p>
     <div class="warn-box">
@@ -212,7 +212,7 @@
     <h2 id="how-we-use">4. How We Use Personal Data</h2>
     <p>Personal data processed through the official demo may be used to:</p>
     <ul>
-        <li>Provide access to and operate the S-Payroll demo environment.</li>
+        <li>Provide access to and operate the Scroll demo environment.</li>
         <li>Authenticate users and manage access permissions.</li>
         <li>Maintain application functionality across all modules (employees, payroll, bonuses, attendance).</li>
         <li>Monitor system stability and performance.</li>
@@ -246,7 +246,7 @@
     <div class="highlight-box">
         <p>
             <i class="fas fa-info-circle me-1" style="color: #1d4ed8;"></i>
-            <strong>Note for self-hosted operators:</strong> Organizations deploying S-Payroll to process employee
+            <strong>Note for self-hosted operators:</strong> Organizations deploying Scroll to process employee
             payroll data (salary, BPJS contributions, PPh 21, bank account information) act as an independent
             <em>Pengendali Data Pribadi</em> (Data Controller) under UU PDP. They must establish their own lawful
             basis - typically employment contract necessity or legal obligation - and issue appropriate privacy
@@ -274,7 +274,7 @@
     <p>We <strong>do not sell personal data</strong>.</p>
     <p>
         We may use third-party infrastructure or service providers when necessary to host, operate, secure,
-        deliver, or maintain the official S-Payroll demo. Such providers may process limited technical or
+        deliver, or maintain the official Scroll demo. Such providers may process limited technical or
         operational information as necessary to provide their services, and are expected to do so in accordance
         with applicable contractual or legal requirements.
     </p>
@@ -282,10 +282,10 @@
     <ul>
         <li>Required by applicable Indonesian law or regulation.</li>
         <li>Required by a valid legal process or lawful request from a competent authority (<em>penegak hukum</em>).</li>
-        <li>Necessary to protect the rights, property, or safety of the S-Payroll project, its users, or the public.</li>
+        <li>Necessary to protect the rights, property, or safety of the Scroll project, its users, or the public.</li>
     </ul>
     <p>
-        The S-Payroll project maintainers do not intentionally disclose personal data to third parties for their
+        The Scroll project maintainers do not intentionally disclose personal data to third parties for their
         own marketing purposes.
     </p>
 
@@ -294,7 +294,7 @@
     <p>
         We take reasonable technical and organizational measures to protect personal data processed through the
         official demo against unauthorized access, loss, misuse, alteration, disclosure, or destruction.
-        Security measures implemented in S-Payroll include, where appropriate:
+        Security measures implemented in Scroll include, where appropriate:
     </p>
     <ul>
         <li>Role-based access controls (Admin, HR, Finance roles with enforced permissions).</li>
@@ -315,7 +315,7 @@
     <!-- Section 9 -->
     <h2 id="incident">9. Security Incident Response</h2>
     <p>
-        If we become aware of a personal data security incident affecting the official S-Payroll demo, we will
+        If we become aware of a personal data security incident affecting the official Scroll demo, we will
         take reasonable steps to investigate, contain, and address the incident.
     </p>
     <p>
@@ -328,10 +328,10 @@
         <p>
             <i class="fas fa-info-circle me-1" style="color: #1d4ed8;"></i>
             <strong>Note for self-hosted operators:</strong> Under UU PDP, organizations operating their own
-            S-Payroll instance must notify the relevant supervisory authority and affected data subjects
+            Scroll instance must notify the relevant supervisory authority and affected data subjects
             <strong>within 3 × 24 hours (72 hours)</strong> of becoming aware of a breach that poses risk to
             data subjects' rights. This obligation rests with the organization operating the instance, not
-            the S-Payroll project maintainers.
+            the Scroll project maintainers.
         </p>
     </div>
     <p>Incident response measures we may take include:</p>
@@ -360,21 +360,21 @@
         <li><strong>Hak Informasi (Right to Information)</strong> - the right to receive clear information about how personal data is processed.</li>
     </ul>
     <p>
-        Requests relating to personal data processed through the official S-Payroll demo may be submitted using
+        Requests relating to personal data processed through the official Scroll demo may be submitted using
         the contact information in the <a href="#contact">Contact Us</a> section below. We may need to verify
         the identity of the requester before fulfilling certain requests. Some rights may be subject to
         limitations or exceptions under applicable law.
     </p>
 
     <!-- Section 11 -->
-    <h2 id="self-hosted">11. Self-Hosted S-Payroll Instances</h2>
+    <h2 id="self-hosted">11. Self-Hosted Scroll Instances</h2>
     <p>
-        S-Payroll is designed as open-source, self-hosted software. Organizations may download, install, modify,
-        and operate S-Payroll on infrastructure under their own control, subject to the applicable open-source
+        Scroll is designed as open-source, self-hosted software. Organizations may download, install, modify,
+        and operate Scroll on infrastructure under their own control, subject to the applicable open-source
         license.
     </p>
     <p>
-        When an organization operates its own S-Payroll instance, that organization acts as the
+        When an organization operates its own Scroll instance, that organization acts as the
         <strong>Pengendali Data Pribadi (Data Controller)</strong> under UU PDP. As such, the organization is
         solely responsible for:
     </p>
@@ -390,31 +390,31 @@
     <div class="highlight-box">
         <p>
             <i class="fas fa-info-circle me-1" style="color: #1d4ed8;"></i>
-            The S-Payroll project maintainers do not have access to data stored in independently operated
+            The Scroll project maintainers do not have access to data stored in independently operated
             self-hosted instances, and are not responsible for the privacy practices, security configuration,
             or data processing activities of such instances.
         </p>
     </div>
     <p>
-        Organizations deploying S-Payroll should conduct their own legal, privacy, and security assessments
+        Organizations deploying Scroll should conduct their own legal, privacy, and security assessments
         and implement safeguards appropriate to their specific operational context.
     </p>
 
     <!-- Section 12 -->
     <h2 id="open-source">12. Open Source Software</h2>
     <p>
-        S-Payroll is distributed as open-source software under the applicable license specified in the
+        Scroll is distributed as open-source software under the applicable license specified in the
         <a href="https://github.com/Sultonisky/SPayroll" target="_blank" rel="noopener noreferrer">project repository</a>.
         The open-source nature of the software does not transfer privacy or data protection responsibilities from an
-        organization operating a self-hosted instance to the S-Payroll project maintainers. Each organization is
+        organization operating a self-hosted instance to the Scroll project maintainers. Each organization is
         responsible for how the software is configured and used within its own environment.
     </p>
 
     <!-- Section 13 -->
     <h2 id="external-links">13. External Links</h2>
     <p>
-        The S-Payroll project may provide links to external websites, repositories, documentation, or third-party
-        services. These external services are not controlled by the S-Payroll project maintainers, and we are not
+        The Scroll project may provide links to external websites, repositories, documentation, or third-party
+        services. These external services are not controlled by the Scroll project maintainers, and we are not
         responsible for their privacy practices, content, or security. We encourage users to review the privacy
         policies of any third-party services they access.
     </p>
@@ -422,7 +422,7 @@
     <!-- Section 14 -->
     <h2 id="children">14. Children's Privacy</h2>
     <p>
-        The S-Payroll demo is intended exclusively for organizational and professional use by adults. The demo is
+        The Scroll demo is intended exclusively for organizational and professional use by adults. The demo is
         not directed toward children, and we do not knowingly seek to collect personal data from individuals under
         the age of 18. If you believe that personal data belonging to a child has been submitted to the demo,
         please contact us so that we can take appropriate action in accordance with applicable law.
@@ -431,7 +431,7 @@
     <!-- Section 15 -->
     <h2 id="changes">15. Changes to This Privacy Policy</h2>
     <p>
-        We may update this Privacy Policy from time to time to reflect changes in the S-Payroll project, the
+        We may update this Privacy Policy from time to time to reflect changes in the Scroll project, the
         official demo environment, applicable laws (including UU PDP implementing regulations), or our data
         handling practices. When changes are made, the "Last Updated" date at the top of this page will be
         updated.
@@ -446,7 +446,7 @@
     <h2 id="contact">16. Contact Us</h2>
     <p>
         If you have questions, concerns, or requests regarding this Privacy Policy or the processing of personal
-        data through the official S-Payroll demo, please contact the S-Payroll project maintainers through the
+        data through the official Scroll demo, please contact the Scroll project maintainers through the
         official project contact channels below.
     </p>
     <div class="contact-card">
@@ -488,7 +488,7 @@
     <!-- Footer -->
     <div class="footer-legal">
         <p>
-            &copy; {{ date('Y') }} S-Payroll &bull; Open Source Self-Hosted Payroll System &bull;
+            &copy; {{ date('Y') }} Scroll &bull; Open Source Self-Hosted Payroll System &bull;
             Built by <a href="https://github.com/Sultonisky" target="_blank" rel="noopener noreferrer">Mohammad Sultoni</a>
         </p>
         <p>

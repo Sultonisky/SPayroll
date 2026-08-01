@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="At-Tarbiyah Admin Dashboard">
     <meta name="author" content="At-Tarbiyah">
-    <title>S-Payroll - Dashboard</title>
+    <title>Scroll - Dashboard</title>
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" sizes="16x16" href="{{ asset('assets/images/logo.svg') }}">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="{{ asset('assets/images/logo.png') }}">
 
     {{-- CoreUI & Vendors Styles --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.css">

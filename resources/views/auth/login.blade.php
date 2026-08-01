@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>S-Payroll | Login</title>
+    <title>Scroll | Login</title>
 
     <!-- File CSS -->
     <!-- CoreUI CSS -->
@@ -14,7 +14,7 @@
     <!-- CSS kustom untuk halaman login -->
     <link rel="stylesheet" href="{{ asset('assets/dashboard/style/login.css') }}">
     <!-- Favicon aplikasi -->
-    <link rel="icon" type="image/svg+xml" sizes="16x16" href="{{ asset('assets/images/logo.svg') }}">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="{{ asset('assets/images/logo.png') }}">
 
     <!-- Font Awesome untuk ikon -->
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
@@ -29,7 +29,7 @@
         <div class="login-card">
             <div class="logo-section">
                 <div class="logo-wrapper">
-                    <img src="{{ asset('assets/images/logo-brand.svg') }}" alt="S-Payroll Logo">
+                    <img src="{{ asset('assets/images/logo-scroll.png') }}" alt="Scroll Logo">
                 </div>
 
                 <p class="logo-tagline">Payroll system built for<br><strong>remote-first companies</strong></p>
@@ -38,7 +38,7 @@
                 <div class="demo-banner">
                     <div class="demo-banner-badge">Live Demo</div>
                     <p class="demo-banner-desc">
-                        This is a live demo of <strong>S-Payroll</strong> - an open source, self-hosted payroll system you can deploy on your own server.
+                        This is a live demo of <strong>Scroll</strong> - an open source, self-hosted payroll system you can deploy on your own server.
                     </p>
                     <div class="demo-banner-links">
                         <a href="https://github.com/Sultonisky/Spayroll" target="_blank" rel="noopener noreferrer" class="demo-link demo-link-github">
@@ -87,7 +87,7 @@
             <div class="form-section">
                 <div class="form-center">
                     <div class="login-header">
-                        <p class="welcome-text">Welcome back to S-Payroll!<br><span>Sign in to your account</span></p>
+                        <p class="welcome-text">Welcome back to Scroll!<br><span>Sign in to your account</span></p>
                     </div>
 
                     <div class="login-body">
@@ -151,7 +151,7 @@
                 </div>{{-- /.form-center --}}
 
                 <div class="login-footer">
-                    <p>&copy; {{ date('Y') }} S-Payroll - Open Source Self-Hosted Payroll System.<br>
+                    <p>&copy; {{ date('Y') }} Scroll - Open Source Self-Hosted Payroll System.<br>
                         Built by <a href="https://github.com/Sultonisky" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-body">Mohammad Sultoni</a>
                         &bull;
                         <a href="https://github.com/Sultonisky/SPayroll#readme" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-body">
