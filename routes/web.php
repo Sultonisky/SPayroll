@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\PositionController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\PayslipVerifyController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
     // Profile (all user login)
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Notifications
+    Route::post('notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
 
     // User Routes - Admin Only
     Route::middleware(['role:admin'])->group(function () {
