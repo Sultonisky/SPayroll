@@ -9,8 +9,8 @@ use App\Http\Controllers\Dashboard\PayrollController;
 use App\Http\Controllers\Dashboard\PositionController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\UserController;
-use App\Http\Controllers\PayslipVerifyController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PayslipVerifyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

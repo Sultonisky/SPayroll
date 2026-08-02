@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Payroll;
 use App\Models\User;
 use App\Notifications\DashboardNotification;
+use Illuminate\Database\Eloquent\Collection;
 
 class PayrollObserver
 {
@@ -12,7 +13,7 @@ class PayrollObserver
      * Users responsible for the payroll engine: admin, HR, finance.
      * Excludes the currently authenticated user to avoid self-notification.
      */
-    private function payrollManagers(): \Illuminate\Database\Eloquent\Collection
+    private function payrollManagers(): Collection
     {
         return User::whereIn('role', ['admin', 'HR', 'finance'])
             ->where('id', '!=', auth()->id() ?? 0)
@@ -22,7 +23,7 @@ class PayrollObserver
     public function created(Payroll $payroll): void
     {
         $period = $payroll->monthName();
-        $name   = $payroll->employee?->name ?? 'Unknown';
+        $name = $payroll->employee?->name ?? 'Unknown';
 
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
@@ -37,7 +38,7 @@ class PayrollObserver
     public function updated(Payroll $payroll): void
     {
         $period = $payroll->monthName();
-        $name   = $payroll->employee?->name ?? 'Unknown';
+        $name = $payroll->employee?->name ?? 'Unknown';
 
         // Status-specific notifications for approve and paid transitions
         if ($payroll->wasChanged('status')) {
@@ -52,6 +53,7 @@ class PayrollObserver
                         'success'
                     ));
                 }
+
                 return;
             }
 
@@ -64,6 +66,7 @@ class PayrollObserver
                         'success'
                     ));
                 }
+
                 return;
             }
         }
@@ -82,7 +85,7 @@ class PayrollObserver
     public function deleted(Payroll $payroll): void
     {
         $period = $payroll->monthName();
-        $name   = $payroll->employee?->name ?? 'Unknown';
+        $name = $payroll->employee?->name ?? 'Unknown';
 
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
@@ -97,7 +100,7 @@ class PayrollObserver
     public function restored(Payroll $payroll): void
     {
         $period = $payroll->monthName();
-        $name   = $payroll->employee?->name ?? 'Unknown';
+        $name = $payroll->employee?->name ?? 'Unknown';
 
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
@@ -112,7 +115,7 @@ class PayrollObserver
     public function forceDeleted(Payroll $payroll): void
     {
         $period = $payroll->monthName();
-        $name   = $payroll->employee?->name ?? 'Unknown';
+        $name = $payroll->employee?->name ?? 'Unknown';
 
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(

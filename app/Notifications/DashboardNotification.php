@@ -46,10 +46,10 @@ class DashboardNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title'   => $this->title,
+            'title' => $this->title,
             'message' => $this->message,
-            'url'     => $this->url,
-            'type'    => $this->type,
+            'url' => $this->url,
+            'type' => $this->type,
         ];
     }
 }
