@@ -105,10 +105,7 @@
                                 @foreach ($payrolls as $payroll)
                                     <tr>
                                         <td class="text-center fw-bold">{{ $loop->iteration }}</td>
-                                        <td>
-                                            <div class="fw-bold text-body">{{ $payroll->employee?->name ?? '-' }}</div>
-                                            <small class="text-muted font-monospace">{{ $payroll->employee?->employee_code ?? '' }}</small>
-                                        </td>
+                                        <td class="fw-bold text-body">{{ $payroll->employee?->name ?? '-' }} <span class="small text-muted">({{ $payroll->employee?->employee_code ?? '-' }})</span></td>
                                         <td class="text-body">
                                             <span data-order="{{ $payroll->year * 100 + $payroll->month }}">
                                                 {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->translatedFormat('F Y') }}
@@ -244,7 +241,7 @@
                     "order": [[2, "desc"]],
                     "columnDefs": [
                         { "orderable": false, "targets": [7] },
-                        { "type": "num", "targets": [2] }
+                        { "type": "num", "targets": [3] }
                     ],
                     "language": {
                         "searchPlaceholder": "Search drafts...",
