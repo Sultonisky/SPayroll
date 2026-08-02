@@ -91,7 +91,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                messageTop: 'S-Payroll - Data Export'
+                messageTop: 'Scroll - Data Export'
             },
             {
                 extend: 'csv',
@@ -100,7 +100,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                title: 'S-Payroll - Data Export'
+                title: 'Scroll - Data Export'
             },
             {
                 extend: 'excel',
@@ -109,7 +109,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                title: 'S-Payroll - Data Export'
+                title: 'Scroll - Data Export'
             },
             {
                 extend: 'pdf',
@@ -118,7 +118,7 @@ if (typeof $.fn.dataTable !== 'undefined') {
                 exportOptions: {
                     columns: ':not(:last-child)'
                 },
-                title: 'S-Payroll - Data Export'
+                title: 'Scroll - Data Export'
             }
         ]
     });
