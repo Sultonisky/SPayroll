@@ -8,14 +8,27 @@ use App\Notifications\DashboardNotification;
 
 class PayrollObserver
 {
+    /**
+     * Users responsible for the payroll engine: admin, HR, finance.
+     * Excludes the currently authenticated user to avoid self-notification.
+     */
+    private function payrollManagers(): \Illuminate\Database\Eloquent\Collection
+    {
+        return User::whereIn('role', ['admin', 'HR', 'finance'])
+            ->where('id', '!=', auth()->id() ?? 0)
+            ->get();
+    }
+
     public function created(Payroll $payroll): void
     {
-        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
-        foreach ($admins as $admin) {
-            $admin->notify(new DashboardNotification(
-                'New Payroll Record',
-                "New payroll record for {$payroll->year}/{$payroll->month} has been created.",
-                route('payrolls.show', $payroll->id),
+        $period = $payroll->monthName();
+        $name   = $payroll->employee?->name ?? 'Unknown';
+
+        foreach ($this->payrollManagers() as $user) {
+            $user->notify(new DashboardNotification(
+                'New Payroll Draft Created',
+                "Draft payroll for {$name} ({$period}) has been created.",
+                route('payrolls.drafts'),
                 'info'
             ));
         }
@@ -23,11 +36,43 @@ class PayrollObserver
 
     public function updated(Payroll $payroll): void
     {
-        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
-        foreach ($admins as $admin) {
-            $admin->notify(new DashboardNotification(
+        $period = $payroll->monthName();
+        $name   = $payroll->employee?->name ?? 'Unknown';
+
+        // Status-specific notifications for approve and paid transitions
+        if ($payroll->wasChanged('status')) {
+            $newStatus = $payroll->status;
+
+            if ($newStatus === 'approved') {
+                foreach ($this->payrollManagers() as $user) {
+                    $user->notify(new DashboardNotification(
+                        'Payroll Approved',
+                        "Payroll for {$name} ({$period}) has been approved.",
+                        route('payrolls.approved'),
+                        'success'
+                    ));
+                }
+                return;
+            }
+
+            if ($newStatus === 'paid') {
+                foreach ($this->payrollManagers() as $user) {
+                    $user->notify(new DashboardNotification(
+                        'Payroll Marked as Paid',
+                        "Payroll for {$name} ({$period}) has been marked as paid.",
+                        route('payrolls.index'),
+                        'success'
+                    ));
+                }
+                return;
+            }
+        }
+
+        // Generic update notification
+        foreach ($this->payrollManagers() as $user) {
+            $user->notify(new DashboardNotification(
                 'Payroll Record Updated',
-                "Payroll record for {$payroll->year}/{$payroll->month} has been updated.",
+                "Payroll for {$name} ({$period}) has been updated.",
                 route('payrolls.show', $payroll->id),
                 'warning'
             ));
@@ -36,12 +81,14 @@ class PayrollObserver
 
     public function deleted(Payroll $payroll): void
     {
-        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
-        foreach ($admins as $admin) {
-            $admin->notify(new DashboardNotification(
+        $period = $payroll->monthName();
+        $name   = $payroll->employee?->name ?? 'Unknown';
+
+        foreach ($this->payrollManagers() as $user) {
+            $user->notify(new DashboardNotification(
                 'Payroll Record Deleted',
-                "Payroll record for {$payroll->year}/{$payroll->month} has been deleted.",
-                route('payrolls.index'),
+                "Payroll for {$name} ({$period}) has been moved to trash.",
+                route('payrolls.trash'),
                 'danger'
             ));
         }
@@ -49,11 +96,13 @@ class PayrollObserver
 
     public function restored(Payroll $payroll): void
     {
-        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
-        foreach ($admins as $admin) {
-            $admin->notify(new DashboardNotification(
+        $period = $payroll->monthName();
+        $name   = $payroll->employee?->name ?? 'Unknown';
+
+        foreach ($this->payrollManagers() as $user) {
+            $user->notify(new DashboardNotification(
                 'Payroll Record Restored',
-                "Payroll record for {$payroll->year}/{$payroll->month} has been restored.",
+                "Payroll for {$name} ({$period}) has been restored from trash.",
                 route('payrolls.show', $payroll->id),
                 'success'
             ));
@@ -62,11 +111,13 @@ class PayrollObserver
 
     public function forceDeleted(Payroll $payroll): void
     {
-        $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
-        foreach ($admins as $admin) {
-            $admin->notify(new DashboardNotification(
-                'Payroll Record Permanently Deleted',
-                "Payroll record for {$payroll->year}/{$payroll->month} has been permanently deleted.",
+        $period = $payroll->monthName();
+        $name   = $payroll->employee?->name ?? 'Unknown';
+
+        foreach ($this->payrollManagers() as $user) {
+            $user->notify(new DashboardNotification(
+                'Payroll Permanently Deleted',
+                "Payroll for {$name} ({$period}) has been permanently deleted.",
                 route('payrolls.index'),
                 'danger'
             ));
