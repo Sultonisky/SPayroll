@@ -112,8 +112,7 @@
                                     <tr>
                                         <td class="text-center fw-bold">{{ $loop->iteration }}</td>
                                         <td>
-                                            <div class="fw-bold text-body">{{ $payroll->employee?->name ?? '-' }}</div>
-                                            <small class="text-muted font-monospace">{{ $payroll->employee?->employee_code ?? '' }}</small>
+                                            <div class="fw-bold text-body">{{ $payroll->employee?->name ?? '-' }} <span class="small text-muted">({{ $payroll->employee?->employee_code ?? '-' }})</span></div>
                                         </td>
                                         <td class="text-body">
                                             <span data-order="{{ $payroll->year * 100 + $payroll->month }}">

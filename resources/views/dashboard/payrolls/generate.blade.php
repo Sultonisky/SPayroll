@@ -147,6 +147,10 @@
     </div>
 @endsection
 
+@push('styles')
+    <style>#previewSection thead th { color: #000 !important; }</style>
+@endpush
+
 @push('scripts')
 <script>
 $(document).ready(function () {
@@ -233,8 +237,7 @@ $(document).ready(function () {
                         <tr class="${rowClass}">
                             <td class="text-center">${idx + 1}</td>
                             <td>
-                                <div class="fw-bold">${item.employee.name}</div>
-                                <small class="text-muted font-monospace">${item.employee.employee_code ?? ''}</small>
+                                <div class="fw-bold">${item.employee.name} <span class="small text-muted">(${item.employee.employee_code ?? ''})</span></div>
                             </td>
                             <td class="small">${item.employee.position?.name ?? '—'}</td>
                             <td>${typeBadge}</td>
