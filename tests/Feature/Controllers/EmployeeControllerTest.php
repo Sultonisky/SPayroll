@@ -5,6 +5,7 @@ namespace Tests\Feature\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Observers\EmployeeObserver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -22,6 +23,8 @@ class EmployeeControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // Re-register EmployeeObserver for employee_code auto-generation
+        Employee::observe(EmployeeObserver::class);
         $this->dept = Department::factory()->create();
         $this->position = Position::factory()->create([
             'base_salary_fulltime' => 8_000_000,
