@@ -9,6 +9,7 @@ use App\Models\Payroll;
 use App\Models\User;
 use App\Notifications\DashboardNotification;
 use App\Services\PayrollCalculatorService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -591,6 +592,46 @@ class PayrollController extends Controller
             'filterYear', 'filterMonth', 'filterEmployeeId',
             'isStaff', 'canViewAll'
         ));
+    }
+
+    /**
+     * Download payslip as PDF.
+     */
+    public function payslipDownload(string $id)
+    {
+        $payroll = Payroll::where('status', 'paid')
+            ->with([
+                'employee:id,name,employee_code,nik,department_id,position_id,employee_type,bank_name,bank_account_number',
+                'employee.department:id,name',
+                'employee.position:id,name',
+            ])
+            ->findOrFail($id);
+
+        Gate::authorize('viewPayslip', $payroll);
+
+        $user = auth()->user();
+        if ($user->role === 'staff') {
+            $user->loadMissing('employee');
+            abort_unless(
+                $user->employee && $user->employee->id === $payroll->employee_id,
+                403, 'Anda tidak memiliki izin untuk mengunduh payslip ini.'
+            );
+        }
+
+        $bonuses = Bonus::where('employee_id', $payroll->employee_id)
+            ->where('year', $payroll->year)
+            ->where('month', $payroll->month)
+            ->where('status', 'approved')
+            ->get();
+
+        $pdf = Pdf::loadView('dashboard.payrolls.payslip-pdf', compact('payroll', 'bonuses'))
+            ->setPaper('a4', 'portrait');
+
+        $employeeCode = $payroll->employee?->employee_code ?? 'EMP';
+        $period = $payroll->year.str_pad($payroll->month, 2, '0', STR_PAD_LEFT);
+        $fileName = "payslip_{$employeeCode}_{$period}.pdf";
+
+        return $pdf->download($fileName);
     }
 
     /**

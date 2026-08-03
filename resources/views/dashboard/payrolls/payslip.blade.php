@@ -7,7 +7,7 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header py-3 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
-                        <i class="fas fa-file-invoice me-2"></i>Payslip
+                        <i class="fas fa-file-invoice me-2"></i>Scroll - Payslip
                     </h5>
                     @if ($canViewAll)
                         <span class="badge bg-info text-white rounded-pill px-3 py-2 fs-6">
@@ -97,8 +97,7 @@
                                             <div class="small text-muted">{{ $payroll->employee?->employee_code ?? '-' }}</div>
                                         </td>
                                         <td>
-                                            <span class="badge bg-light text-dark border" data-order="{{ $payroll->year * 100 + $payroll->month }}">
-                                                <i class="fas fa-calendar-alt me-1 text-primary"></i>
+                                            <span class="text-body" data-order="{{ $payroll->year * 100 + $payroll->month }}">
                                                 {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->translatedFormat('F Y') }}
                                             </span>
                                         </td>
@@ -120,10 +119,9 @@
                                                     class="btn btn-white btn-sm px-3" title="View Payslip">
                                                     <i class="fas fa-eye text-info"></i>
                                                 </a>
-                                                <a href="{{ route('payrolls.payslip.show', $payroll->id) }}?print=1"
-                                                    target="_blank"
-                                                    class="btn btn-white btn-sm px-3" title="Print Payslip">
-                                                    <i class="fas fa-print text-secondary"></i>
+                                                <a href="{{ route('payrolls.payslip.download', $payroll->id) }}"
+                                                    class="btn btn-white btn-sm px-3" title="Download PDF">
+                                                    <i class="fas fa-file-pdf text-danger"></i>
                                                 </a>
                                             </div>
                                         </td>

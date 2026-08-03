@@ -1,18 +1,19 @@
 @extends('layouts.app')
-@section('title', 'Payslip – ' . ($payroll->employee?->name ?? '-') . ' – ' . $payroll->monthName())
+@section('title', 'Payslip - ' . ($payroll->employee?->name ?? '-') . ' - ' . $payroll->monthName())
 
 @section('contents')
 <div class="row justify-content-center">
-    <div class="col-12 col-lg-9 col-xl-8">
+    <div class="col-12 col-lg-9 col-xl-12">
 
-        {{-- Action Bar (hidden on print) --}}
+        {{-- Action Bar --}}
         <div class="d-flex justify-content-between align-items-center mb-3 no-print">
             <a href="{{ route('payrolls.payslip') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-4 shadow-sm">
                 <i class="fas fa-arrow-left me-2"></i>Back to Payslips
             </a>
-            <button onclick="window.print()" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm fw-bold">
-                <i class="fas fa-print me-2"></i>Print / Save PDF
-            </button>
+            <a href="{{ route('payrolls.payslip.download', $payroll->id) }}"
+               class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm fw-bold">
+                <i class="fas fa-file-pdf me-2"></i>Download PDF
+            </a>
         </div>
 
         {{-- ── PAYSLIP CARD ─────────────────────────────────────────── --}}
@@ -23,18 +24,15 @@
                 <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
                     <div>
                         <h4 class="mb-1 fw-bold text-black">
-                            <i class="fas fa-file-invoice me-2"></i>Payslip / Slip Gaji
+                            <i class="fas fa-file-invoice me-2"></i>Scroll - Payslip
                         </h4>
                         <p class="mb-0 text-black opacity-75 small">
                             Periode: <strong class="text-black">{{ $payroll->monthName() }}</strong>
                         </p>
                     </div>
                     <div class="text-end">
-                        <span class="badge bg-success text-white rounded-pill px-3 py-2 fs-6 mb-1">
-                            <i class="fas fa-check-circle me-1"></i>Paid
-                        </span>
                         <div class="small text-black opacity-75 mt-1">
-                            Tanggal Bayar: <strong class="text-black">{{ $payroll->pay_date?->translatedFormat('d F Y') ?? '-' }}</strong>
+                            Payment Date : <strong class="text-black">{{ $payroll->pay_date?->translatedFormat('d F Y') ?? '-' }}</strong>
                         </div>
                     </div>
                 </div>
@@ -46,19 +44,19 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <h6 class="text-uppercase text-muted fw-bold small mb-3 border-bottom pb-2">
-                            <i class="fas fa-user me-2"></i>Informasi Karyawan
+                            <i class="fas fa-user me-2"></i>Employee Informations
                         </h6>
                     </div>
                     <div class="col-md-6">
                         <table class="table table-borderless table-sm mb-0">
                             <tbody>
                                 <tr>
-                                    <td class="text-muted small fw-semibold" style="width:45%">Nama</td>
+                                    <td class="text-muted small fw-semibold" style="width:45%">Name</td>
                                     <td class="text-muted small">:</td>
                                     <td class="fw-bold">{{ $payroll->employee?->name ?? '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-muted small fw-semibold">Kode Karyawan</td>
+                                    <td class="text-muted small fw-semibold">Employee Code</td>
                                     <td class="text-muted small">:</td>
                                     <td>{{ $payroll->employee?->employee_code ?? '-' }}</td>
                                 </tr>
@@ -68,7 +66,7 @@
                                     <td>{{ $payroll->employee?->nik ?? '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-muted small fw-semibold">Tipe</td>
+                                    <td class="text-muted small fw-semibold">Type</td>
                                     <td class="text-muted small">:</td>
                                     <td>
                                         @php
@@ -87,12 +85,12 @@
                         <table class="table table-borderless table-sm mb-0">
                             <tbody>
                                 <tr>
-                                    <td class="text-muted small fw-semibold" style="width:45%">Departemen</td>
+                                    <td class="text-muted small fw-semibold" style="width:45%">Department</td>
                                     <td class="text-muted small">:</td>
                                     <td>{{ $payroll->employee?->department?->name ?? '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-muted small fw-semibold">Posisi</td>
+                                    <td class="text-muted small fw-semibold">Position</td>
                                     <td class="text-muted small">:</td>
                                     <td>{{ $payroll->employee?->position?->name ?? '-' }}</td>
                                 </tr>
@@ -114,15 +112,15 @@
                 {{-- ── Salary Breakdown ──────────────────────── --}}
                 <div class="mb-4">
                     <h6 class="text-uppercase text-muted fw-bold small mb-3 border-bottom pb-2">
-                        <i class="fas fa-money-bill-wave me-2"></i>Rincian Gaji
+                        <i class="fas fa-money-bill-wave me-2"></i>Salary Details
                     </h6>
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm align-middle">
                             <thead class="table-light text-uppercase small">
                                 <tr>
-                                    <th>Komponen</th>
-                                    <th class="text-end">Jumlah</th>
+                                    <th class="text-black">Components</th>
+                                    <th class="text-end text-black">Total Salary</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,7 +128,7 @@
                                 <tr>
                                     <td>
                                         <i class="fas fa-wallet me-2 text-primary"></i>
-                                        Gaji Pokok
+                                        Base Salary
                                     </td>
                                     <td class="text-end fw-semibold">
                                         Rp {{ number_format($payroll->base_salary, 0, ',', '.') }}
@@ -143,7 +141,7 @@
                                         <tr>
                                             <td>
                                                 <i class="fas fa-gift me-2 text-success"></i>
-                                                Bonus – {{ $bonus->type ? ucfirst($bonus->type) : 'Bonus' }}
+                                                Bonus - {{ $bonus->type ? ucfirst($bonus->type) : 'Bonus' }}
                                                 @if ($bonus->description)
                                                     <span class="text-muted small">({{ $bonus->description }})</span>
                                                 @endif
@@ -168,10 +166,10 @@
                                     </tr>
                                 @endif
                             </tbody>
-                            <tfoot class="table-primary">
+                            <tfoot class="table-light">
                                 <tr>
                                     <th class="fw-bold text-uppercase">
-                                        <i class="fas fa-coins me-2"></i>Total Gaji Diterima
+                                        <i class="fas fa-coins me-2"></i>Total Salary Received
                                     </th>
                                     <th class="text-end fw-bold fs-5">
                                         Rp {{ number_format($payroll->total_salary, 0, ',', '.') }}
@@ -184,38 +182,38 @@
 
                 {{-- ── Notes ────────────────────────────────── --}}
                 @if ($payroll->notes)
-                    <div class="mb-4">
+                    <div class="mb-5">
                         <h6 class="text-uppercase text-muted fw-bold small mb-2 border-bottom pb-2">
-                            <i class="fas fa-sticky-note me-2"></i>Catatan
+                            <i class="fas fa-sticky-note me-2"></i>Notes
                         </h6>
                         <p class="text-muted mb-0 small">{{ $payroll->notes }}</p>
                     </div>
                 @endif
 
                 {{-- ── Summary Strip ───────────────────────── --}}
-                <div class="row g-3 mb-4">
+                <div class="row g-3 mb-4 border-top">
                     <div class="col-6 col-md-3">
-                        <div class="rounded-3 bg-light p-3 text-center border">
+                        <div class="rounded-3 p-3 text-center border">
                             <div class="text-muted small mb-1">Payroll ID</div>
                             <div class="fw-bold">#{{ $payroll->id }}</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="rounded-3 bg-light p-3 text-center border">
+                        <div class="rounded-3 p-3 text-center border">
                             <div class="text-muted small mb-1">Periode</div>
                             <div class="fw-bold">{{ \Carbon\Carbon::create($payroll->year, $payroll->month)->format('m/Y') }}</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="rounded-3 bg-light p-3 text-center border">
-                            <div class="text-muted small mb-1">Tgl Bayar</div>
+                        <div class="rounded-3 p-3 text-center border">
+                            <div class="text-muted small mb-1">Payment Date</div>
                             <div class="fw-bold">{{ $payroll->pay_date?->format('d/m/Y') ?? '-' }}</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="rounded-3 bg-success p-3 text-center">
-                            <div class="text-white small mb-1 opacity-75">Status</div>
-                            <div class="fw-bold text-white">Paid</div>
+                        <div class="rounded-3 bg-primary p-3 text-center">
+                            <div class="text-black small mb-1 opacity-75">Status</div>
+                            <div class="fw-bold text-black">Paid</div>
                         </div>
                     </div>
                 </div>
@@ -224,13 +222,11 @@
                 <div class="row mt-5 pt-3 border-top">
                     <div class="col-6 text-center">
                         <p class="small text-muted mb-5">Karyawan</p>
-                        <div class="border-bottom mx-4 mb-1"></div>
                         <p class="small fw-bold mb-0">{{ $payroll->employee?->name ?? '-' }}</p>
                         <p class="small text-muted">{{ $payroll->employee?->employee_code ?? '' }}</p>
                     </div>
                     <div class="col-6 text-center">
                         <p class="small text-muted mb-5">HR / Finance</p>
-                        <div class="border-bottom mx-4 mb-1"></div>
                         <p class="small fw-bold mb-0">Authorized Signatory</p>
                         <p class="small text-muted">HR / Finance Department</p>
                     </div>
@@ -239,9 +235,9 @@
             </div>{{-- /card-body --}}
 
             {{-- Footer --}}
-            <div class="card-footer bg-light text-center text-muted small py-3">
-                Dokumen ini digenerate secara otomatis oleh sistem Scroll.
-                Dicetak pada {{ now()->translatedFormat('d F Y, H:i') }}.
+            <div class="text-center text-muted small py-5">
+                This document is generated automatically by the Scroll system.
+                Printed On {{ now()->translatedFormat('d F Y, H:i') }}.
             </div>
         </div>
         {{-- /payslip-card --}}
@@ -255,53 +251,5 @@
     .payslip-card {
         border: 1px solid #dee2e6;
     }
-
-    @media print {
-        /* Hide everything except the payslip */
-        body * { visibility: hidden; }
-        #payslip-print-area,
-        #payslip-print-area * { visibility: visible; }
-        #payslip-print-area {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            border: none !important;
-            box-shadow: none !important;
-        }
-        .no-print { display: none !important; }
-        .sidebar, .navbar, .footer, .breadcrumb { display: none !important; }
-
-        /* Ensure table borders print */
-        .table-bordered td,
-        .table-bordered th {
-            border: 1px solid #dee2e6 !important;
-        }
-        .table-primary th {
-            background-color: #cfe2ff !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .bg-primary {
-            background-color: #0d6efd !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .bg-success {
-            background-color: #198754 !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-    }
 </style>
-@endpush
-
-@push('scripts')
-    @if(request('print'))
-    <script>
-        window.addEventListener('load', function () {
-            setTimeout(function () { window.print(); }, 400);
-        });
-    </script>
-    @endif
 @endpush
