@@ -20,26 +20,31 @@ class PayrollFactory extends Factory
         $employee = Employee::with('position')->inRandomOrder()->first()
             ?? Employee::factory()->create();
 
-        // Track used employee+year+month combos to avoid unique constraint violation
-        static $used = [];
-
+        // Find a year/month combo not yet in the DB for this employee,
+        // with a hard cap to prevent infinite loops.
+        $maxAttempts = 50;
         $attempt = 0;
-        do {
+        $year = fake()->numberBetween(2024, 2026);
+        $month = fake()->numberBetween(1, 12);
+
+        while (
+            $attempt < $maxAttempts &&
+            Payroll::withTrashed()
+                ->where('employee_id', $employee->id)
+                ->where('year', $year)
+                ->where('month', $month)
+                ->exists()
+        ) {
             $year = fake()->numberBetween(2024, 2026);
             $month = fake()->numberBetween(1, 12);
-            $key = "{$employee->id}-{$year}-{$month}";
             $attempt++;
 
-            // After a few tries with same employee, pick a different employee
-            if ($attempt > 10) {
-                $employee = Employee::with('position')
-                    ->inRandomOrder()
-                    ->first();
-                $attempt = 0;
+            // Switch to a different employee after several tries
+            if ($attempt % 10 === 0) {
+                $employee = Employee::with('position')->inRandomOrder()->first()
+                    ?? Employee::factory()->create();
             }
-        } while (in_array($key, $used, true));
-
-        $used[] = $key;
+        }
 
         // Base salary via model accessor (resolves by employee_type + position)
         $baseSalary = (float) ($employee->base_salary ?? fake()->numberBetween(5_000_000, 20_000_000));

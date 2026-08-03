@@ -116,10 +116,7 @@
                             @foreach ($bonuses as $bonus)
                                 <tr>
                                     <td class="text-center fw-bold">{{ $loop->iteration }}</td>
-                                    <td>
-                                        <div class="fw-bold text-body">{{ $bonus->employee?->name ?? '-' }}</div>
-                                        <small class="text-muted font-monospace">{{ $bonus->employee?->employee_code ?? '' }}</small>
-                                    </td>
+                                    <td class="fw-bold text-body">{{ $bonus->employee?->name ?? '-' }} <span class="small text-muted">({{ $bonus->employee?->employee_code ?? '-' }})</span></td>
                                     <td class="text-body">
                                         {{ \Carbon\Carbon::create($bonus->year, $bonus->month)->translatedFormat('F Y') }}
                                     </td>

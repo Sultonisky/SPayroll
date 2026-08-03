@@ -5,15 +5,26 @@ namespace Tests\Unit;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Observers\EmployeeObserver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
  * Unit tests for EmployeeObserver — focuses on the employee_code auto-generation.
+ *
+ * We re-register only EmployeeObserver here because the base TestCase uses
+ * WithoutObservers to keep tests fast (observers trigger DB notifications).
  */
 class EmployeeObserverTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Re-register only the observer needed for this test
+        Employee::observe(EmployeeObserver::class);
+    }
 
     private function baseAttributes(): array
     {

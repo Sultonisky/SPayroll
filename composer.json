@@ -18,6 +18,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "barryvdh/laravel-dompdf": "^3.1",
         "intervention/image": "3.0",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",

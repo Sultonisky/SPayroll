@@ -76,8 +76,12 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate
 
+      - name: Generate testing application key
+        run: php artisan key:generate --env=testing
+
       - name: Run tests
-        run: php artisan test
+        run: php artisan test --env=testing
+        timeout-minutes: 10
 
   build-assets:
     name: Build Frontend Assets
