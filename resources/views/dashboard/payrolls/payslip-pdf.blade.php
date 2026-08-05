@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Payslip - {{ $payroll->employee?->name ?? '-' }} - {{ $payroll->monthName() }}</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
@@ -23,23 +28,38 @@
             border-radius: 6px 6px 0 0;
             margin-bottom: 0;
         }
+
         .header-inner {
             width: 100%;
         }
-        .header-left { float: left; }
-        .header-right { float: right; text-align: right; }
+
+        .header-left {
+            float: left;
+        }
+
+        .header-right {
+            float: right;
+            text-align: right;
+        }
+
         .header h2 {
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 4px;
             color: #000;
         }
+
         .header p {
             font-size: 11px;
             color: #000;
             opacity: 0.85;
         }
-        .clearfix::after { content: ""; display: table; clear: both; }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
         /* ── Card body ───────────────────────────── */
         .card-body {
@@ -66,17 +86,40 @@
             width: 100%;
             margin-bottom: 18px;
         }
-        .info-col { width: 50%; vertical-align: top; }
-        .info-table { width: 100%; border-collapse: collapse; }
+
+        .info-col {
+            width: 50%;
+            vertical-align: top;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
         .info-table td {
             padding: 3px 4px;
             font-size: 11px;
             vertical-align: top;
         }
-        .info-label { color: #6c757d; width: 42%; }
-        .info-sep   { color: #6c757d; width: 5%; }
-        .info-value { font-weight: normal; }
-        .info-value.bold { font-weight: bold; }
+
+        .info-label {
+            color: #6c757d;
+            width: 42%;
+        }
+
+        .info-sep {
+            color: #6c757d;
+            width: 5%;
+        }
+
+        .info-value {
+            font-weight: normal;
+        }
+
+        .info-value.bold {
+            font-weight: bold;
+        }
 
         /* ── Type badge ──────────────────────────── */
         .type-badge {
@@ -95,6 +138,7 @@
             margin-bottom: 16px;
             font-size: 11px;
         }
+
         .salary-table th {
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -104,13 +148,25 @@
             letter-spacing: 0.6px;
             color: #1a1a1a;
         }
+
         .salary-table td {
             border: 1px solid #dee2e6;
             padding: 7px 10px;
         }
-        .salary-table .text-right { text-align: right; }
-        .salary-table .text-success { color: #198754; font-weight: 600; }
-        .salary-table .text-muted   { color: #6c757d; }
+
+        .salary-table .text-right {
+            text-align: right;
+        }
+
+        .salary-table .text-success {
+            color: #198754;
+            font-weight: 600;
+        }
+
+        .salary-table .text-muted {
+            color: #6c757d;
+        }
+
         .salary-table tfoot td,
         .salary-table tfoot th {
             background-color: #e9f0ff;
@@ -121,26 +177,47 @@
         }
 
         /* ── Summary strip ───────────────────────── */
-        .summary-wrap { width: 100%; margin-bottom: 20px; }
+        .summary-wrap {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
         .summary-cell {
             width: 25%;
             vertical-align: top;
             padding: 0 4px;
         }
+
         .summary-box {
             border: 1px solid #dee2e6;
             border-radius: 4px;
             padding: 8px 6px;
             text-align: center;
         }
+
         .summary-box.green {
             background-color: #00F260;
             border-color: #00F260;
         }
-        .summary-label { font-size: 9px; color: #6c757d; margin-bottom: 3px; }
-        .summary-value { font-size: 12px; font-weight: bold; }
-        .summary-box.green .summary-label { color: #000; }
-        .summary-box.green .summary-value { color: #000; }
+
+        .summary-label {
+            font-size: 9px;
+            color: #6c757d;
+            margin-bottom: 3px;
+        }
+
+        .summary-value {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .summary-box.green .summary-label {
+            color: #000;
+        }
+
+        .summary-box.green .summary-value {
+            color: #000;
+        }
 
         /* ── Notes ───────────────────────────────── */
         .notes-box {
@@ -154,13 +231,45 @@
         }
 
         /* ── Signature ───────────────────────────── */
-        .sig-wrap { width: 100%; border-top: 1px solid #dee2e6; padding-top: 18px; margin-top: 10px; }
-        .sig-cell { width: 50%; text-align: center; vertical-align: top; padding: 0 20px; }
-        .sig-role  { font-size: 10px; color: #6c757d; margin-bottom: 8px; }
-        .sig-space { height: 52px; } /* matches logo height in HR column */
-        .sig-line  { border-bottom: 1px solid #1a1a1a; margin: 0 30px 6px; }
-        .sig-name  { font-size: 11px; font-weight: bold; }
-        .sig-code  { font-size: 10px; color: #6c757d; }
+        .sig-wrap {
+            width: 100%;
+            border-top: 1px solid #dee2e6;
+            padding-top: 18px;
+            margin-top: 10px;
+        }
+
+        .sig-cell {
+            width: 50%;
+            text-align: center;
+            vertical-align: top;
+            padding: 0 20px;
+        }
+
+        .sig-role {
+            font-size: 10px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .sig-space {
+            height: 52px;
+        }
+
+        /* matches logo height in HR column */
+        .sig-line {
+            border-bottom: 1px solid #1a1a1a;
+            margin: 0 30px 6px;
+        }
+
+        .sig-name {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .sig-code {
+            font-size: 10px;
+            color: #6c757d;
+        }
 
         /* ── Doc footer ──────────────────────────── */
         .doc-footer {
@@ -182,6 +291,7 @@
             z-index: 0;
             pointer-events: none;
         }
+
         .watermark img {
             width: 580px;
         }
@@ -189,8 +299,8 @@
         /* ── Doc ID badge ────────────────────────── */
         .doc-id-badge {
             display: inline-block;
-            background-color: rgba(0,0,0,0.12);
-            border: 1px solid rgba(0,0,0,0.2);
+            background-color: rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 4px;
             padding: 3px 8px;
             font-size: 9px;
@@ -205,32 +315,64 @@
             border-top: 2px solid #dee2e6;
             padding-top: 10px;
         }
-        .footer-bar table { width: 100%; }
-        .footer-left  { font-size: 9px; color: #6c757d; vertical-align: middle; }
-        .footer-right { font-size: 9px; color: #6c757d; text-align: right; vertical-align: middle; }
-        .footer-verify-url { font-size: 9px; color: #6c757d; text-align: center; margin-top: 5px; }
+
+        .footer-bar table {
+            width: 100%;
+        }
+
+        .footer-left {
+            font-size: 9px;
+            color: #6c757d;
+            vertical-align: middle;
+        }
+
+        .footer-right {
+            font-size: 9px;
+            color: #6c757d;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .footer-verify-url {
+            font-size: 9px;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 5px;
+        }
     </style>
 </head>
 @php
     // Document ID: deterministik dari data payroll — tidak bisa dipalsukan tanpa tahu data aslinya
-    $docHash = strtoupper(substr(hash('sha256',
-        $payroll->id . $payroll->employee_id . $payroll->year . $payroll->month .
-        $payroll->total_salary . $payroll->pay_date
-    ), 0, 12));
+    $docHash = strtoupper(
+        substr(
+            hash(
+                'sha256',
+                $payroll->id .
+                    $payroll->employee_id .
+                    $payroll->year .
+                    $payroll->month .
+                    $payroll->total_salary .
+                    $payroll->pay_date,
+            ),
+            0,
+            12,
+        ),
+    );
     $docId = 'SCR-' . str_pad($payroll->id, 5, '0', STR_PAD_LEFT) . '-' . $docHash;
 @endphp
+
 <body>
 
     {{-- ── WATERMARK (rendered behind all content) ───────────── --}}
     <div class="watermark">
-        <img src="{{ public_path('assets/images/logo-scroll.png') }}" alt="">
+        <img src="{{ Brand::logoPath() }}" alt="">
     </div>
 
     {{-- ── HEADER ────────────────────────────────────────────── --}}
     <div class="header">
         <div class="header-inner clearfix">
             <div class="header-left">
-                <h2>Scroll | Payslip</h2>
+                <h2>{{ Brand::name() }} | Payslip</h2>
                 <p>Periode: <strong>{{ $payroll->monthName() }}</strong></p>
             </div>
             <div class="header-right">
@@ -332,7 +474,8 @@
                                     <span class="text-muted">({{ $bonus->description }})</span>
                                 @endif
                             </td>
-                            <td class="text-right text-success">+ Rp {{ number_format($bonus->amount, 0, ',', '.') }}</td>
+                            <td class="text-right text-success">+ Rp {{ number_format($bonus->amount, 0, ',', '.') }}
+                            </td>
                         </tr>
                     @endforeach
                 @elseif ($payroll->bonus > 0)
@@ -373,7 +516,8 @@
                 <td class="summary-cell">
                     <div class="summary-box">
                         <div class="summary-label">Period</div>
-                        <div class="summary-value">{{ \Carbon\Carbon::create($payroll->year, $payroll->month)->format('m/Y') }}</div>
+                        <div class="summary-value">
+                            {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->format('m/Y') }}</div>
                     </div>
                 </td>
                 <td class="summary-cell">
@@ -406,9 +550,8 @@
                 <td class="sig-cell">
                     <div class="sig-role">HR / Finance</div>
                     <div style="text-align: center; margin-bottom: 4px;">
-                        <img src="{{ public_path('assets/images/logo-scroll.png') }}"
-                             alt="Scroll"
-                             style="height: 44px; opacity: 0.85;">
+                        <img src="{{ Brand::logoPath() }}" alt="{{ Brand::name() }}"
+                            style="height: 44px; opacity: 0.85;">
                     </div>
                     <div class="sig-line"></div>
                     <div class="sig-name">Authorized Signatory</div>
@@ -424,9 +567,9 @@
         <table>
             <tr>
                 <td class="footer-left">
-                    <img src="{{ public_path('assets/images/logo-scroll.png') }}"
-                         alt="Scroll" style="height: 14px; vertical-align: middle; margin-right: 5px; opacity: 0.6;">
-                    Generated by <strong>Scroll Payroll System</strong>
+                    <img src="{{ Brand::logoPath() }}" alt="{{ Brand::name() }}"
+                        style="height: 14px; vertical-align: middle; margin-right: 5px; opacity: 0.6;">
+                    Generated by <strong>{{ Brand::fullName() }}</strong>
                     &nbsp;&bull;&nbsp; {{ now()->translatedFormat('d F Y, H:i') }}
                 </td>
                 <td class="footer-right">
@@ -441,4 +584,5 @@
     </div>
 
 </body>
+
 </html>

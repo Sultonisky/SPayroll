@@ -5,9 +5,10 @@
     <div class="row">
         <div class="col-12">
             <div class="card mb-4 shadow-sm">
-                <div class="card-header py-3 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                <div
+                    class="card-header py-3 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
                     <h5 class="mb-0 fw-bold text-primary fs-5">
-                        <i class="fas fa-file-invoice me-2"></i>Scroll - Payslip
+                        <i class="fas fa-file-invoice me-2"></i>{{ Brand::name() }} - Payslip
                     </h5>
                     @if ($canViewAll)
                         <span class="badge bg-info text-white rounded-pill px-3 py-2 fs-6">
@@ -26,7 +27,9 @@
                                     <select name="year" class="form-select form-select-sm rounded-pill shadow-sm">
                                         <option value="">All Years</option>
                                         @foreach (range(date('Y'), date('Y') - 3) as $y)
-                                            <option value="{{ $y }}" {{ ($filterYear ?? '') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                                            <option value="{{ $y }}"
+                                                {{ ($filterYear ?? '') == $y ? 'selected' : '' }}>{{ $y }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -35,7 +38,8 @@
                                     <select name="month" class="form-select form-select-sm rounded-pill shadow-sm">
                                         <option value="">All Months</option>
                                         @for ($m = 1; $m <= 12; $m++)
-                                            <option value="{{ $m }}" {{ ($filterMonth ?? '') == $m ? 'selected' : '' }}>
+                                            <option value="{{ $m }}"
+                                                {{ ($filterMonth ?? '') == $m ? 'selected' : '' }}>
                                                 {{ date('F', mktime(0, 0, 0, $m, 1)) }}
                                             </option>
                                         @endfor
@@ -46,7 +50,8 @@
                                     <select name="employee_id" class="form-select form-select-sm rounded-pill shadow-sm">
                                         <option value="">All Employees</option>
                                         @foreach ($allEmployees as $emp)
-                                            <option value="{{ $emp->id }}" {{ ($filterEmployeeId ?? '') == $emp->id ? 'selected' : '' }}>
+                                            <option value="{{ $emp->id }}"
+                                                {{ ($filterEmployeeId ?? '') == $emp->id ? 'selected' : '' }}>
                                                 {{ $emp->name }} ({{ $emp->employee_code }})
                                             </option>
                                         @endforeach
@@ -72,7 +77,8 @@
                         <div class="text-center py-5 text-muted">
                             <i class="fas fa-file-invoice fa-3x mb-3 opacity-50"></i>
                             <p class="mb-0 fw-semibold">No payslip found.</p>
-                            <p class="small mt-1">Payslips are available once payroll is marked as <span class="badge bg-success">Paid</span>.</p>
+                            <p class="small mt-1">Payslips are available once payroll is marked as <span
+                                    class="badge bg-success">Paid</span>.</p>
                         </div>
                     @else
                         <table class="table table-hover align-middle" id="payslipTable">
@@ -94,25 +100,30 @@
                                         <td class="text-center fw-bold">{{ $loop->iteration }}</td>
                                         <td>
                                             <div class="fw-bold text-body">{{ $payroll->employee?->name ?? '-' }}</div>
-                                            <div class="small text-muted">{{ $payroll->employee?->employee_code ?? '-' }}</div>
+                                            <div class="small text-muted">{{ $payroll->employee?->employee_code ?? '-' }}
+                                            </div>
                                         </td>
                                         <td>
-                                            <span class="text-body" data-order="{{ $payroll->year * 100 + $payroll->month }}">
+                                            <span class="text-body"
+                                                data-order="{{ $payroll->year * 100 + $payroll->month }}">
                                                 {{ \Carbon\Carbon::create($payroll->year, $payroll->month)->translatedFormat('F Y') }}
                                             </span>
                                         </td>
                                         <td class="text-body">
                                             {{ $payroll->pay_date?->translatedFormat('d M Y') ?? '-' }}
                                         </td>
-                                        <td class="text-body">Rp {{ number_format($payroll->base_salary, 0, ',', '.') }}</td>
+                                        <td class="text-body">Rp {{ number_format($payroll->base_salary, 0, ',', '.') }}
+                                        </td>
                                         <td>
                                             @if ($payroll->bonus > 0)
-                                                <span class="text-success fw-semibold">+ Rp {{ number_format($payroll->bonus, 0, ',', '.') }}</span>
+                                                <span class="text-success fw-semibold">+ Rp
+                                                    {{ number_format($payroll->bonus, 0, ',', '.') }}</span>
                                             @else
                                                 <span class="text-muted">—</span>
                                             @endif
                                         </td>
-                                        <td class="fw-bold text-success">Rp {{ number_format($payroll->total_salary, 0, ',', '.') }}</td>
+                                        <td class="fw-bold text-success">Rp
+                                            {{ number_format($payroll->total_salary, 0, ',', '.') }}</td>
                                         <td class="text-center">
                                             <div class="btn-group shadow-sm rounded-pill overflow-hidden border">
                                                 <a href="{{ route('payrolls.payslip.show', $payroll->id) }}"
@@ -138,20 +149,29 @@
 
 @push('styles')
     <style>
-        #payslipTable thead th { color: #000 !important; }
+        #payslipTable thead th {
+            color: #000 !important;
+        }
     </style>
 @endpush
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             if (!$.fn.DataTable.isDataTable('#payslipTable')) {
                 $('#payslipTable').DataTable({
                     "dom": '<"dt-controls"Bf>r<"table-responsive"t><"dt-footer"ip>',
-                    "order": [[2, "desc"]],
-                    "columnDefs": [
-                        { "orderable": false, "targets": [7] },
-                        { "type": "num", "targets": [2] }
+                    "order": [
+                        [2, "desc"]
+                    ],
+                    "columnDefs": [{
+                            "orderable": false,
+                            "targets": [7]
+                        },
+                        {
+                            "type": "num",
+                            "targets": [2]
+                        }
                     ],
                     "language": {
                         "searchPlaceholder": "Search payslips...",
