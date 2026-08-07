@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Employee;
 use App\Models\User;
 use App\Notifications\DashboardNotification;
+use App\Services\AuditLogService;
 
 class EmployeeObserver
 {
@@ -26,6 +27,12 @@ class EmployeeObserver
 
     public function created(Employee $employee): void
     {
+        AuditLogService::logModelEvent(
+            'created',
+            $employee,
+            "Employee '{$employee->name}' (#{$employee->employee_code}) created"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -39,6 +46,12 @@ class EmployeeObserver
 
     public function updated(Employee $employee): void
     {
+        AuditLogService::logModelEvent(
+            'updated',
+            $employee,
+            "Employee '{$employee->name}' (#{$employee->employee_code}) updated"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -52,6 +65,12 @@ class EmployeeObserver
 
     public function deleted(Employee $employee): void
     {
+        AuditLogService::log(
+            'deleted',
+            $employee,
+            "Employee '{$employee->name}' moved to trash"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -65,6 +84,12 @@ class EmployeeObserver
 
     public function restored(Employee $employee): void
     {
+        AuditLogService::log(
+            'restored',
+            $employee,
+            "Employee '{$employee->name}' restored from trash"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -78,6 +103,12 @@ class EmployeeObserver
 
     public function forceDeleted(Employee $employee): void
     {
+        AuditLogService::log(
+            'force_deleted',
+            $employee,
+            "Employee '{$employee->name}' permanently deleted"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(

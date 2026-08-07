@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Payroll;
 use App\Models\User;
 use App\Notifications\DashboardNotification;
+use App\Services\AuditLogService;
 use Illuminate\Database\Eloquent\Collection;
 
 class PayrollObserver
@@ -25,6 +26,12 @@ class PayrollObserver
         $period = $payroll->monthName();
         $name = $payroll->employee?->name ?? 'Unknown';
 
+        AuditLogService::logModelEvent(
+            'created',
+            $payroll,
+            "Payroll draft created for '{$name}' ({$period})"
+        );
+
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
                 'New Payroll Draft Created',
@@ -40,11 +47,16 @@ class PayrollObserver
         $period = $payroll->monthName();
         $name = $payroll->employee?->name ?? 'Unknown';
 
-        // Status-specific notifications for approve and paid transitions
         if ($payroll->wasChanged('status')) {
             $newStatus = $payroll->status;
 
             if ($newStatus === 'approved') {
+                AuditLogService::log(
+                    'approved',
+                    $payroll,
+                    "Payroll for '{$name}' ({$period}) approved"
+                );
+
                 foreach ($this->payrollManagers() as $user) {
                     $user->notify(new DashboardNotification(
                         'Payroll Approved',
@@ -58,6 +70,12 @@ class PayrollObserver
             }
 
             if ($newStatus === 'paid') {
+                AuditLogService::log(
+                    'mark_paid',
+                    $payroll,
+                    "Payroll for '{$name}' ({$period}) marked as paid"
+                );
+
                 foreach ($this->payrollManagers() as $user) {
                     $user->notify(new DashboardNotification(
                         'Payroll Marked as Paid',
@@ -71,7 +89,13 @@ class PayrollObserver
             }
         }
 
-        // Generic update notification
+        // Generic update
+        AuditLogService::logModelEvent(
+            'updated',
+            $payroll,
+            "Payroll for '{$name}' ({$period}) updated"
+        );
+
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
                 'Payroll Record Updated',
@@ -86,6 +110,12 @@ class PayrollObserver
     {
         $period = $payroll->monthName();
         $name = $payroll->employee?->name ?? 'Unknown';
+
+        AuditLogService::log(
+            'deleted',
+            $payroll,
+            "Payroll for '{$name}' ({$period}) moved to trash"
+        );
 
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
@@ -102,6 +132,12 @@ class PayrollObserver
         $period = $payroll->monthName();
         $name = $payroll->employee?->name ?? 'Unknown';
 
+        AuditLogService::log(
+            'restored',
+            $payroll,
+            "Payroll for '{$name}' ({$period}) restored from trash"
+        );
+
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
                 'Payroll Record Restored',
@@ -116,6 +152,12 @@ class PayrollObserver
     {
         $period = $payroll->monthName();
         $name = $payroll->employee?->name ?? 'Unknown';
+
+        AuditLogService::log(
+            'force_deleted',
+            $payroll,
+            "Payroll for '{$name}' ({$period}) permanently deleted"
+        );
 
         foreach ($this->payrollManagers() as $user) {
             $user->notify(new DashboardNotification(
