@@ -95,7 +95,20 @@ class DatabaseSeeder extends Seeder
         // 7. Payrolls
         // ----------------------------------------------------------------
         $this->command->info('Seeding payrolls...');
-        Payroll::factory()->count(60)->create();
+        $payrollSeeded = 0;
+        $payrollTarget = 60;
+        $payrollAttempts = 0;
+        $payrollMaxAttempts = 200;
+
+        while ($payrollSeeded < $payrollTarget && $payrollAttempts < $payrollMaxAttempts) {
+            try {
+                Payroll::factory()->create();
+                $payrollSeeded++;
+            } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+                // Duplicate employee/year/month combo — just retry
+            }
+            $payrollAttempts++;
+        }
 
         // ----------------------------------------------------------------
         $this->command->info('');

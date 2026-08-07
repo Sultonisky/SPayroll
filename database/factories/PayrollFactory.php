@@ -71,4 +71,25 @@ class PayrollFactory extends Factory
             'status' => fake()->randomElement(['draft', 'approved', 'approved', 'paid', 'paid']),
         ];
     }
+
+    public function draft(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'draft',
+        ]);
+    }
+
+    public function approved(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'approved',
+        ]);
+    }
+
+    public function paid(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'paid',
+        ]);
+    }
 }

@@ -25,11 +25,13 @@ class Payroll extends Model
     ];
 
     protected $casts = [
+        'year'        => 'integer',
+        'month'       => 'integer',
         'base_salary' => 'float',
-        'bonus' => 'float',
+        'bonus'       => 'float',
         'total_salary' => 'float',
-        'pay_date' => 'date',
-        'deleted_at' => 'datetime',
+        'pay_date'    => 'date',
+        'deleted_at'  => 'datetime',
     ];
 
     // ----------------------------------------------------------------
