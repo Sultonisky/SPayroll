@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Dashboard\AuditLogController;
 use App\Http\Controllers\Dashboard\BonusController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\DepartmentController;
@@ -60,6 +61,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
         Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
         Route::resource('users', UserController::class);
+
+        // Audit Logs - Admin only
+        Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('audit-logs/{auditLog}', [AuditLogController::class, 'show'])->name('audit-logs.show');
     });
 
     // Department Routes - Admin & HR & Manager (read for staff)

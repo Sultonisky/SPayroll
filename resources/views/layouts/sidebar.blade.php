@@ -41,16 +41,6 @@
         {{-- ── Master Data ─────────────────────────────── --}}
         <li class="nav-title">Master Data</li>
 
-        {{-- Users: admin only, hidden for demo --}}
-        @if ($isAdmin && !$isDemo)
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('users.index') }}">
-                    <i class="nav-icon fas fa-user-lock"></i>
-                    Users
-                </a>
-            </li>
-        @endif
-
         {{-- Departments: admin, HR, manager --}}
         @if ($canDept)
             <li class="nav-item">
@@ -144,6 +134,22 @@
                     </a>
                 </li>
             @endif
+        @endif
+
+         {{-- Users: admin only, hidden for demo --}}
+        @if ($isAdmin && !$isDemo)
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('users.index') }}">
+                    <i class="nav-icon fas fa-user-lock"></i>
+                    Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('audit-logs.index') }}">
+                    <i class="nav-icon fas fa-shield-alt"></i>
+                    Audit Log
+                </a>
+            </li>
         @endif
 
     </ul>
