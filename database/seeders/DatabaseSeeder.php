@@ -10,6 +10,7 @@ use App\Models\Position;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -95,7 +96,20 @@ class DatabaseSeeder extends Seeder
         // 7. Payrolls
         // ----------------------------------------------------------------
         $this->command->info('Seeding payrolls...');
-        Payroll::factory()->count(60)->create();
+        $payrollSeeded = 0;
+        $payrollTarget = 60;
+        $payrollAttempts = 0;
+        $payrollMaxAttempts = 200;
+
+        while ($payrollSeeded < $payrollTarget && $payrollAttempts < $payrollMaxAttempts) {
+            try {
+                Payroll::factory()->create();
+                $payrollSeeded++;
+            } catch (UniqueConstraintViolationException $e) {
+                // Duplicate employee/year/month combo — just retry
+            }
+            $payrollAttempts++;
+        }
 
         // ----------------------------------------------------------------
         $this->command->info('');

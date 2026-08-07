@@ -2,52 +2,106 @@
 
 namespace App\Console\Commands;
 
+use App\Models\AuditLog;
+use App\Models\Bonus;
+use App\Models\Department;
+use App\Models\Employee;
+use App\Models\Payroll;
+use App\Models\Position;
 use App\Models\User;
 use Illuminate\Console\Command;
 
 class CleanUpTrashCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:cleanup-trash';
+    protected $signature = 'app:cleanup-trash
+                            {--trash-days=90 : Permanently delete soft-deleted records older than this many days}
+                            {--log-days=365  : Purge audit log entries older than this many days}
+                            {--logs-only     : Only purge audit logs, skip trash cleanup}
+                            {--trash-only    : Only clean trash, skip audit log purge}';
+
+    protected $description = 'Permanently delete old trash items and prune old audit log entries';
 
     /**
-     * The console command description.
-     *
-     * @var string
+     * Models that support soft-deletes and should be cleaned from trash.
      */
-    protected $description = 'Permanently delete items in trash that have been soft-deleted for more than 90 days';
+    private array $trashableModels = [
+        User::class,
+        Employee::class,
+        Department::class,
+        Position::class,
+        Payroll::class,
+        Bonus::class,
+    ];
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): int
     {
-        $models = [
-            User::class,
-        ];
+        $trashDays = (int) $this->option('trash-days');
+        $logDays = (int) $this->option('log-days');
+        $logsOnly = $this->option('logs-only');
+        $trashOnly = $this->option('trash-only');
 
-        $days = 90;
-        $cutoffDate = now()->subDays($days);
-        $totalDeleted = 0;
+        $this->info('╔══════════════════════════════════════╗');
+        $this->info('║       S-Payroll Cleanup Job          ║');
+        $this->info('╚══════════════════════════════════════╝');
+        $this->newLine();
 
-        $this->info("Cleaning up trash items older than $days days (before $cutoffDate)...");
+        $totalTrash = 0;
+        $totalLogs = 0;
 
-        foreach ($models as $modelClass) {
-            $modelName = class_basename($modelClass);
-            $count = $modelClass::onlyTrashed()
-                ->where('deleted_at', '<', $cutoffDate)
-                ->forceDelete();
+        // ----------------------------------------------------------------
+        // 1. Trash cleanup
+        // ----------------------------------------------------------------
+        if (! $logsOnly) {
+            $cutoff = now()->subDays($trashDays);
+            $this->info("🗑  Trash cleanup — records soft-deleted before {$cutoff->toDateString()} ({$trashDays}d)");
 
-            if ($count > 0) {
-                $this->info("- Deleted $count items from $modelName");
-                $totalDeleted += $count;
+            foreach ($this->trashableModels as $modelClass) {
+                $name = class_basename($modelClass);
+                $count = $modelClass::onlyTrashed()
+                    ->where('deleted_at', '<', $cutoff)
+                    ->forceDelete();
+
+                if ($count > 0) {
+                    $this->line("   ✓ {$name}: {$count} record(s) permanently deleted");
+                    $totalTrash += $count;
+                } else {
+                    $this->line("   – {$name}: nothing to delete");
+                }
             }
+
+            $this->newLine();
         }
 
-        $this->info("Cleanup finished. Total items permanently deleted: $totalDeleted");
+        // ----------------------------------------------------------------
+        // 2. Audit log pruning
+        // ----------------------------------------------------------------
+        if (! $trashOnly) {
+            $logCutoff = now()->subDays($logDays);
+            $this->info("📋  Audit log pruning — entries older than {$logCutoff->toDateString()} ({$logDays}d)");
+
+            $totalLogs = AuditLog::where('created_at', '<', $logCutoff)->delete();
+
+            if ($totalLogs > 0) {
+                $this->line("   ✓ AuditLog: {$totalLogs} record(s) purged");
+            } else {
+                $this->line('   – AuditLog: nothing to purge');
+            }
+
+            $this->newLine();
+        }
+
+        // ----------------------------------------------------------------
+        // Summary
+        // ----------------------------------------------------------------
+        $this->info('Summary:');
+        if (! $logsOnly) {
+            $this->line("  Trash records deleted : {$totalTrash}");
+        }
+        if (! $trashOnly) {
+            $this->line("  Audit logs purged     : {$totalLogs}");
+        }
+        $this->info('Cleanup complete.');
+
+        return self::SUCCESS;
     }
 }

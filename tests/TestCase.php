@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\Payroll;
 use App\Models\Position;
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -24,6 +25,12 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         $this->flushModelObservers();
+
+        // Disable CSRF verification globally for feature tests.
+        // In Laravel 13 the CSRF middleware is PreventRequestForgery (renamed from ValidateCsrfToken).
+        // All our test routes are exercised via actingAs() so session integrity
+        // is already guaranteed — CSRF adds no value in an in-process test.
+        $this->withoutMiddleware(PreventRequestForgery::class);
     }
 
     /**

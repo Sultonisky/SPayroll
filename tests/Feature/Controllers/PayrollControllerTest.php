@@ -6,7 +6,6 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
 use App\Models\Position;
-use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -132,25 +131,21 @@ class PayrollControllerTest extends TestCase
         $this->makePayroll('draft', ['year' => 2025, 'month' => 8]);
         $countBefore = Payroll::count();
 
-        // Attempt to store a duplicate — the controller has no uniqueness validation,
-        // so the DB unique constraint fires and Laravel returns a 500 (unhandled exception)
-        // or a redirect with errors depending on exception handler configuration.
-        // Either way, no new payroll record should exist.
-        try {
-            $this->actingAs($this->adminUser())
-                ->post(route('payrolls.store'), [
-                    'employee_id' => $this->employee->id,
-                    'year' => 2025,
-                    'month' => 8,
-                    'pay_date' => '2025-08-25',
-                    'base_salary' => 10_000_000,
-                    'bonus' => 0,
-                    'total_salary' => 10_000_000,
-                    'status' => 'draft',
-                ]);
-        } catch (UniqueConstraintViolationException $e) {
-            // Expected — DB constraint prevents duplicate
-        }
+        // Attempt to store a duplicate — the controller's uniqueness validation
+        // rejects it and redirects back with a validation error.
+        $this->actingAs($this->adminUser())
+            ->post(route('payrolls.store'), [
+                'employee_id' => $this->employee->id,
+                'year' => 2025,
+                'month' => 8,
+                'pay_date' => '2025-08-25',
+                'base_salary' => 10_000_000,
+                'bonus' => 0,
+                'total_salary' => 10_000_000,
+                'status' => 'draft',
+            ])
+            ->assertRedirect()
+            ->assertSessionHasErrors('employee_id');
 
         $this->assertSame($countBefore, Payroll::count());
     }

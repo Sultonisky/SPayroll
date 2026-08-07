@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Notifications\DashboardNotification;
+use App\Services\AuditLogService;
 
 class UserObserver
 {
@@ -12,7 +13,12 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        // Notify other admins about new user
+        AuditLogService::logModelEvent(
+            'created',
+            $user,
+            "User '{$user->name}' (role: {$user->role}) created"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -29,7 +35,12 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        // Notify other admins about updated user
+        AuditLogService::logModelEvent(
+            'updated',
+            $user,
+            "User '{$user->name}' (role: {$user->role}) updated"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -46,7 +57,12 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        // Notify other admins about deleted user
+        AuditLogService::log(
+            'deleted',
+            $user,
+            "User '{$user->name}' moved to trash"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -63,7 +79,12 @@ class UserObserver
      */
     public function restored(User $user): void
     {
-        // Notify other admins about restored user
+        AuditLogService::log(
+            'restored',
+            $user,
+            "User '{$user->name}' restored from trash"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
@@ -80,7 +101,12 @@ class UserObserver
      */
     public function forceDeleted(User $user): void
     {
-        // Notify other admins about force deleted user
+        AuditLogService::log(
+            'force_deleted',
+            $user,
+            "User '{$user->name}' permanently deleted"
+        );
+
         $admins = User::where('role', 'admin')->where('id', '!=', auth()->id())->get();
         foreach ($admins as $admin) {
             $admin->notify(new DashboardNotification(
