@@ -11,7 +11,7 @@ return [
     |
     */
 
-    "name" => env("BRAND_NAME", "Scroll"),
+    'name' => env('BRAND_NAME', 'Scroll'),
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     |
     */
 
-    "full_name" => env("BRAND_FULL_NAME", "Scroll Payroll System"),
+    'full_name' => env('BRAND_FULL_NAME', 'Scroll Payroll System'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ return [
     |
     */
 
-    "tagline" => env("BRAND_TAGLINE", "Payroll system built for remote-first companies"),
+    'tagline' => env('BRAND_TAGLINE', 'Payroll system built for remote-first companies'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return [
     |
     */
 
-    "primary_color" => env("BRAND_PRIMARY_COLOR", "#0d6efd"),
+    'primary_color' => env('BRAND_PRIMARY_COLOR', '#0d6efd'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    "logo" => env("BRAND_LOGO", "assets/images/logo-scroll.png"),
+    'logo' => env('BRAND_LOGO', 'assets/images/logo-scroll.png'),
 
     /*
     |--------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return [
     |
     */
 
-    "logo_white" => env("BRAND_LOGO_WHITE", "assets/images/logo-brand-white.png"),
+    'logo_white' => env('BRAND_LOGO_WHITE', 'assets/images/logo-brand-white.png'),
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +77,7 @@ return [
     |
     */
 
-    "favicon" => env("BRAND_FAVICON", "assets/images/logo.png"),
+    'favicon' => env('BRAND_FAVICON', 'assets/images/logo.png'),
 
     /*
     |--------------------------------------------------------------------------
@@ -88,7 +88,7 @@ return [
     |
     */
 
-    "fallback_avatar" => env("BRAND_FALLBACK_AVATAR", "assets/images/logo.png"),
+    'fallback_avatar' => env('BRAND_FALLBACK_AVATAR', 'assets/images/logo.png'),
 
     /*
     |--------------------------------------------------------------------------
@@ -99,7 +99,7 @@ return [
     |
     */
 
-    "footer_text" => env("BRAND_FOOTER_TEXT", ""),
+    'footer_text' => env('BRAND_FOOTER_TEXT', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return [
     |
     */
 
-    "copyright_owner" => env("BRAND_COPYRIGHT_OWNER", ""),
+    'copyright_owner' => env('BRAND_COPYRIGHT_OWNER', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,7 +121,7 @@ return [
     |
     */
 
-    "github_url" => env("BRAND_GITHUB_URL", "https://github.com/Sultonisky/Scroll"),
+    'github_url' => env('BRAND_GITHUB_URL', 'https://github.com/Sultonisky/Scroll'),
 
     /*
     |--------------------------------------------------------------------------
@@ -132,7 +132,7 @@ return [
     |
     */
 
-    "author_name" => env("BRAND_AUTHOR_NAME", "Mohammad Sultoni"),
+    'author_name' => env('BRAND_AUTHOR_NAME', 'Mohammad Sultoni'),
 
     /*
     |--------------------------------------------------------------------------
@@ -143,6 +143,6 @@ return [
     |
     */
 
-    "author_url" => env("BRAND_AUTHOR_URL", "https://github.com/Sultonisky"),
+    'author_url' => env('BRAND_AUTHOR_URL', 'https://github.com/Sultonisky'),
 
 ];
