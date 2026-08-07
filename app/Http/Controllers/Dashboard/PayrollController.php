@@ -11,8 +11,10 @@ use App\Notifications\DashboardNotification;
 use App\Services\PayrollCalculatorService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class PayrollController extends Controller
 {
@@ -160,7 +162,7 @@ class PayrollController extends Controller
                 SUM(CASE WHEN status = "approved" THEN 1 ELSE 0 END) as approved_count,
                 SUM(CASE WHEN status = "paid"     THEN 1 ELSE 0 END) as paid_count,
                 MIN(pay_date) as pay_date
-            ')
+            ', [])
             ->groupBy('year', 'month')
             ->orderByDesc('year')
             ->orderByDesc('month');
@@ -183,7 +185,7 @@ class PayrollController extends Controller
             $periods = $periods->filter(fn ($p) => $p->draft_count > 0);
         }
 
-        $availableYears = Payroll::selectRaw('DISTINCT year')->orderByDesc('year')->pluck('year');
+        $availableYears = Payroll::selectRaw('DISTINCT year', [])->orderByDesc('year')->pluck('year');
 
         return view('dashboard.payrolls.periods', compact('periods', 'filterYear', 'filterMonth', 'filterStatus', 'availableYears'));
     }
@@ -223,7 +225,14 @@ class PayrollController extends Controller
         Gate::authorize('create', Payroll::class);
 
         $validated = $request->validate([
-            'employee_id' => 'required|exists:employees,id',
+            'employee_id' => [
+                'required',
+                'exists:employees,id',
+                Rule::unique('payrolls', 'employee_id')->where(function ($query) use ($request) {
+                    return $query->where('year', $request->input('year'))
+                        ->where('month', $request->input('month'));
+                }),
+            ],
             'year' => 'required|integer|min:2000|max:2100',
             'month' => 'required|integer|min:1|max:12',
             'pay_date' => 'required|date',
@@ -234,7 +243,13 @@ class PayrollController extends Controller
             'status' => 'required|in:draft,approved,paid',
         ]);
 
-        Payroll::create($validated);
+        try {
+            Payroll::create($validated);
+        } catch (UniqueConstraintViolationException $e) {
+            return back()
+                ->withInput()
+                ->withErrors(['employee_id' => 'A payroll already exists for this employee in the selected period.']);
+        }
 
         return redirect()->route('payrolls.index')
             ->with('success', 'Payroll record created successfully.');
