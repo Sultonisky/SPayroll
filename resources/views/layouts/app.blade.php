@@ -5,17 +5,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="At-Tarbiyah Admin Dashboard">
-    <meta name="author" content="At-Tarbiyah">
-    <title>Scroll - Dashboard</title>
+    <meta name="description" content="{{ Brand::fullName() }} Admin Dashboard">
+    <meta name="author" content="{{ config('branding.author_name', Brand::name()) }}">
+    <title>{{ Brand::name() }} - Dashboard</title>
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" sizes="16x16" href="{{ asset('assets/images/logo.png') }}">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="{{ Brand::favicon() }}">
 
     {{-- CoreUI & Vendors Styles --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.css">
     <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/css/coreui.min.css" rel="stylesheet">
-    
+
     {{-- FontAwesome --}}
     <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
 
@@ -31,11 +31,12 @@
     {{-- CoreUI Config & Color Modes --}}
     <script src="{{ asset('assets/dashboard/js/config.js') }}"></script>
     <script src="{{ asset('assets/dashboard/js/color-modes.js') }}"></script>
-    
+
     <style>
         .sidebar-brand-icon i {
             font-size: 2rem;
         }
+
         .header-nav .nav-link {
             padding-left: 0.5rem;
             padding-right: 0.5rem;
@@ -57,17 +58,17 @@
                 <x-alert />
 
                 {{-- Demo Mode Banner --}}
-                @if(auth()->check() && auth()->user()->isDemo())
-                <div class="demo-mode-banner">
-                    <span class="demo-mode-dot"></span>
-                    <span>
-                        You are logged in as a <strong>demo account</strong> — some actions are restricted.
-                        Data resets daily.
-                    </span>
-                    <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">
-                        Deploy your own instance →
-                    </a>
-                </div>
+                @if (auth()->check() && auth()->user()->isDemo())
+                    <div class="demo-mode-banner">
+                        <span class="demo-mode-dot"></span>
+                        <span>
+                            You are logged in as a <strong>demo account</strong> — some actions are restricted.
+                            Data resets daily.
+                        </span>
+                        <a href="https://github.com/Sultonisky/Scroll" target="_blank" rel="noopener noreferrer">
+                            Deploy your own instance →
+                        </a>
+                    </div>
                 @endif
 
                 {{-- Main Content --}}
@@ -87,7 +88,7 @@
     {{-- Scripts --}}
     {{-- jQuery --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
+
     {{-- CoreUI & Vendors Scripts --}}
     <script src="https://cdn.jsdelivr.net/npm/simplebar@6.2.5/dist/simplebar.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0/dist/js/coreui.bundle.min.js"></script>

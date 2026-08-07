@@ -3,7 +3,13 @@
     "name": "sultonisky/scroll",
     "type": "project",
     "description": "Open source, self-hosted payroll management system for remote-first companies. Built with Laravel 13.",
-    "keywords": ["payroll", "hrm", "self-hosted", "laravel", "open-source"],
+    "keywords": [
+        "payroll",
+        "hrm",
+        "self-hosted",
+        "laravel",
+        "open-source"
+    ],
     "license": "MIT",
     "homepage": "https://github.com/Sultonisky/Scroll",
     "support": {
@@ -35,6 +41,9 @@
         "phpunit/phpunit": "^12.5.12"
     },
     "autoload": {
+        "files": [
+            "app/Helpers/Brand.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

@@ -2,14 +2,14 @@
     $user = auth()->user();
     $role = $user?->role;
     $isDemo = $user?->isDemo();
-    $isAdmin    = $role === 'admin';
-    $isHR       = $role === 'HR';
-    $isManager  = $role === 'manager';
-    $isStaff    = $role === 'staff';
-    $isFinance  = $role === 'finance';
+    $isAdmin = $role === 'admin';
+    $isHR = $role === 'HR';
+    $isManager = $role === 'manager';
+    $isStaff = $role === 'staff';
+    $isFinance = $role === 'finance';
     $canPayroll = in_array($role, ['admin', 'HR', 'manager', 'staff', 'finance']);
-    $canBonus   = in_array($role, ['admin', 'HR', 'manager', 'finance']);
-    $canDept    = in_array($role, ['admin', 'HR', 'manager']);
+    $canBonus = in_array($role, ['admin', 'HR', 'manager', 'finance']);
+    $canDept = in_array($role, ['admin', 'HR', 'manager']);
     $canGenerate = in_array($role, ['admin', 'HR', 'finance']);
 @endphp
 
@@ -17,7 +17,7 @@
     <div class="sidebar-header border-bottom px-4" style="height: 64px;">
         <div class="sidebar-brand">
             <div class="sidebar-brand-full d-flex align-items-center">
-                <span class="fw-bold">Dashboard <span class="text-primary">Scroll</span></span>
+                <span class="fw-bold">Dashboard <span class="text-primary">{{ Brand::name() }}</span></span>
             </div>
             <div class="sidebar-brand-narrow">
                 <i class="fas fa-calculator" style="font-size: 1.5rem; color: var(--cui-primary);"></i>
