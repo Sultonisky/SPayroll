@@ -7,7 +7,7 @@ class Brand
      */
     public static function name(): string
     {
-        return config("branding.name", "Scroll");
+        return config('branding.name', 'Scroll');
     }
 
     /**
@@ -15,7 +15,7 @@ class Brand
      */
     public static function fullName(): string
     {
-        return config("branding.full_name", "Scroll Payroll System");
+        return config('branding.full_name', 'Scroll Payroll System');
     }
 
     /**
@@ -23,7 +23,7 @@ class Brand
      */
     public static function tagline(): string
     {
-        return config("branding.tagline", "Payroll system built for remote-first companies");
+        return config('branding.tagline', 'Payroll system built for remote-first companies');
     }
 
     /**
@@ -31,7 +31,7 @@ class Brand
      */
     public static function primaryColor(): string
     {
-        return config("branding.primary_color", "#0d6efd");
+        return config('branding.primary_color', '#0d6efd');
     }
 
     /**
@@ -41,9 +41,9 @@ class Brand
      */
     public static function logo(?string $fallback = null): string
     {
-        $path = config("branding.logo") ?: $fallback;
+        $path = config('branding.logo') ?: $fallback;
 
-        return asset($path ?: "assets/images/logo-scroll.png");
+        return asset($path ?: 'assets/images/logo-scroll.png');
     }
 
     /**
@@ -53,9 +53,9 @@ class Brand
      */
     public static function logoWhite(?string $fallback = null): string
     {
-        $path = config("branding.logo_white") ?: $fallback;
+        $path = config('branding.logo_white') ?: $fallback;
 
-        return asset($path ?: "assets/images/logo-brand-white.png");
+        return asset($path ?: 'assets/images/logo-brand-white.png');
     }
 
     /**
@@ -65,9 +65,9 @@ class Brand
      */
     public static function favicon(?string $fallback = null): string
     {
-        $path = config("branding.favicon") ?: $fallback;
+        $path = config('branding.favicon') ?: $fallback;
 
-        return asset($path ?: "assets/images/logo.png");
+        return asset($path ?: 'assets/images/logo.png');
     }
 
     /**
@@ -75,7 +75,7 @@ class Brand
      */
     public static function fallbackAvatar(): string
     {
-        $path = config("branding.fallback_avatar") ?: "assets/images/logo.png";
+        $path = config('branding.fallback_avatar') ?: 'assets/images/logo.png';
 
         return asset($path);
     }
@@ -85,7 +85,7 @@ class Brand
      */
     public static function logoPath(): string
     {
-        $path = config("branding.logo") ?: "assets/images/logo-scroll.png";
+        $path = config('branding.logo') ?: 'assets/images/logo-scroll.png';
 
         return public_path($path);
     }
@@ -95,15 +95,15 @@ class Brand
      */
     public static function footerText(): string
     {
-        $custom = config("branding.footer_text");
+        $custom = config('branding.footer_text');
 
-        if ($custom !== "" && $custom !== null) {
+        if ($custom !== '' && $custom !== null) {
             return $custom;
         }
 
-        $owner = config("branding.copyright_owner") ?: self::name();
+        $owner = config('branding.copyright_owner') ?: self::name();
 
-        return "© " . date("Y") . " {$owner}. All rights reserved.";
+        return '© '.date('Y')." {$owner}. All rights reserved.";
     }
 
     /**
@@ -111,9 +111,9 @@ class Brand
      */
     public static function copyrightLine(): string
     {
-        $owner = config("branding.copyright_owner") ?: self::name();
+        $owner = config('branding.copyright_owner') ?: self::name();
 
-        return "© " . date("Y") . " {$owner}";
+        return '© '.date('Y')." {$owner}";
     }
 
     /**
@@ -121,7 +121,7 @@ class Brand
      */
     public static function githubUrl(): string
     {
-        return config("branding.github_url", "https://github.com/Sultonisky/Scroll");
+        return config('branding.github_url', 'https://github.com/Sultonisky/Scroll');
     }
 
     /**
@@ -129,8 +129,8 @@ class Brand
      */
     public static function authorHtml(): string
     {
-        $name = config("branding.author_name", "Mohammad Sultoni");
-        $url  = config("branding.author_url", "https://github.com/Sultonisky");
+        $name = config('branding.author_name', 'Mohammad Sultoni');
+        $url = config('branding.author_url', 'https://github.com/Sultonisky');
 
         return "Built by <a href=\"{$url}\" target=\"_blank\" rel=\"noopener noreferrer\">{$name}</a>";
     }

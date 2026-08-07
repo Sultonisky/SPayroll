@@ -35,10 +35,10 @@ class CleanUpTrashCommand extends Command
 
     public function handle(): int
     {
-        $trashDays  = (int) $this->option('trash-days');
-        $logDays    = (int) $this->option('log-days');
-        $logsOnly   = $this->option('logs-only');
-        $trashOnly  = $this->option('trash-only');
+        $trashDays = (int) $this->option('trash-days');
+        $logDays = (int) $this->option('log-days');
+        $logsOnly = $this->option('logs-only');
+        $trashOnly = $this->option('trash-only');
 
         $this->info('╔══════════════════════════════════════╗');
         $this->info('║       S-Payroll Cleanup Job          ║');
@@ -46,7 +46,7 @@ class CleanUpTrashCommand extends Command
         $this->newLine();
 
         $totalTrash = 0;
-        $totalLogs  = 0;
+        $totalLogs = 0;
 
         // ----------------------------------------------------------------
         // 1. Trash cleanup
@@ -56,7 +56,7 @@ class CleanUpTrashCommand extends Command
             $this->info("🗑  Trash cleanup — records soft-deleted before {$cutoff->toDateString()} ({$trashDays}d)");
 
             foreach ($this->trashableModels as $modelClass) {
-                $name  = class_basename($modelClass);
+                $name = class_basename($modelClass);
                 $count = $modelClass::onlyTrashed()
                     ->where('deleted_at', '<', $cutoff)
                     ->forceDelete();

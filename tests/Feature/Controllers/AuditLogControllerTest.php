@@ -294,7 +294,7 @@ class AuditLogControllerTest extends TestCase
         $response = $this->actingAs($admin)
             ->get(route('audit-logs.index', [
                 'user_id' => $admin->id,
-                'action'  => 'login',
+                'action' => 'login',
             ]));
 
         $logs = $response->viewData('logs');
@@ -323,8 +323,8 @@ class AuditLogControllerTest extends TestCase
     public function test_demo_admin_cannot_view_audit_log_detail(): void
     {
         $admin = $this->adminUser();
-        $demo  = $this->demoAdmin();
-        $log   = AuditLog::factory()->byUser($admin)->create();
+        $demo = $this->demoAdmin();
+        $log = AuditLog::factory()->byUser($admin)->create();
 
         $this->actingAs($demo)
             ->get(route('audit-logs.show', $log->id))
@@ -354,12 +354,12 @@ class AuditLogControllerTest extends TestCase
     public function test_show_displays_correct_log_entry(): void
     {
         $admin = $this->adminUser();
-        $log   = AuditLog::factory()
+        $log = AuditLog::factory()
             ->byUser($admin)
             ->state([
-                'action'      => 'deleted',
+                'action' => 'deleted',
                 'description' => 'Employee moved to trash',
-                'ip_address'  => '192.168.1.99',
+                'ip_address' => '192.168.1.99',
             ])
             ->create();
 

@@ -46,10 +46,10 @@ class AuditLogObserverIntegrationTest extends TestCase
         $user = User::factory()->create();
 
         $this->assertDatabaseHas('audit_logs', [
-            'user_id'        => $actor->id,
-            'action'         => 'created',
+            'user_id' => $actor->id,
+            'action' => 'created',
             'auditable_type' => User::class,
-            'auditable_id'   => $user->id,
+            'auditable_id' => $user->id,
         ]);
     }
 
@@ -66,9 +66,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $user->update(['name' => 'New Name']);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'updated',
+            'action' => 'updated',
             'auditable_type' => User::class,
-            'auditable_id'   => $user->id,
+            'auditable_id' => $user->id,
         ]);
     }
 
@@ -85,9 +85,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $user->delete();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'deleted',
+            'action' => 'deleted',
             'auditable_type' => User::class,
-            'auditable_id'   => $user->id,
+            'auditable_id' => $user->id,
         ]);
     }
 
@@ -105,9 +105,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $user->restore();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'restored',
+            'action' => 'restored',
             'auditable_type' => User::class,
-            'auditable_id'   => $user->id,
+            'auditable_id' => $user->id,
         ]);
     }
 
@@ -126,9 +126,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $user->forceDelete();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'force_deleted',
+            'action' => 'force_deleted',
             'auditable_type' => User::class,
-            'auditable_id'   => $userId,
+            'auditable_id' => $userId,
         ]);
     }
 
@@ -145,9 +145,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $dept = Department::factory()->create();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'created',
+            'action' => 'created',
             'auditable_type' => Department::class,
-            'auditable_id'   => $dept->id,
+            'auditable_id' => $dept->id,
         ]);
     }
 
@@ -163,9 +163,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $dept->update(['name' => 'Renamed Dept']);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'updated',
+            'action' => 'updated',
             'auditable_type' => Department::class,
-            'auditable_id'   => $dept->id,
+            'auditable_id' => $dept->id,
         ]);
     }
 
@@ -181,9 +181,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $dept->delete();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'deleted',
+            'action' => 'deleted',
             'auditable_type' => Department::class,
-            'auditable_id'   => $dept->id,
+            'auditable_id' => $dept->id,
         ]);
     }
 
@@ -200,9 +200,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $position = Position::factory()->create();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'created',
+            'action' => 'created',
             'auditable_type' => Position::class,
-            'auditable_id'   => $position->id,
+            'auditable_id' => $position->id,
         ]);
     }
 
@@ -219,9 +219,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $employee = Employee::factory()->create();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'created',
+            'action' => 'created',
             'auditable_type' => Employee::class,
-            'auditable_id'   => $employee->id,
+            'auditable_id' => $employee->id,
         ]);
     }
 
@@ -237,9 +237,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $employee->update(['name' => 'Updated Employee Name']);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'updated',
+            'action' => 'updated',
             'auditable_type' => Employee::class,
-            'auditable_id'   => $employee->id,
+            'auditable_id' => $employee->id,
         ]);
     }
 
@@ -255,9 +255,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $employee->delete();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'deleted',
+            'action' => 'deleted',
             'auditable_type' => Employee::class,
-            'auditable_id'   => $employee->id,
+            'auditable_id' => $employee->id,
         ]);
     }
 
@@ -274,9 +274,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $bonus = Bonus::factory()->pending()->create();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'created',
+            'action' => 'created',
             'auditable_type' => Bonus::class,
-            'auditable_id'   => $bonus->id,
+            'auditable_id' => $bonus->id,
         ]);
     }
 
@@ -290,15 +290,15 @@ class AuditLogObserverIntegrationTest extends TestCase
 
         Bonus::observe(BonusObserver::class);
         $bonus->update([
-            'status'      => 'approved',
+            'status' => 'approved',
             'approved_by' => $actor->id,
             'approved_at' => now(),
         ]);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'approved',
+            'action' => 'approved',
             'auditable_type' => Bonus::class,
-            'auditable_id'   => $bonus->id,
+            'auditable_id' => $bonus->id,
         ]);
     }
 
@@ -313,13 +313,13 @@ class AuditLogObserverIntegrationTest extends TestCase
         Bonus::observe(BonusObserver::class);
         $bonus->update([
             'status' => 'rejected',
-            'notes'  => 'Budget exceeded',
+            'notes' => 'Budget exceeded',
         ]);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'rejected',
+            'action' => 'rejected',
             'auditable_type' => Bonus::class,
-            'auditable_id'   => $bonus->id,
+            'auditable_id' => $bonus->id,
         ]);
     }
 
@@ -336,9 +336,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $payroll = Payroll::factory()->create();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'created',
+            'action' => 'created',
             'auditable_type' => Payroll::class,
-            'auditable_id'   => $payroll->id,
+            'auditable_id' => $payroll->id,
         ]);
     }
 
@@ -354,9 +354,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $payroll->update(['status' => 'approved']);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'approved',
+            'action' => 'approved',
             'auditable_type' => Payroll::class,
-            'auditable_id'   => $payroll->id,
+            'auditable_id' => $payroll->id,
         ]);
     }
 
@@ -372,9 +372,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $payroll->update(['status' => 'paid']);
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'mark_paid',
+            'action' => 'mark_paid',
             'auditable_type' => Payroll::class,
-            'auditable_id'   => $payroll->id,
+            'auditable_id' => $payroll->id,
         ]);
     }
 
@@ -390,9 +390,9 @@ class AuditLogObserverIntegrationTest extends TestCase
         $payroll->delete();
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'deleted',
+            'action' => 'deleted',
             'auditable_type' => Payroll::class,
-            'auditable_id'   => $payroll->id,
+            'auditable_id' => $payroll->id,
         ]);
     }
 

@@ -29,7 +29,7 @@ class DemoResetCommandTest extends TestCase
         // real connection, which causes unique-constraint collisions when run on
         // a persistent database that already has seeded data.
         $connection = config('database.default');
-        $database   = config("database.connections.{$connection}.database");
+        $database = config("database.connections.{$connection}.database");
 
         if ($connection !== 'sqlite' || $database !== ':memory:') {
             $this->markTestSkipped(
@@ -49,7 +49,7 @@ class DemoResetCommandTest extends TestCase
         // seeder is run a second time on a database that already has data from
         // a previous test in the same suite.  Skip on any non-:memory: database.
         $connection = config('database.default');
-        $database   = config("database.connections.{$connection}.database");
+        $database = config("database.connections.{$connection}.database");
 
         if ($connection !== 'sqlite' || $database !== ':memory:') {
             $this->markTestSkipped(

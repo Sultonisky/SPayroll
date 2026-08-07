@@ -4,12 +4,9 @@ namespace Tests\Unit;
 
 use App\Models\AuditLog;
 use App\Models\Department;
-use App\Models\Employee;
-use App\Models\Position;
 use App\Models\User;
 use App\Services\AuditLogService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 /**
@@ -32,8 +29,8 @@ class AuditLogServiceTest extends TestCase
         AuditLogService::log('login', null, 'User logged in');
 
         $this->assertDatabaseHas('audit_logs', [
-            'user_id'     => $admin->id,
-            'action'      => 'login',
+            'user_id' => $admin->id,
+            'action' => 'login',
             'description' => 'User logged in',
         ]);
     }
@@ -68,9 +65,9 @@ class AuditLogServiceTest extends TestCase
         AuditLogService::log('deleted', $dept, "Department '{$dept->name}' deleted");
 
         $this->assertDatabaseHas('audit_logs', [
-            'action'         => 'deleted',
+            'action' => 'deleted',
             'auditable_type' => Department::class,
-            'auditable_id'   => $dept->id,
+            'auditable_id' => $dept->id,
         ]);
     }
 
@@ -97,8 +94,8 @@ class AuditLogServiceTest extends TestCase
         AuditLogService::log('login_failed', null, 'Brute force attempt');
 
         $this->assertDatabaseHas('audit_logs', [
-            'user_id'     => null,
-            'action'      => 'login_failed',
+            'user_id' => null,
+            'action' => 'login_failed',
         ]);
     }
 
@@ -158,7 +155,7 @@ class AuditLogServiceTest extends TestCase
         $dept = Department::factory()->create();
 
         // Manually call logModelEvent as if from an observer
-        AuditLogService::logModelEvent('created', $dept, "Department created");
+        AuditLogService::logModelEvent('created', $dept, 'Department created');
 
         $log = AuditLog::where('action', 'created')
             ->where('auditable_type', Department::class)
@@ -182,7 +179,7 @@ class AuditLogServiceTest extends TestCase
         $dept->name = 'Product';          // changed
         // description left unchanged    // not in dirty
 
-        AuditLogService::logModelEvent('updated', $dept, "Dept updated");
+        AuditLogService::logModelEvent('updated', $dept, 'Dept updated');
 
         $log = AuditLog::where('action', 'updated')
             ->where('auditable_type', Department::class)
@@ -201,7 +198,7 @@ class AuditLogServiceTest extends TestCase
 
         $dept = Department::factory()->create();
 
-        AuditLogService::logModelEvent('deleted', $dept, "Dept deleted");
+        AuditLogService::logModelEvent('deleted', $dept, 'Dept deleted');
 
         $log = AuditLog::where('action', 'deleted')
             ->where('auditable_type', Department::class)
@@ -222,7 +219,7 @@ class AuditLogServiceTest extends TestCase
         // Simulate logModelEvent on a User model (which has password attribute)
         $user = User::factory()->create();
 
-        AuditLogService::logModelEvent('created', $user, "User created");
+        AuditLogService::logModelEvent('created', $user, 'User created');
 
         $log = AuditLog::where('action', 'created')
             ->where('auditable_type', User::class)

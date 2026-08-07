@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Models\AuditLog;
 use App\Models\Bonus;
 use App\Models\Department;
 use App\Models\Employee;

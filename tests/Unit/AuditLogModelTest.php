@@ -40,11 +40,11 @@ class AuditLogModelTest extends TestCase
     public function test_auditable_name_works_for_all_model_types(): void
     {
         $map = [
-            'App\\Models\\User'       => 'User',
+            'App\\Models\\User' => 'User',
             'App\\Models\\Department' => 'Department',
-            'App\\Models\\Position'   => 'Position',
-            'App\\Models\\Payroll'    => 'Payroll',
-            'App\\Models\\Bonus'      => 'Bonus',
+            'App\\Models\\Position' => 'Position',
+            'App\\Models\\Payroll' => 'Payroll',
+            'App\\Models\\Bonus' => 'Bonus',
         ];
 
         foreach ($map as $fqn => $expected) {
@@ -66,19 +66,19 @@ class AuditLogModelTest extends TestCase
     public static function actionColorProvider(): array
     {
         return [
-            'created'      => ['created',      'success'],
-            'updated'      => ['updated',       'warning'],
-            'deleted'      => ['deleted',       'danger'],
-            'restored'     => ['restored',      'info'],
+            'created' => ['created',      'success'],
+            'updated' => ['updated',       'warning'],
+            'deleted' => ['deleted',       'danger'],
+            'restored' => ['restored',      'info'],
             'force_deleted' => ['force_deleted', 'dark'],
-            'login'        => ['login',         'primary'],
-            'logout'       => ['logout',        'secondary'],
+            'login' => ['login',         'primary'],
+            'logout' => ['logout',        'secondary'],
             'login_failed' => ['login_failed',  'danger'],
-            'export'       => ['export',        'info'],
-            'approved'     => ['approved',      'success'],
-            'rejected'     => ['rejected',      'danger'],
-            'mark_paid'    => ['mark_paid',     'success'],
-            'unknown'      => ['something_new', 'secondary'],
+            'export' => ['export',        'info'],
+            'approved' => ['approved',      'success'],
+            'rejected' => ['rejected',      'danger'],
+            'mark_paid' => ['mark_paid',     'success'],
+            'unknown' => ['something_new', 'secondary'],
         ];
     }
 
@@ -96,19 +96,19 @@ class AuditLogModelTest extends TestCase
     public static function actionIconProvider(): array
     {
         return [
-            'created'      => ['created',      'fa-plus-circle'],
-            'updated'      => ['updated',       'fa-edit'],
-            'deleted'      => ['deleted',       'fa-trash'],
-            'restored'     => ['restored',      'fa-undo'],
+            'created' => ['created',      'fa-plus-circle'],
+            'updated' => ['updated',       'fa-edit'],
+            'deleted' => ['deleted',       'fa-trash'],
+            'restored' => ['restored',      'fa-undo'],
             'force_deleted' => ['force_deleted', 'fa-times-circle'],
-            'login'        => ['login',         'fa-sign-in-alt'],
-            'logout'       => ['logout',        'fa-sign-out-alt'],
+            'login' => ['login',         'fa-sign-in-alt'],
+            'logout' => ['logout',        'fa-sign-out-alt'],
             'login_failed' => ['login_failed',  'fa-exclamation-triangle'],
-            'export'       => ['export',        'fa-download'],
-            'approved'     => ['approved',      'fa-check-circle'],
-            'rejected'     => ['rejected',      'fa-ban'],
-            'mark_paid'    => ['mark_paid',     'fa-money-bill-wave'],
-            'unknown'      => ['something_new', 'fa-circle'],
+            'export' => ['export',        'fa-download'],
+            'approved' => ['approved',      'fa-check-circle'],
+            'rejected' => ['rejected',      'fa-ban'],
+            'mark_paid' => ['mark_paid',     'fa-money-bill-wave'],
+            'unknown' => ['something_new', 'fa-circle'],
         ];
     }
 

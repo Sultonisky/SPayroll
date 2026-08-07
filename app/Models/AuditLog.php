@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class AuditLog extends Model
 {
     use HasFactory;
+
     /**
      * Audit logs are append-only — never update or soft-delete them.
      */
@@ -74,19 +75,19 @@ class AuditLog extends Model
     public function getActionColorAttribute(): string
     {
         return match ($this->action) {
-            'created'      => 'success',
-            'updated'      => 'warning',
-            'deleted'      => 'danger',
-            'restored'     => 'info',
+            'created' => 'success',
+            'updated' => 'warning',
+            'deleted' => 'danger',
+            'restored' => 'info',
             'force_deleted' => 'dark',
-            'login'        => 'primary',
-            'logout'       => 'secondary',
+            'login' => 'primary',
+            'logout' => 'secondary',
             'login_failed' => 'danger',
-            'export'       => 'info',
-            'approved'     => 'success',
-            'rejected'     => 'danger',
-            'mark_paid'    => 'success',
-            default        => 'secondary',
+            'export' => 'info',
+            'approved' => 'success',
+            'rejected' => 'danger',
+            'mark_paid' => 'success',
+            default => 'secondary',
         };
     }
 
@@ -96,19 +97,19 @@ class AuditLog extends Model
     public function getActionIconAttribute(): string
     {
         return match ($this->action) {
-            'created'      => 'fa-plus-circle',
-            'updated'      => 'fa-edit',
-            'deleted'      => 'fa-trash',
-            'restored'     => 'fa-undo',
+            'created' => 'fa-plus-circle',
+            'updated' => 'fa-edit',
+            'deleted' => 'fa-trash',
+            'restored' => 'fa-undo',
             'force_deleted' => 'fa-times-circle',
-            'login'        => 'fa-sign-in-alt',
-            'logout'       => 'fa-sign-out-alt',
+            'login' => 'fa-sign-in-alt',
+            'logout' => 'fa-sign-out-alt',
             'login_failed' => 'fa-exclamation-triangle',
-            'export'       => 'fa-download',
-            'approved'     => 'fa-check-circle',
-            'rejected'     => 'fa-ban',
-            'mark_paid'    => 'fa-money-bill-wave',
-            default        => 'fa-circle',
+            'export' => 'fa-download',
+            'approved' => 'fa-check-circle',
+            'rejected' => 'fa-ban',
+            'mark_paid' => 'fa-money-bill-wave',
+            default => 'fa-circle',
         };
     }
 }

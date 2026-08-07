@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\AuditLog;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -53,18 +52,18 @@ class AuditLogFactory extends Factory
         $isAuthEvent = in_array($action, ['login', 'logout', 'login_failed']);
 
         return [
-            'user_id'        => User::factory(),
-            'action'         => $action,
+            'user_id' => User::factory(),
+            'action' => $action,
             'auditable_type' => $isAuthEvent ? null : $modelType,
-            'auditable_id'   => $isAuthEvent ? null : fake()->numberBetween(1, 100),
-            'description'    => fake()->sentence(),
-            'old_values'     => $oldValues,
-            'new_values'     => $newValues,
-            'ip_address'     => fake()->ipv4(),
-            'user_agent'     => fake()->userAgent(),
-            'url'            => fake()->url(),
-            'method'         => fake()->randomElement(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
-            'created_at'     => fake()->dateTimeBetween('-6 months', 'now'),
+            'auditable_id' => $isAuthEvent ? null : fake()->numberBetween(1, 100),
+            'description' => fake()->sentence(),
+            'old_values' => $oldValues,
+            'new_values' => $newValues,
+            'ip_address' => fake()->ipv4(),
+            'user_agent' => fake()->userAgent(),
+            'url' => fake()->url(),
+            'method' => fake()->randomElement(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']),
+            'created_at' => fake()->dateTimeBetween('-6 months', 'now'),
         ];
     }
 
@@ -75,16 +74,16 @@ class AuditLogFactory extends Factory
     public function created(): static
     {
         return $this->state(fn () => [
-            'action'      => 'created',
-            'old_values'  => null,
-            'new_values'  => ['name' => fake()->name()],
+            'action' => 'created',
+            'old_values' => null,
+            'new_values' => ['name' => fake()->name()],
         ]);
     }
 
     public function updated(): static
     {
         return $this->state(fn () => [
-            'action'     => 'updated',
+            'action' => 'updated',
             'old_values' => ['name' => fake()->name()],
             'new_values' => ['name' => fake()->name()],
         ]);
@@ -93,7 +92,7 @@ class AuditLogFactory extends Factory
     public function deleted(): static
     {
         return $this->state(fn () => [
-            'action'     => 'deleted',
+            'action' => 'deleted',
             'old_values' => null,
             'new_values' => null,
         ]);
@@ -102,7 +101,7 @@ class AuditLogFactory extends Factory
     public function restored(): static
     {
         return $this->state(fn () => [
-            'action'     => 'restored',
+            'action' => 'restored',
             'old_values' => null,
             'new_values' => null,
         ]);
@@ -111,44 +110,44 @@ class AuditLogFactory extends Factory
     public function forceDeleted(): static
     {
         return $this->state(fn () => [
-            'action'         => 'force_deleted',
+            'action' => 'force_deleted',
             'auditable_type' => null,
-            'auditable_id'   => null,
-            'old_values'     => null,
-            'new_values'     => null,
+            'auditable_id' => null,
+            'old_values' => null,
+            'new_values' => null,
         ]);
     }
 
     public function login(): static
     {
         return $this->state(fn () => [
-            'action'         => 'login',
+            'action' => 'login',
             'auditable_type' => null,
-            'auditable_id'   => null,
-            'old_values'     => null,
-            'new_values'     => null,
+            'auditable_id' => null,
+            'old_values' => null,
+            'new_values' => null,
         ]);
     }
 
     public function loginFailed(): static
     {
         return $this->state(fn () => [
-            'action'         => 'login_failed',
+            'action' => 'login_failed',
             'auditable_type' => null,
-            'auditable_id'   => null,
-            'old_values'     => null,
-            'new_values'     => null,
+            'auditable_id' => null,
+            'old_values' => null,
+            'new_values' => null,
         ]);
     }
 
     public function logout(): static
     {
         return $this->state(fn () => [
-            'action'         => 'logout',
+            'action' => 'logout',
             'auditable_type' => null,
-            'auditable_id'   => null,
-            'old_values'     => null,
-            'new_values'     => null,
+            'auditable_id' => null,
+            'old_values' => null,
+            'new_values' => null,
         ]);
     }
 
@@ -156,7 +155,7 @@ class AuditLogFactory extends Factory
     {
         return $this->state(fn () => [
             'auditable_type' => $modelClass,
-            'auditable_id'   => $modelId,
+            'auditable_id' => $modelId,
         ]);
     }
 
