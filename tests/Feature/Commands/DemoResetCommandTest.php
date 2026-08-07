@@ -25,10 +25,16 @@ class DemoResetCommandTest extends TestCase
 
     public function test_command_proceeds_when_user_confirms(): void
     {
-        // migrate:fresh cannot run on :memory: SQLite inside a RefreshDatabase transaction.
-        // This path is validated in staging/CI with a persistent DB.
-        if (config('database.default') === 'sqlite' && config('database.connections.sqlite.database') === ':memory:') {
-            $this->markTestSkipped('migrate:fresh is incompatible with :memory: SQLite inside a transaction.');
+        // migrate:fresh runs outside the RefreshDatabase transaction and hits the
+        // real connection, which causes unique-constraint collisions when run on
+        // a persistent database that already has seeded data.
+        $connection = config('database.default');
+        $database   = config("database.connections.{$connection}.database");
+
+        if ($connection !== 'sqlite' || $database !== ':memory:') {
+            $this->markTestSkipped(
+                'demo:reset runs migrate:fresh which conflicts with RefreshDatabase on a persistent database.'
+            );
         }
 
         $this->artisan('demo:reset')
@@ -38,8 +44,17 @@ class DemoResetCommandTest extends TestCase
 
     public function test_command_skips_confirmation_with_force_flag(): void
     {
-        if (config('database.default') === 'sqlite' && config('database.connections.sqlite.database') === ':memory:') {
-            $this->markTestSkipped('migrate:fresh is incompatible with :memory: SQLite inside a transaction.');
+        // migrate:fresh runs outside the RefreshDatabase transaction and hits the
+        // real connection, which causes unique-constraint collisions when the
+        // seeder is run a second time on a database that already has data from
+        // a previous test in the same suite.  Skip on any non-:memory: database.
+        $connection = config('database.default');
+        $database   = config("database.connections.{$connection}.database");
+
+        if ($connection !== 'sqlite' || $database !== ':memory:') {
+            $this->markTestSkipped(
+                'demo:reset runs migrate:fresh which conflicts with RefreshDatabase on a persistent database.'
+            );
         }
 
         $this->artisan('demo:reset', ['--force' => true])
